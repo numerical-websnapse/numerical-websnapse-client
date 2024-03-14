@@ -6,10 +6,10 @@
 	import { deepCopy } from "../utils/copy";
 
 	var client_id = Date.now()
-	let socket = new WebSocket(`wss://numerical-websnapse-server.onrender.com:8000/ws/${client_id}`);
+	let socket = new WebSocket(`wss://numerical-websnapse-server.onrender.com/ws/${client_id}`);
 
 	function connect() {
-		socket = new WebSocket(`wss://numerical-websnapse-server.onrender.com:8000/ws/${client_id}`);
+		socket = new WebSocket(`wss://numerical-websnapse-server.onrender.com/ws/${client_id}`);
 	}
 
 	socket.onopen = function() {
