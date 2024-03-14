@@ -6,10 +6,10 @@
 	import { deepCopy } from "../utils/copy";
 
 	var client_id = Date.now()
-	let socket = new WebSocket(`ws://localhost:8000/ws/${client_id}`);
+	let socket = new WebSocket(`ws://numerical-websnapse-server.vercel.app/ws/${client_id}`);
 
 	function connect() {
-		socket = new WebSocket(`ws://localhost:8000/ws/${client_id}`);
+		socket = new WebSocket(`ws://numerical-websnapse-server.vercel.app/ws/${client_id}`);
 	}
 
 	socket.onopen = function() {
