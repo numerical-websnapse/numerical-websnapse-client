@@ -1,0 +1,302 @@
+{
+    "nodes": [
+        {
+            "id": "u621ywhe",
+            "data": {
+                "var_": [
+                    [
+                        "x",
+                        "7"
+                    ]
+                ],
+                "prf": [
+                    [
+                        "f_{1}",
+                        "",
+                        [
+                            [
+                                "x",
+                                "1"
+                            ]
+                        ]
+                    ],
+                    [
+                        "f_{2}",
+                        "",
+                        [
+                            [
+                                "x",
+                                "-1"
+                            ]
+                        ]
+                    ]
+                ],
+                "train": [],
+                "ntype": "reg",
+                "label": "\\sigma_{0}",
+                "x": 200,
+                "y": 0
+            }
+        },
+        {
+            "id": "lr35mvqm",
+            "data": {
+                "var_": [
+                    [
+                        "x",
+                        "7"
+                    ]
+                ],
+                "prf": [
+                    [
+                        "f_{1}",
+                        "",
+                        [
+                            [
+                                "x",
+                                "1"
+                            ]
+                        ]
+                    ],
+                    [
+                        "f_{2}",
+                        "",
+                        [
+                            [
+                                "x",
+                                "-1"
+                            ]
+                        ]
+                    ]
+                ],
+                "train": [],
+                "ntype": "reg",
+                "label": "\\sigma_{1}",
+                "x": 200,
+                "y": 200
+            }
+        },
+        {
+            "id": "5iymcks6",
+            "data": {
+                "var_": [
+                    [
+                        "x",
+                        "0"
+                    ]
+                ],
+                "prf": [
+                    [
+                        "f_{1}",
+                        "0",
+                        [
+                            [
+                                "x",
+                                "1"
+                            ]
+                        ]
+                    ]
+                ],
+                "train": [],
+                "ntype": "reg",
+                "label": "\\sigma_{2}",
+                "x": 400,
+                "y": 0
+            }
+        },
+        {
+            "id": "uxsom8dk",
+            "data": {
+                "var_": [
+                    [
+                        "x",
+                        "0"
+                    ]
+                ],
+                "prf": [
+                    [
+                        "f_{1}",
+                        "0",
+                        [
+                            [
+                                "x",
+                                "1"
+                            ]
+                        ]
+                    ]
+                ],
+                "train": [],
+                "ntype": "reg",
+                "label": "\\sigma_{3}",
+                "x": 400,
+                "y": 200
+            }
+        },
+        {
+            "id": "qhyo9eem",
+            "data": {
+                "var_": [
+                    [
+                        "x",
+                        "6"
+                    ]
+                ],
+                "prf": [
+                    [
+                        "f_{1}",
+                        "",
+                        [
+                            [
+                                "x",
+                                "-1"
+                            ]
+                        ]
+                    ]
+                ],
+                "train": [],
+                "ntype": "reg",
+                "label": "\\sigma_{4}",
+                "x": 600,
+                "y": -200
+            }
+        },
+        {
+            "id": "frrfi773",
+            "data": {
+                "var_": [
+                    [
+                        "x",
+                        "0"
+                    ]
+                ],
+                "prf": [
+                    [
+                        "f_{1}",
+                        "",
+                        [
+                            [
+                                "x",
+                                "1"
+                            ]
+                        ]
+                    ]
+                ],
+                "train": [],
+                "ntype": "reg",
+                "label": "\\sigma_{5}",
+                "x": 600,
+                "y": 0
+            }
+        },
+        {
+            "id": "eu9pjihm",
+            "data": {
+                "var_": [
+                    [
+                        "x",
+                        "0"
+                    ]
+                ],
+                "prf": [
+                    [
+                        "f_{1}",
+                        "-1",
+                        [
+                            [
+                                "x",
+                                "-1"
+                            ]
+                        ]
+                    ]
+                ],
+                "train": [],
+                "ntype": "reg",
+                "label": "\\sigma_{6}",
+                "x": 600,
+                "y": 200
+            }
+        },
+        {
+            "id": "4emjfybw",
+            "data": {
+                "var_": [
+                    [
+                        "x",
+                        "0"
+                    ]
+                ],
+                "prf": [
+                    [
+                        "f_{1}",
+                        "1",
+                        [
+                            [
+                                "x",
+                                "1"
+                            ]
+                        ]
+                    ]
+                ],
+                "train": [],
+                "ntype": "reg",
+                "label": "\\sigma_{7}",
+                "x": 800,
+                "y": 200
+            }
+        },
+        {
+            "id": "7zt240sv",
+            "data": {
+                "var_": [],
+                "prf": [],
+                "train": [],
+                "ntype": "out",
+                "label": "\\sigma_{out}",
+                "x": 1000,
+                "y": 200
+            }
+        }
+    ],
+    "edges": [
+        {
+            "id": "syn_{(0,2)}",
+            "source": "u621ywhe",
+            "target": "5iymcks6"
+        },
+        {
+            "id": "syn_{(2,6)}",
+            "source": "5iymcks6",
+            "target": "eu9pjihm"
+        },
+        {
+            "id": "syn_{(1,3)}",
+            "source": "lr35mvqm",
+            "target": "uxsom8dk"
+        },
+        {
+            "id": "syn_{(3,6)}",
+            "source": "uxsom8dk",
+            "target": "eu9pjihm"
+        },
+        {
+            "id": "syn_{(4,5)}",
+            "source": "qhyo9eem",
+            "target": "frrfi773"
+        },
+        {
+            "id": "syn_{(5,6)}",
+            "source": "frrfi773",
+            "target": "eu9pjihm"
+        },
+        {
+            "id": "syn_{(6,7)}",
+            "source": "eu9pjihm",
+            "target": "4emjfybw"
+        },
+        {
+            "id": "syn_{(7,8)}",
+            "source": "4emjfybw",
+            "target": "7zt240sv"
+        }
+    ]
+}

@@ -1,0 +1,60 @@
+diff --git a/node_modules/@antv/g6/esm/runtime/controller/item.js b/node_modules/@antv/g6/esm/runtime/controller/item.js
+index dd8703f..46ee95e 100644
+--- a/node_modules/@antv/g6/esm/runtime/controller/item.js
++++ b/node_modules/@antv/g6/esm/runtime/controller/item.js
+@@ -655,12 +655,22 @@ export class ItemController {
+         const { itemType, stateConfig } = param;
+         const fieldName = `${itemType}StateMapper`;
+         this[fieldName] = stateConfig;
+-        this.graph.getAllNodesData().forEach((node) => {
+-            const item = this.itemMap.get(node.id);
+-            if (item) {
+-                item.stateMapper = stateConfig;
+-            }
+-        });
++        if(itemType === 'node') {
++            this.graph.getAllNodesData().forEach((node) => {
++                const item = this.itemMap.get(node.id);
++                if (item) {
++                    item.stateMapper = stateConfig;
++                }
++            });
++        }
++        if(itemType === 'edge') {
++            this.graph.getAllEdgesData().forEach((edge) => {
++                const item = this.itemMap.get(edge.id);
++                if (item) {
++                    item.stateMapper = stateConfig;
++                }
++            });
++        }
+     }
+     onItemVisibilityChange(param) {
+         const { ids, shapeIds, value, graphCore, animate = true, keepKeyShape = false, keepRelated = false, } = param;
+diff --git a/node_modules/@antv/g6/esm/runtime/graph.js b/node_modules/@antv/g6/esm/runtime/graph.js
+index 77efa93..20e24fe 100644
+--- a/node_modules/@antv/g6/esm/runtime/graph.js
++++ b/node_modules/@antv/g6/esm/runtime/graph.js
+@@ -300,7 +300,7 @@ export class Graph extends EventEmitter {
+         const stateField = `${itemType}State`;
+         if (updateType === 'mergeReplace') {
+             const config = Object.assign(Object.assign({}, this.specification[stateField]), stateConfig);
+-            this.specification[itemType] = config;
++            this.specification[stateField] = config;
+             this.hooks.itemstateconfigchange.emit({ itemType, stateConfig: config });
+         }
+         else {
+diff --git a/node_modules/@antv/g6/esm/stdlib/plugin/minimap/index.js b/node_modules/@antv/g6/esm/stdlib/plugin/minimap/index.js
+index 57a69c9..a9fd150 100644
+--- a/node_modules/@antv/g6/esm/stdlib/plugin/minimap/index.js
++++ b/node_modules/@antv/g6/esm/stdlib/plugin/minimap/index.js
+@@ -101,9 +101,7 @@ export class Minimap extends Base {
+       style='position:absolute;
+         left:0;
+         top:0;
+-        border: 2px solid #1980ff;
+         box-sizing:border-box;
+-        background: rgba(0, 0, 255, 0.1);
+         cursor:move'
+       draggable=${isSafari || isFireFox ? false : true}
+     />`);

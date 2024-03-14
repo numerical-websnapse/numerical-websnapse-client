@@ -1,0 +1,15 @@
+diff --git a/node_modules/@antv/g6/esm/stdlib/plugin/menu/index.js b/node_modules/@antv/g6/esm/stdlib/plugin/menu/index.js
+index cd7e4f5..b3e5cea 100644
+--- a/node_modules/@antv/g6/esm/stdlib/plugin/menu/index.js
++++ b/node_modules/@antv/g6/esm/stdlib/plugin/menu/index.js
+@@ -134,8 +134,8 @@ export class Menu extends Base {
+             const bbox = menuDom.getBoundingClientRect();
+             const offsetX = this.options.offsetX || 0;
+             const offsetY = this.options.offsetY || 0;
+-            const graphTop = this.graph.container.offsetTop;
+-            const graphLeft = this.graph.container.offsetLeft;
++            const graphTop = document.getElementById(this.graph.container).offsetTop;
++            const graphLeft = document.getElementById(this.graph.container).offsetLeft;
+             let x = e.viewport.x + graphLeft + offsetX;
+             let y = e.viewport.y + graphTop + offsetY - 55;
+             // when the menu is (part of) out of the canvas
