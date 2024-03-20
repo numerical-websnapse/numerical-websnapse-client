@@ -15,8 +15,8 @@
 	}
 
 	function connect() {
-		$system.socket = new WebSocket(`ws://${$system.url}/ws/${$system.client}`);
-		// $system.socket = new WebSocket(`wss://${$system.url}/ws/${$system.client}`);
+		// $system.socket = new WebSocket(`ws://${$system.url}/ws/${$system.client}`);
+		$system.socket = new WebSocket(`wss://${$system.url}/ws/${$system.client}`);
 		$system.socket.onopen = function() {
 			addNotification({
 				position: 'top-left',
@@ -62,8 +62,8 @@
 
 	async function requestDetails(route, message) {
 		let response = null;
-		await fetch(`http://${$system.url}/${route}/${$system.client}`, {
-		// await fetch(`https://${$system.url}/${route}/${$system.client}`, {
+		// await fetch(`http://${$system.url}/${route}/${$system.client}`, {
+		await fetch(`https://${$system.url}/${route}/${$system.client}`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
