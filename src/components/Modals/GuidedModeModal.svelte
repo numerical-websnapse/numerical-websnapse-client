@@ -3,10 +3,7 @@
   import { system } from "../../stores/system";
   import { MathToSvgElement } from "../../utils/math";
   import { modals, getModal } from "../../stores/modals";
-  import { getNotificationsContext } from "svelte-notifications";
   import FunctionSelect from "./inputs/FunctionSelect.svelte";
-
-  const { addNotification } = getNotificationsContext();
 
   const hideModal = () => {
     getModal("guidedModal").hide();

@@ -2,6 +2,9 @@
 	import { modals, getModal } from "../stores/modals";
 	import { system, resetSystem } from "../stores/system";
 	import { graph, changeMode } from "../stores/graph";
+	import { getNotificationsContext } from "svelte-notifications";
+
+	const { addNotification } = getNotificationsContext();
 
 	$: if(!$system.client) {
 		$system.client = Date.now().toString();
@@ -12,10 +15,15 @@
 	}
 
 	function connect() {
-		// $system.socket = new WebSocket(`ws://${$system.url}/ws/${$system.client}`);
-		$system.socket = new WebSocket(`wss://${$system.url}/ws/${$system.client}`);
+		$system.socket = new WebSocket(`ws://${$system.url}/ws/${$system.client}`);
+		// $system.socket = new WebSocket(`wss://${$system.url}/ws/${$system.client}`);
 		$system.socket.onopen = function() {
-			console.log('Connected to the server');
+			addNotification({
+				position: 'top-left',
+				messages: ['Connected to server'],
+				type: 'success',
+				removeAfter: 4000,
+			});
 		};
 	}
 
@@ -54,8 +62,8 @@
 
 	async function requestDetails(route, message) {
 		let response = null;
-		await fetch(`https://${$system.url}/${route}/${$system.client}`, {
-		// await fetch(`http://${$system.url}/${route}/${$system.client}`, {
+		await fetch(`http://${$system.url}/${route}/${$system.client}`, {
+		// await fetch(`https://${$system.url}/${route}/${$system.client}`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
