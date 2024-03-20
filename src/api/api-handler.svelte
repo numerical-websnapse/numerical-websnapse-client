@@ -31,10 +31,13 @@
 	}
 
 	function sendMessage(message) {
-		if (!$system.socket || $system.socket.readyState !== WebSocket.OPEN)
+		if (!$system.socket || $system.socket.readyState !== WebSocket.OPEN) {
+			console.log('Still connecting to socket...');
 			connect();
-
-			$system.socket.send(message);
+			return;
+		}
+			
+		$system.socket.send(message);
 	}
 
 	async function requestSimulation(message) {
