@@ -56,7 +56,6 @@
   ];
 
   const changeGraphData = (data) => {
-    console.log(data);
     const errors = dataValidation(data);
 
     if (errors.length) {
