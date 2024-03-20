@@ -1,5 +1,7 @@
 <script>
   import { system } from "../../stores/system";
+  import { graph } from "../../stores/graph";
+  import { checkOpenModal } from "../../stores/modals";
   import SimulationRequest from  "../../api/api-handler.svelte";
   
   let simulator = null;
@@ -14,12 +16,17 @@
     event.target.blur();
   };
 
+  const initialRate = $system.tickRate;
   let speedMultiplier = 1.25;
   const handleSpeedChange = () => {
-    $system.tickRate = 1500 * (1/speedMultiplier);
+    $system.tickRate = initialRate * (1/speedMultiplier);
+    const { edge } = $graph.getSpecification();
+    $graph.updateSpecification({ edge });
   };
 
   const onKeydownControls = (e) => {
+    if(checkOpenModal()) return;
+
     switch(e.code) {
       case 'KeyG':
         toggleGuided();

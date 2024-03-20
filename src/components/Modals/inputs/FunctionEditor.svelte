@@ -19,7 +19,7 @@
   ]);
 
   const addFunction = () => {
-    $neuron.data.prf = [...$neuron.data.prf, ["", null, []]];
+    $neuron.data.prf = [...$neuron.data.prf, ["f", null, []]];
   };
 
   const deleteFunction = (index) => {
@@ -118,35 +118,33 @@
         </div>
       {/each}
       <!-- Delete button -->
-      {#if $neuron.data.prf.length !== 1}
-        <div class="w-4 pt-6">
-          <button
-            type="button"
-            on:click={() => deleteFunction(index)}
-            class=" ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+      <div class="w-4 pt-6">
+        <button
+          type="button"
+          on:click={() => deleteFunction(index)}
+          class=" ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+        >
+          <svg
+            class="h-3 w-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 14"
           >
-            <svg
-              class="h-3 w-3"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 14 14"
-            >
-              <line
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                x1="0"
-                y1="7"
-                x2="14"
-                y2="7"
-              />
-            </svg>
-            <span class="sr-only">delete variables</span>
-          </button>
-        </div>
-      {/if}
+            <line
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              x1="0"
+              y1="7"
+              x2="14"
+              y2="7"
+            />
+          </svg>
+          <span class="sr-only">Delete Function</span>
+        </button>
+      </div>
     </div>
   {/each}
 </div>

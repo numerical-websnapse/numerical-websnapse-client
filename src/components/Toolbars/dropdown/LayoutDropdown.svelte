@@ -1,9 +1,8 @@
 <script>
-  import { onMount, onDestroy } from "svelte";
   export let id;
   export let graph;
 
-  $: layoutConfigs = {
+  const layoutConfigs = {
     Circular: () => {
       return {
         type: "circular",

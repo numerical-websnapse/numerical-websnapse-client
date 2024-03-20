@@ -12,22 +12,16 @@ export const getNodeConfig = (nodeInnerModel) => {
 		return nodeInnerModel;
 	}
 
-	// Can preprocess the node here - downside is that it will be called for all node updates (i.e., dragging)
-	// preprocessNode(nodeInnerModel); 
 	const config = get(nodeOptions);
 	const {data, ...newModel } = nodeInnerModel;
-	const { size:[width, height] } = data;
 
 	if (data.ntype === 'out') {
 		return {
 			...newModel,
 			data: {
 				...data,
-				size: [width, height],
 				type: 'neuron-node',
 				keyShape: {
-					width: width+config.outShape.padding*2,
-					height: height+config.outShape.padding*2,
 					fill: config.outShape.fill,
 					stroke: config.outShape.stroke,
 					lineWidth: config.outShape.lineWidth,
@@ -36,7 +30,6 @@ export const getNodeConfig = (nodeInnerModel) => {
 					zIndex: -3,
 				},
 				haloShape: {
-					fill: config.haloShape.fill,
 					stroke: config.haloShape.stroke,
 				},
 				otherShapes: {},
@@ -49,16 +42,13 @@ export const getNodeConfig = (nodeInnerModel) => {
 			...newModel,
 			data: {
 				...data,
-				size: [width, height],
 				type: 'neuron-node',
 				keyShape: {
-					width: width+config.content.padding*2,
-					height: height+config.content.padding*2,
 					fill: config.keyShape.fill,
 					stroke: config.keyShape.stroke,
 					lineWidth: config.keyShape.lineWidth,
+					radius: config.keyShape.radius,
 					cursor: 'pointer',
-					radius: 15,
 					zIndex: -3,
 				},
 				haloShape: {

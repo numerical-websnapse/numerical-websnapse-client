@@ -4,6 +4,7 @@ import { minimap } from '../plugins/minimap';
 import { getGraph, setGraphLocalData } from '../../stores/graph';
 import { deleteImage } from '../../stores/data';
 import { objectsMatch } from '../../utils/match';
+import { deepCopy } from '../../utils/copy';
 
 export function addNode(content = null, graph = null) {
     let node = neuronTemplate();
@@ -51,11 +52,6 @@ export function updateNode(id, content, graph = null, simulating = false) {
         },
     };
 
-    // if(simulating) {
-    //     if(objectsMatch(node.data, updatedNode.data)) return;
-    // }
-
-    preprocessNode(updatedNode, simulating = true);
     graph.updateData('node', updatedNode);
     if (!simulating) setGraphLocalData();
 }
@@ -66,4 +62,9 @@ export function removeNode(id, graph = null) {
     graph.updatePlugin(minimap());
     deleteImage(id);
     setGraphLocalData();
+}
+
+export function getCopyNode(id, graph = null) {
+    graph = graph || getGraph();
+    return deepCopy(graph.getNodeData(id));
 }

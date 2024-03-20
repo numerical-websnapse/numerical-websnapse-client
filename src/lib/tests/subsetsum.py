@@ -107,7 +107,7 @@ def generate_subset_sum(n, sum=20):
             'prf': [],
             'train': [],
             'ntype': 'out',
-            'label': '\sigma_{{{i}}}'.format(i='out'),
+            'label': '\sigma_{{{i}}}'.format(i=(n*2)+4),
             'x': position['x'] * 5,
             'y': position['y'] * ((n-1)-0),
             'train': [],

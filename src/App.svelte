@@ -16,7 +16,6 @@
 </script>
 
 <svelte:window on:beforeunload={beforeUnload}/>
-
 <Notifications item={Alert} zIndex=100>
 	<main>
 		<Canvas/>

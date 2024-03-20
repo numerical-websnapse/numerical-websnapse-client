@@ -1,16 +1,19 @@
 <script>
-  import Input from "./Input.svelte";
+  import Setting from "./Setting.svelte";
   import { onMount } from "svelte";
-  import { graph, setGraphLocalData } from "../../../stores/graph";
-  import { preprocessNodes } from "../../../graph/utils/preprocess";
   import { minimap } from "../../../graph/plugins/minimap";
   import { dataValidation } from "../../../utils/validation";
   import { getNotificationsContext } from "svelte-notifications";
+  import { graph, setGraphLocalData } from "../../../stores/graph";
+  import { resetSystem } from "../../../stores/system";
 
   const { addNotification } = getNotificationsContext();
 
   export let nodeOptions;
   export let edgeOptions;
+  export let nodeMetaData;
+  export let edgeMetaData;
+
   let files;
 
   $: files = files?.length ? files : null;
@@ -72,9 +75,10 @@
         return;
       }
 
-      $graph.changeData(preprocessNodes(data), "replace");
+      $graph.changeData(data, "replace");
       $graph.updatePlugin(minimap());
       setGraphLocalData();
+      resetSystem();
     };
     reader.readAsText(files[0]);
   };
@@ -159,7 +163,7 @@
       <div
         class="p-6 grid grid-flow-row grid-col-1 space-y-3 overflow-y-auto max-h-[45vh] md:max-h-[60vh]"
       >
-        <Input bind:options={nodeOptions} name="node-settings" />
+        <Setting bind:options={nodeOptions} bind:metaData={nodeMetaData} name="node-settings" />
       </div>
     </div>
     <!-- Edge settings content -->
@@ -172,7 +176,7 @@
       <div
         class="p-6 grid grid-flow-row grid-col-1 space-y-3 overflow-y-auto max-h-[45vh] md:max-h-[60vh]"
       >
-        <Input bind:options={edgeOptions} name="edge-settings" />
+        <Setting bind:options={edgeOptions} bind:metaData={edgeMetaData} name="edge-settings" />
       </div>
     </div>
 

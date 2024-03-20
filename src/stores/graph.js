@@ -2,6 +2,7 @@ import { writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
 import { get } from 'svelte/store';
 import { system } from './system';
+import { deepCopy } from '../utils/copy';
 
 // TEMPLATES
 export const edgeTemplate = (source = null, target = null) => {
@@ -62,9 +63,19 @@ const cleanNodes = (nodes) => {
     });
 }
 
+const cleanEdges = (edges) => {
+    return edges.map((edge) => {
+        return {
+            id: edge.id,
+            source: edge.source,
+            target: edge.target,
+        }
+    });
+}
+
 export const setGraphLocalData = () => {
     const nodes = cleanNodes(getGraph().getAllNodesData());
-    const edges = getGraph().getAllEdgesData();
+    const edges = cleanEdges(getGraph().getAllEdgesData());
     const data = { nodes, edges };
     localStorage.setItem('data', JSON.stringify(data));
 }
@@ -80,41 +91,21 @@ export const setPositionLocalData = () => {
 }
 
 export const resetNeuron = (x = 0, y = 0) => {
-    neuron.set({
-        id: `${uuidv4().slice(0, 8)}`,
-        data: {
-            var_: [[ 'x_1', '0' ]],
-            prf: [[ 'f_1', null, [['x_1','1']] ]],
-            label: 'n1',
-            ntype: 'reg',
-            x,
-            y,
-        }
-    })
+    neuron.set(neuronTemplate(x, y))
 }
 
 export const setNeuron = (id) => {
-    const node = getGraph().getNodeData(id);
+    const node = deepCopy(getGraph().getNodeData(id));
     neuron.set({
         id: node.id,
         data: {
             var_: node.data.var_,
             prf: node.data.prf,
+            train: node.data.train,
             label: node.data.label,
             ntype: node.data.ntype,
             x: node.data.x,
             y: node.data.y,
         }
     })
-}
-
-export const getNeuron = () => {
-    let temp = null;
-
-    const unsubscribe = neuron.subscribe((obj) => {
-        temp = obj;
-    });
-    
-    unsubscribe();
-    return temp;
 }

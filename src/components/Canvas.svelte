@@ -25,19 +25,8 @@
     $graph.destroy();
     unsubscribe();
   });
-
-  function beforeUnload(e) {
-    $graph.destroy();
-    $graph = null;
-    unsubscribe();
-
-    e.preventDefault();
-    e.returnValue = '';
-    return '...';
-  }
 </script>
 
-<svelte:window on:beforeunload={beforeUnload}/>
 <div ref="canvas" id="canvas" class="canvas fixed top-0 left-0"></div>
 
 <style global lang="postcss">

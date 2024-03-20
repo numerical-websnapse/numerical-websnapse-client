@@ -1,7 +1,8 @@
-import { texFormat } from '../../stores/settings.js';
-import { chunkArray } from './chunk.js';
+import { unicodeFormat } from './unicode';
+import { texFormat } from './latex';
+import { chunkArray } from './chunk';
 
-export const texFormatter = (content, type) => {
+export const texFormatter = (content, type, details=null) => {
     const specs = texFormat;
     const {
         rowMax:rm,
@@ -10,10 +11,15 @@ export const texFormatter = (content, type) => {
         rowFormatVar,
         singleFormatPrf,
         rowFormatPrf,
+        trainFormat,
         alignmentWrapper
     } = specs;
     const max =   type === 'var' ? rm 
                 : type === 'prf' ? pm : null;
+
+    if (type === 'train') {
+        return trainFormat(content, details);
+    }
                 
     const arr = content.map(([name, ...content],i) => {
             return [name,content];
@@ -36,20 +42,47 @@ export const texFormatter = (content, type) => {
     return alignmentWrapper(latex);
 }
 
-export const trainFormatter = (content, row, supress=null, count=null) => {
-	let accumulator = '';
-	let compressed = content;
-	row = row < 1 ? 5 : row;
+export const unicodeFormatter = (content, type, details = null) => {
+    const {
+        rowMax:rm,
+        prfMax:pm,
+        singleFormatVar,
+        rowFormatVar,
+        singleFormatPrf,
+        rowFormatPrf,
+        nameFormat,
+        trainFormat
+    } = unicodeFormat;
 
-	if (supress) {
-        compressed = content.slice(-count);
+    if (type === 'train') {
+        return trainFormat(content, details);
     }
-		
-	compressed.forEach((t, i) => {
-		accumulator += `${t}`;
-        if((i+1) % row) accumulator += `,`;
-		if (!((i+1) % row)) accumulator += `\\\\`;
-	});
-	
-	return texFormat.gatherWrapper(accumulator);
+
+    if (type === 'label') {
+        return nameFormat(content);
+    }
+
+    const max =   type === 'var' ? rm 
+                : type === 'prf' ? pm
+                : null;
+
+    const arr = content.map(([name, ...values], i) => {
+        return [name, values];
+    });
+
+    const unicodeSingle = arr.map((v, i) => {
+        return    type === 'var' ? singleFormatVar(v[0], v[1])
+                : type === 'prf' ? singleFormatPrf(v[0], v[1])
+                : null;
+    });
+
+    const unicodeRow = chunkArray(unicodeSingle, max);
+
+    const unicode = unicodeRow.map((v, i) => {
+        return    type === 'var' ? rowFormatVar(v)
+                : type === 'prf' ? rowFormatPrf(v)
+                : null;
+    }).join(`\n`);
+
+    return unicode;
 }

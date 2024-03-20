@@ -125,7 +125,7 @@
                 "var_": [],
                 "prf": [],
                 "train": [],
-                "label": "n_{out}",
+                "label": "out_{1}",
                 "ntype": "out",
                 "x": 200,
                 "y": 500

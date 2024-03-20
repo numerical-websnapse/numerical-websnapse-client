@@ -121,7 +121,7 @@
             <!-- Choice Editor -->
             {#if $system.choice.active.length && $system.choice.spike}
               <div
-                class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-h-[45vh] overflow-y-auto"
+                class="grid grid-cols-1 p-4 sm:grid-cols-3 gap-4 max-h-[45vh] overflow-y-auto"
               >
                 {#each $system.order.nrn_ord as neuron}
                   {#if nodeData(neuron, "ntype") === "reg"}

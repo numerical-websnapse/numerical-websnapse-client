@@ -1,58 +1,79 @@
 <script>
-	import { updateNode } from "../graph/actions/node-action";
 	import { modals, getModal } from "../stores/modals";
 	import { system, resetSystem } from "../stores/system";
 	import { graph, changeMode } from "../stores/graph";
-	import { deepCopy } from "../utils/copy";
 
-	var client_id = Date.now()
-	let socket = new WebSocket(`wss://numerical-websnapse-server.onrender.com/ws/${client_id}`);
-
-	function connect() {
-		socket = new WebSocket(`wss://numerical-websnapse-server.onrender.com/ws/${client_id}`);
-	}
-
-	socket.onopen = function() {
-		console.log('Connected to the server');
+	$: if(!$system.client) {
+		$system.client = Date.now().toString();
 	};
 
-	function waitForMessage() {
-		return new Promise((resolve, reject) => {
-			if (!socket || socket.readyState !== WebSocket.OPEN) {
-				reject(new Error('WebSocket connection not open'));
-				connect();
-				return;
-			}
+	$: if(!$system.socket) {
+		connect();
+	}
 
-			socket.onmessage = function(event) {
+	function connect() {
+		//$system.socket = new WebSocket(`ws://${$system.url}/ws/${$system.client}`);
+		$system.socket = new WebSocket(`wss://${$system.url}/ws/${$system.client}`);
+		$system.socket.onopen = function() {
+			console.log('Connected to the server');
+		};
+	}
+
+	function waitForMessage() {
+		return new Promise(async (resolve, reject) => {
+			if (!$system.socket || $system.socket.readyState !== WebSocket.OPEN)
+				reject(new Error('WebSocket connection not open'));
+
+			$system.socket.onmessage = function(event) {
 				resolve(event.data);
 			};
     	});
 	}
 
 	function sendMessage(message) {
-		if (!socket || socket.readyState !== WebSocket.OPEN)
+		if (!$system.socket || $system.socket.readyState !== WebSocket.OPEN)
 			connect();
 
-		socket.send(message);
+			$system.socket.send(message);
 	}
 
 	async function requestSimulation(message) {
-			try {
-				sendMessage(JSON.stringify(message));
-				const response = await waitForMessage();
-				return JSON.parse(response);
-			} catch (error) {
-				$system.running = false;
-				$system.simulating = false;
-				console.error("Error:", error);
-			}
+		try {
+			sendMessage(JSON.stringify(message));
+			const response = await waitForMessage();
+			return JSON.parse(response);
+		} catch (error) {
+			$system.running = false;
+			$system.simulating = false;
+			console.error("Error:", error);
 		}
+	}
+
+	async function requestDetails(route, message) {
+		let response = null;
+		await fetch(`https://${$system.url}/${route}/${$system.client}`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(message)
+		})
+		.then(response => {
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+			return response.json();
+		})
+		.then(data => {
+			response = data;
+		})
+
+		return response;
+	}
 
 	export async function updateTime(time) {
 		$system.time = time;
-		$system.prev = time;
-		
+		$system.prev = time;	
 	}
 	
 	export async function simulate() {
@@ -129,10 +150,9 @@
 
 	export async function getConfigMatrices() {
 		const conf = getCurrentConfig();
-		$system.matrices = await requestSimulation({
-			type: "matrices",
-			config: conf
-		});
+		$system.matrices = await requestDetails(
+			'matrices', { config: conf }
+		);
 	}
 
 	export function getGraphConfig() {
@@ -176,38 +196,42 @@
 		return $system.history[$system.time];
 	}
 
-	export function updateGraphConfig(conf, env=null, mode='forward', step=undefined) {
+	export function updateGraphConfig(conf, mode='forward', step=1) {
 		let curVar = 0;
-		$system.order.nrn_ord.forEach((n) => {
+		$system.order.nrn_ord.forEach((reg) => {
+			const neuron = $graph.getNodeData(reg);
 			let changed = false;
-			const neuron = $graph.getNodeData(n);
 			neuron.data.var_.forEach((v, i) => {
 				if (v[1] !== conf[curVar].toString()) {
 					v[1] = conf[curVar].toString();
-					curVar += 1;
 					changed = true;
 				}
+				curVar += 1;
 			});
-			if(changed) updateNode(n, neuron, $graph, true);
+
+			if(changed) $graph.updateData('node', neuron);
 		});
 
 		if (mode === 'backward') {
 			$system.order.out_ord.forEach((out) => {
 				const neuron = $graph.getNodeData(out);
 				neuron.data.train = neuron.data.train.slice(0, neuron.data.train.length - step);
-				updateNode(out, neuron, $graph, true);
+				$graph.updateData('node', neuron);
 			});
 		}
 
-		if(!env) return;
-
 		if (mode === 'forward') {
-			let curOut = 0;
+			let currentTime = $system.time;
+			for (currentTime; currentTime < $system.time + step; currentTime++) {
+				const env = $system.environment[currentTime + 1];
+				$system.order.out_ord.forEach((out, index) => {
+					const neuron = $graph.getNodeData(out);
+					neuron.data.train.push(env[index].toString());
+				});
+			}
 			$system.order.out_ord.forEach((out) => {
 				const neuron = $graph.getNodeData(out);
-				neuron.data.train.push(env[curOut].toString());
-				updateNode(out, neuron, $graph, true);
-				curOut += 1;
+				$graph.updateData('node', neuron);
 			});
 		}
 	}
@@ -220,9 +244,6 @@
 		jumpToConfig($system.time + 1);
 	}
 
-	/*
-	 * after porting to a websocket solution for the backend, change this to request directly from the socket
-	 */
 	async function computeActive(config) {
 		$system.choice.active = await requestSimulation({
 			type: "active",
@@ -331,14 +352,14 @@
 		await animate(spike);
 
 		if ($system.running) {
-			updateGraphConfig(next, env);
 			$system.history.push(next);
 			$system.environment.push(env);
 			$system.spike.push(spike);
+			updateGraphConfig(next, 'forward', 1);
 			updateTime($system.time + 1);
 		}
 
-		await getConfigMatrices();
+		getConfigMatrices();
 
 		// clean system details
 		$system.config = {};
@@ -356,7 +377,7 @@
 
 		updateTime($system.time - step);
 		const conf = getCurrentConfig();
-		updateGraphConfig(conf, null, 'backward', step);
+		updateGraphConfig(conf, 'backward', step);
 
 		getConfigMatrices();
 
@@ -375,17 +396,7 @@
 		else if (time > $system.time) {
 			$system.running = true;
 			const next = $system.history[time];
-			for (let i = $system.time; i < time; i++) {
-				const env = $system.environment[i+1];
-				let curOut = 0;
-				$system.order.out_ord.forEach((out) => {
-					const neuron = $graph.getNodeData(out);
-					neuron.data.train.push(env[curOut].toString());
-					updateNode(out, neuron, $graph, true);
-					curOut += 1;
-				});
-			}
-			updateGraphConfig(next);
+			updateGraphConfig(next, 'forward', time - $system.time);
 			updateTime(time);
 			$system.running = false;
 		}

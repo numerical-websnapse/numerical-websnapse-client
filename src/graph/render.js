@@ -94,7 +94,7 @@ const renderGraph = (container, size, data, renderer) => {
 	const graph = new ExtGraph({
 		container,
 		renderer,
-		data: preprocessNodes(data),
+		data: data,
 		width: size.width,
 		height: size.height,
 		node: getNodeConfig,

@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 import { Modal } from 'flowbite';
 
 export const modals = writable({
@@ -43,6 +43,24 @@ export const getModal = (id, options=true) => {
     return temp;
 }
 
-export const modalElementId = (id) => {
-    return new Modal(document.getElementById(id));
+export const checkOpenModal = () => {
+    const modals_ = get(modals);
+    for(const modal in modals_) {
+        if (modal.includes('Modal')) {
+            const myElement = document.getElementById(modals_[modal]);
+            const ariaModalValue = myElement.getAttribute('aria-modal');
+            if (ariaModalValue) return true;
+        }
+    }
+
+    return false;
+};
+
+export const checkOpenModalById = (id) => {
+    const modal = document.getElementById(id);
+    console.log(modal);
+    if(!modal) return false;
+    const ariaModalValue = modal.getAttribute('aria-modal');
+    if (ariaModalValue) return true;
+    return false;
 }

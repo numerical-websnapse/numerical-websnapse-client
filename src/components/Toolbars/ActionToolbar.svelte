@@ -3,11 +3,21 @@
   import { changeMode } from "../../stores/graph";
   import { system } from "../../stores/system";
   import { graph } from "../../stores/graph";
+  import { checkOpenModal, getModal } from "../../stores/modals";
+
+  const openHistory = () => {
+    getModal('historyModal').show();
+  }
 
   const onKeydownActions = (e) => {
+    if (checkOpenModal()) return;
+
     switch (e.code) {
       case "KeyS":
         changeMode("default");
+        break;
+      case "KeyM":
+        changeMode("move");
         break;
       case "KeyC":
         if ($system.editing) changeMode("create-node");
@@ -18,14 +28,14 @@
       case "KeyD":
         if ($system.editing) changeMode("delete");
         break;
-      case "KeyM":
-        changeMode("move");
-        break;
       case "KeyA":
         if ($system.editing) changeMode("create-edge");
         break;
+      case "KeyH":
+        openHistory();
+        break;
       case "Delete":
-        if ($system.editing) changeMode("delete");
+        if ($system.editing) clearGraph();
         break;
     }
   };
@@ -35,9 +45,45 @@
 
 <div class="fixed inline-flex top-[50vh] left-[1.5vw] translate-y-[-50%]">
   <div class="flex flex-col">
-    <!-- Selectable toolbar -->
+    <!-- History toolbar -->
     <div
       class="flex flex-col flex-wrap items-center justify-between mx-auto space-y-2 rounded-lg border-solid border border-gray-500 bg-gray-100 dark:bg-gray-900"
+    >
+      <!-- History -->
+      <button
+        on:click={openHistory}
+        data-tooltip-target="tooltip-history"
+        data-tooltip-placement="right"
+        class="group rounded-md p-2 bg-gray-100 dark:bg-gray-800 border-0 hover:bg-blue-800 active:ring-4 active:outline-none active:ring-blue-800 active:bg-blue-800 dark:hover:bg-blue-800 dark:active:ring-blue-800"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="group-hover:text-gray-100 group-active:text-gray-100 dark:text-gray-300 dark:group-hover:text-gray-100 dark:group-active:text-gray-100"
+        >
+        <path class="cls-1" d="M12.9,22.34a9.66,9.66,0,1,0-9.65-9.75" transform="translate(-0.11 -2.28)"/><polyline class="cls-1" points="0.75 7.97 2.82 10.68 5.52 8.61"/><polyline class="cls-1" points="12.49 4.9 12.49 11.59 15.53 13.92"/>
+        </svg>
+      </button>
+      <div
+        id="tooltip-history"
+        role="tooltip"
+        class="absolute invisible w-max inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+      >
+        History (H)
+        <div class="tooltip-arrow" data-popper-arrow></div>
+      </div>
+    </div>
+
+    <!-- Modes toolbar -->
+    <div
+      class="flex flex-col flex-wrap items-center justify-between mx-auto mt-2 space-y-2 rounded-lg border-solid border border-gray-500 bg-gray-100 dark:bg-gray-900"
     >
       <!-- Select -->
       <button
@@ -267,7 +313,7 @@
     >
       <!-- Clear -->
       <button
-        on:dblclick={clearGraph}
+        on:dblclick={() => clearGraph()}
         data-tooltip-target="tooltip-clear"
         data-tooltip-placement="right"
         class="group rounded-md p-2 bg-gray-100 dark:bg-gray-800 border-0 hover:bg-red-800 active:ring-4 active:outline-none active:ring-red-800 active:bg-red-800 dark:hover:bg-red-700 dark:active:ring-red-800"
@@ -314,7 +360,7 @@
             else $graph.setItemState(edge.id, "Spiking", true);
           });
         }}
-        data-tooltip-target="tooltip-clear"
+        data-tooltip-target="tooltip-trigger-edges"
         data-tooltip-placement="right"
         class="group rounded-md p-2 bg-gray-100 dark:bg-gray-800 border-0 hover:bg-green-800 active:ring-4 active:outline-none active:ring-green-800 active:bg-green-800 dark:hover:bg-green-700 dark:active:ring-green-800"
         disabled={!$system.editing}
@@ -333,6 +379,66 @@
           <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
         </svg>
       </button>
+      <div
+        id="tooltip-trigger-edges"
+        role="tooltip"
+        class="absolute invisible w-max inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+      >
+        Trigger Edges
+        <div class="tooltip-arrow" data-popper-arrow></div>
+      </div>
+
+      <!-- Trigger change graph data -->
+      <button
+        on:click={() => {
+          $graph.getAllNodesData().forEach((node) => {
+            const newNode = $graph.getNodeData(node.id);
+            if (node.data.ntype === 'reg') {
+              newNode.data.var_.forEach((v) => {
+                v[1] = (Math.random() * 100).toString();
+              });
+              $graph.updateData('node', newNode);
+            }
+            // if (node.data.ntype === 'out') {
+            //   node.data.train = [];
+            //   for(let i = 0; i < 100; i++) {
+            //     node.data.train.push(Math.random() * 100);
+            //   }
+            //   $graph.updateData('node', newNode);
+            // }
+          });
+
+          // const { node } = $graph.getSpecification();
+          // $graph.updateSpecification({ node });
+        }}
+        data-tooltip-target="tooltip-change-node-data"
+        data-tooltip-placement="right"
+        class="group rounded-md p-2 bg-gray-100 dark:bg-gray-800 border-0 hover:bg-green-800 active:ring-4 active:outline-none active:ring-green-800 active:bg-green-800 dark:hover:bg-green-700 dark:active:ring-green-800"
+        disabled={!$system.editing}
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="group-hover:text-gray-100 group-active:text-gray-100 dark:text-gray-300 dark:group-hover:text-gray-100 dark:group-active:text-gray-100"
+        >
+        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line>
+        </svg>
+      </button>
+      <div
+        id="tooltip-change-node-data"
+        role="tooltip"
+        class="absolute invisible w-max inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+      >
+        Change Node Data
+        <div class="tooltip-arrow" data-popper-arrow></div>
+      </div>
+
     </div>
   </div>
 </div>

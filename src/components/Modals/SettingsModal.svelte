@@ -1,11 +1,17 @@
 <script>
   import SettingSidebar from "./sidebar/SettingSidebar.svelte";
+  import SamplesSidebar from "./sidebar/SamplesSidebar.svelte";
 
   import { onDestroy } from "svelte";
   import { graph } from "../../stores/graph";
   import { ExtGraph } from "../../graph/render";
   import { modals, getModal } from "../../stores/modals";
-  import { nodeOptions, edgeOptions } from "../../stores/settings";
+  import {
+    nodeOptions,
+    edgeOptions,
+    nodeMetaData,
+    edgeMetaData,
+  } from "../../stores/settings";
   import { nodeState, edgeState } from "../../graph/config";
   import { deepCopy } from "../../utils/copy";
 
@@ -13,22 +19,22 @@
   - We need to remove the "states" from the specification to prevent this
   See patches for fix*/
   const nodeOptUnsubcribe = nodeOptions.subscribe((value) => {
-    if($graph instanceof ExtGraph) {
+    if ($graph instanceof ExtGraph) {
       const spec = $graph.getSpecification();
       delete spec.nodeState;
       delete spec.edgeState;
       $graph.updateSpecification(spec);
-      $graph.updateStateConfig('node', nodeState());
+      $graph.updateStateConfig("node", nodeState());
     }
   });
 
   const edgeOptUnsubcribe = edgeOptions.subscribe((value) => {
-    if($graph instanceof ExtGraph) {
+    if ($graph instanceof ExtGraph) {
       const spec = $graph.getSpecification();
       delete spec.nodeState;
       delete spec.edgeState;
       $graph.updateSpecification(spec);
-      $graph.updateStateConfig('edge', edgeState());
+      $graph.updateStateConfig("edge", edgeState());
     }
   });
 
@@ -45,33 +51,24 @@
   const initEdgeOptions = deepCopy($edgeOptions);
   $: tempNodeOptions = deepCopy($nodeOptions);
   $: tempEdgeOptions = deepCopy($edgeOptions);
-  
+
   const matchOptions = () => {
     tempNodeOptions = deepCopy($nodeOptions);
     tempEdgeOptions = deepCopy($edgeOptions);
-  }
+  };
 
   const resetOptions = () => {
     tempNodeOptions = deepCopy(initNodeOptions);
     tempEdgeOptions = deepCopy(initEdgeOptions);
-  }
+  };
 
   const applySettings = () => {
     nodeOptions.set(tempNodeOptions);
     edgeOptions.set(tempEdgeOptions);
     hideModal();
   };
-
-  function beforeUnload(e) {
-    nodeOptUnsubcribe();
-    edgeOptUnsubcribe();
-    e.preventDefault();
-    e.returnValue = '...';
-    return '...';
-  }
 </script>
 
-<svelte:window on:beforeunload={beforeUnload}/>
 <div
   id={$modals.settingModal}
   tabindex="-1"
@@ -102,13 +99,13 @@
           </li>
           <li class="me-2">
             <a
-              id="system-tab"
-              data-tabs-target="#system"
+              id="samples-tab"
+              data-tabs-target="#samples"
               role="tab"
-              arial-controls="system"
+              arial-controls="samples"
               arial-selected="false"
               class="inline-block p-4 border-b-2 rounded-t-lg hover:no-underline capitalize select-none hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-              aria-current="page">System</a
+              aria-current="page">Samples</a
             >
           </li>
           <li class="flex-grow">
@@ -150,18 +147,22 @@
           role="tabpanel"
           aria-labelledby="setting-tab"
         >
-          <SettingSidebar nodeOptions={tempNodeOptions} edgeOptions={tempEdgeOptions}/>
+          <SettingSidebar
+            nodeOptions={tempNodeOptions}
+            edgeOptions={tempEdgeOptions}
+            {nodeMetaData}
+            {edgeMetaData}
+          />
         </div>
-        <!-- System content -->
+        <!-- samples content -->
         <div
           class="hidden dark:bg-gray-800"
-          id="system"
+          id="samples"
           role="tabpanel"
-          aria-labelledby="system-tab"
+          aria-labelledby="samples-tab"
         >
-          system
+          <SamplesSidebar />
         </div>
-
       </div>
 
       <!-- Modal footer -->
@@ -191,7 +192,7 @@
           type="button"
           id="apply-settings"
           class="rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-           on:click={applySettings} 
+          on:click={applySettings}
         >
           Apply
         </button>

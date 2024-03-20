@@ -7,6 +7,7 @@ export const nodeOptions = writable({
     },
     content: {
         padding: 20,
+        paddingSimple: 6,
         divider: 15,
     },
     keyShape: {
@@ -31,6 +32,9 @@ export const nodeOptions = writable({
         supressCount: 5,
         fill: '#FFFFFF',
         stroke: '#000000',
+    },
+    draw: {
+        mode: 'text',
     }
 })
 
@@ -56,63 +60,214 @@ export const edgeOptions = writable({
     // },
 })
 
-export const texFormat = {
-    rowMax: 3,
-    prfMax: 1,
-    singleFormatVar: (name, value) => {
-        return `${name}[${value}]`;
+export const nodeMetaData = {
+    label: {
+        name: 'Label',
+        visible: true,
+        type: 'object',
+        value: {
+            offset: {
+                name: 'Offset',
+                visible: true,
+                type: 'number',
+            },
+            margin: {
+                name: 'Margin',
+                visible: true,
+                type: 'number',
+            },
+        }
     },
-    rowFormatVar: (row) => {
-        return row.join(`,\\hspace{5px}`);
+    content: {
+        name: 'Content',
+        visible: true,
+        type: 'object',
+        value: {
+            padding: {
+                name: 'Padding',
+                visible: true,
+                type: 'number',
+            },
+            paddingSimple: {
+                name: 'Padding: Simple mode',
+                visible: true,
+                type: 'number',
+            },
+            divider: {
+                name: 'Divider',
+                visible: true,
+                type: 'number',
+            },
+        }
     },
-    singleFormatPrf: (name, value) => {
-        const expression = value[1].reduce(function(p, d, i) {
-            const val = d[1];
+    keyShape: {
+        name: 'Key Shape',
+        visible: true,
+        type: 'object',
+        value: {
+            lineWidth: {
+                name: 'Line width',
+                visible: true,
+                type: 'number',
+            },
+            defaultWidth: {
+                name: 'Default width',
+                visible: true,
+                type: 'number',
+            },
+            defaultHeight: {
+                name: 'Default height',
+                visible: true,
+                type: 'number',
+            },
+            radius: {
+                name: 'Radius',
+                visible: true,
+                type: 'number',
+            },
+            fill: {
+                name: 'Fill',
+                visible: true,
+                type: 'color',
+            },
+            stroke: {
+                name: 'Stroke',
+                visible: true,
+                type: 'color',
+            },
+        }
+    },
+    haloShape: {
+        name: 'Halo Shape',
+        visible: true,
+        type: 'object',
+        value: {
+            stroke: {
+                name: 'Stroke',
+                visible: true,
+                type: 'color',
+            },
+        }
+    },
+    outShape: {
+        name: 'Output Shape',
+        visible: true,
+        type: 'object',
+        value: {
+            padding: {
+                name: 'Padding',
+                visible: true,
+                type: 'number',
+            },
+            lineWidth: {
+                name: 'Line width',
+                visible: true,
+                type: 'number',
+            },
+            defaultWidth: {
+                name: 'Default width',
+                visible: true,
+                type: 'number',
+            },
+            defaultHeight: {
+                name: 'Default height',
+                visible: true,
+                type: 'number',
+            },
+            radius:{
+                name: 'Radius',
+                visible: true,
+                type: 'number',
+            },
+            row: {
+                name: 'Row',
+                visible: true,
+                type: 'number',
+            },
+            supressOutput: {
+                name: 'Supress output',
+                visible: true,
+                type: 'boolean',
+            },
+            supressCount: {
+                name: 'Supress count',
+                visible: true,
+                type: 'number',
+            },
+            fill: {
+                name: 'Fill',
+                visible: true,
+                type: 'color',
+            },
+            stroke: {
+                name: 'Stroke',
+                visible: true,
+                type: 'color',
+            },
+        }
+    },
+    draw: {
+        name: 'Draw',
+        visible: false,
+        type: 'object',
+        value: {
+            mode: {
+                name: 'Mode',
+                visible: false,
+                type: 'string',
+            },
+        }
+    }
+}
 
-            // if value is 0, return empty string if first value, else return previous value
-            if (val === '0') {
-                if (i === 0) return '';
-                return p;
-            };
-            
-            // assume val is a string that can be formatted as int, float, or fraction  (from regex check)
-            const isNegative = val[0] === '-';
-            const coef = isNegative ? val.slice(1) : val;
-            
-            // wrap coefficient if its a fraction or decimal
-            // if fraction, wrap in \frac{}{}, split by '/'
-            // check if value is 1 or -1
-            const isFraction = coef.includes('/');
-            const isDecimal = coef.includes('.');
-            const isOne = coef === '1';
-            let coefWrap = isOne ? '' : coef;
-            // if (isFraction) {
-            //     const [num, den] = coef.split('/');
-            //     coefChk = `\\left(\\frac{${num}}{${den}}\\right)`;   // wrap in \frac{}{}
-            // }
-            // if (isDecimal) {
-            //     coefChk = `(${coefChk})`;                            // wrap in ()
-            // }
-            coefWrap = isFraction || isDecimal ? `(${coefWrap})` : coefWrap;
-            const op = isNegative ? `-${coefWrap}` : ( !p ? `${coefWrap}` : `+${coefWrap}`);
-            const var_ = op + d[0];
-            
-            if (i === 0) return '' + var_;
-            return p + var_;
-        }, 0);
-
-        const threshold = value[0] ? `|_{${value[0]}}` : '';
-
-        if (expression === '') return `${name} &= 0${threshold}`;
-        return `${name} &= ${expression}${threshold}`;
+export const edgeMetaData = {
+    keyShape: {
+        name: 'Key Shape',
+        visible: true,
+        type: 'object',
+        value: {
+            stroke: {
+                name: 'Stroke',
+                visible: true,
+                type: 'color',
+            },
+            lineWidth: {
+                name: 'Line width',
+                visible: true,
+                type: 'number',
+            },
+        }
     },
-    rowFormatPrf: (row) => {
-        return row.join(',\\hspace{5px}');
+    endArrow: {
+        name: 'End Arrow',
+        visible: true,
+        type: 'object',
+        value: {
+            stroke: {
+                name: 'Stroke',
+                visible: true,
+                type: 'color',
+            },
+            fill: {
+                name: 'Fill',
+                visible: true,
+                type: 'color',
+            },
+            path: {
+                name: 'Path',
+                visible: true,
+                type: 'path',
+            },
+        }
     },
-    alignmentWrapper: (content) => {
-        return `\\begin{align*}${content}\\end{align*}`;
-    },
-    gatherWrapper: (content) => {
-        return `\\begin{gather*}${content}\\end{gather*}`;
-    },
+    // growShape: {
+    //     lineWidth: 3,
+    //     lineDash: ["100%", 0],
+    //     stroke: '#1e429f',
+    //     direction: '',
+    // },
+    // colorShape: {
+    //     stroke: '#a7e3fa',
+    //     lineWidth: 2
+    // },
 }

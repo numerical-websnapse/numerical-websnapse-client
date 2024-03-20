@@ -1,7 +1,10 @@
 <script>
   import LayoutDropdown from "./dropdown/LayoutDropdown.svelte";
+  import NodeViewDropdown from "./dropdown/nodeViewDropdown.svelte";
   import { graph } from "../../stores/graph";
   import { getModal } from "../../stores/modals";
+  import { nodeOptions } from "../../stores/settings";
+  import { checkOpenModal } from "../../stores/modals";
 
   const zoomSensitivity = 50;
   const minZoom = 0.00001;
@@ -29,11 +32,28 @@
     getModal('settingModal').show();
   };
 
-  const openHistory = () => {
-    getModal('historyModal').show();
-  }
+  const updateNodeView = (view = null) => {
+    if (view) {
+      $nodeOptions.draw.mode = view;
+      return;
+    }
+
+    const modes = ['text', 'simple'];
+    const mode = $nodeOptions.draw.mode;
+
+    if (!modes.includes(mode)) {
+      $nodeOptions.draw.mode = 'simple';
+      return;
+    }
+
+    $nodeOptions.draw.mode = (
+      modes[(modes.indexOf(mode) + 1) % modes.length]
+    );
+  };
 
   const onKeydownGraph = (e) => {
+    if (checkOpenModal()) return;
+
     switch (e.code) {
       case "Equal":
         zoomIn();
@@ -47,12 +67,18 @@
       case "KeyH":
         openHistory();
         break;
+      case "KeyV":
+        updateNodeView();
+        break;
       case 'Escape':
         getModal('settingModal').toggle();
         break;
     }
-
   };
+
+  $: if(document.getElementById('canvas')) {
+    document.getElementById('canvas').focus();
+  }
 </script>
 
 <svelte:window on:keydown={onKeydownGraph} />
@@ -62,11 +88,12 @@
     <div
       class="flex flex-row flex-wrap items-center justify-between mr-2 my-auto space-x-2 rounded-lg border-solid border border-gray-500 bg-gray-100 dark:bg-gray-900"
     >
-      <!-- History -->
+      <!-- Change node view -->
+      <!-- on:click={updateNodeView} -->
       <button
-        on:click={openHistory}
-        data-tooltip-target="tooltip-history"
-        data-tooltip-placement="bottom"
+        data-dropdown-toggle="nodeViewDropdown"
+        data-tooltip-target="tooltip-view"
+        data-tooltip-placement="left"
         class="group rounded-md p-2 bg-gray-100 dark:bg-gray-800 border-0 hover:bg-blue-800 active:ring-4 active:outline-none active:ring-blue-800 active:bg-blue-800 dark:hover:bg-blue-800 dark:active:ring-blue-800"
       >
         <svg
@@ -81,17 +108,20 @@
           stroke-linejoin="round"
           class="group-hover:text-gray-100 group-active:text-gray-100 dark:text-gray-300 dark:group-hover:text-gray-100 dark:group-active:text-gray-100"
         >
-        <path class="cls-1" d="M12.9,22.34a9.66,9.66,0,1,0-9.65-9.75" transform="translate(-0.11 -2.28)"/><polyline class="cls-1" points="0.75 7.97 2.82 10.68 5.52 8.61"/><polyline class="cls-1" points="12.49 4.9 12.49 11.59 15.53 13.92"/>
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
         </svg>
       </button>
       <div
-        id="tooltip-history"
+        id="tooltip-view"
         role="tooltip"
         class="absolute invisible w-max inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
       >
-        History (H)
+        View (V)
         <div class="tooltip-arrow" data-popper-arrow></div>
       </div>
+
+      <NodeViewDropdown id="nodeViewDropdown" updater={updateNodeView} />
     </div>
     <!-- Graph action toolbar -->
     <div

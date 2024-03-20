@@ -2,12 +2,12 @@
     "NSNP": {
         "neurons": [
             {
-                "id": "2ie7xzad",
+                "id": "ftodv9f1",
                 "data": {
                     "var_": [
                         [
                             "x",
-                            "8"
+                            "7.5"
                         ]
                     ],
                     "prf": [
@@ -40,12 +40,12 @@
                 }
             },
             {
-                "id": "dre261me",
+                "id": "n0jws06i",
                 "data": {
                     "var_": [
                         [
                             "x",
-                            "10"
+                            "1.2"
                         ]
                     ],
                     "prf": [
@@ -78,12 +78,12 @@
                 }
             },
             {
-                "id": "hytd7m8y",
+                "id": "2mq6oige",
                 "data": {
                     "var_": [
                         [
                             "x",
-                            "6"
+                            "1.3"
                         ]
                     ],
                     "prf": [
@@ -116,7 +116,7 @@
                 }
             },
             {
-                "id": "e73coe5m",
+                "id": "uvwhghzc",
                 "data": {
                     "var_": [
                         [
@@ -144,7 +144,7 @@
                 }
             },
             {
-                "id": "ycnfvivn",
+                "id": "7awheci6",
                 "data": {
                     "var_": [
                         [
@@ -172,7 +172,7 @@
                 }
             },
             {
-                "id": "prlohv7i",
+                "id": "sd4qia06",
                 "data": {
                     "var_": [
                         [
@@ -200,7 +200,7 @@
                 }
             },
             {
-                "id": "6cjw2kgs",
+                "id": "hxi207iw",
                 "data": {
                     "var_": [
                         [
@@ -228,7 +228,7 @@
                 }
             },
             {
-                "id": "o0kh4w6c",
+                "id": "g1ezwazc",
                 "data": {
                     "var_": [
                         [
@@ -256,7 +256,7 @@
                 }
             },
             {
-                "id": "r13waqo8",
+                "id": "2778j7sp",
                 "data": {
                     "var_": [
                         [
@@ -284,7 +284,7 @@
                 }
             },
             {
-                "id": "iqjct5v0",
+                "id": "bk5vnt77",
                 "data": {
                     "var_": [
                         [
@@ -312,13 +312,13 @@
                 }
             },
             {
-                "id": "bjn0rsjx",
+                "id": "p924q19r",
                 "data": {
                     "var_": [],
                     "prf": [],
                     "train": [],
                     "ntype": "out",
-                    "label": "\\sigma_{out}",
+                    "label": "\\sigma_{10}",
                     "x": 1000,
                     "y": 400
                 }
@@ -327,53 +327,53 @@
         "syn": [
             {
                 "id": "syn_{(0,3)}",
-                "source": "2ie7xzad",
-                "target": "e73coe5m"
+                "source": "ftodv9f1",
+                "target": "uvwhghzc"
             },
             {
                 "id": "syn_{(3,8)}",
-                "source": "e73coe5m",
-                "target": "r13waqo8"
+                "source": "uvwhghzc",
+                "target": "2778j7sp"
             },
             {
                 "id": "syn_{(1,4)}",
-                "source": "dre261me",
-                "target": "ycnfvivn"
+                "source": "n0jws06i",
+                "target": "7awheci6"
             },
             {
                 "id": "syn_{(4,8)}",
-                "source": "ycnfvivn",
-                "target": "r13waqo8"
+                "source": "7awheci6",
+                "target": "2778j7sp"
             },
             {
                 "id": "syn_{(2,5)}",
-                "source": "hytd7m8y",
-                "target": "prlohv7i"
+                "source": "2mq6oige",
+                "target": "sd4qia06"
             },
             {
                 "id": "syn_{(5,8)}",
-                "source": "prlohv7i",
-                "target": "r13waqo8"
+                "source": "sd4qia06",
+                "target": "2778j7sp"
             },
             {
                 "id": "syn_{(6,7)}",
-                "source": "6cjw2kgs",
-                "target": "o0kh4w6c"
+                "source": "hxi207iw",
+                "target": "g1ezwazc"
             },
             {
                 "id": "syn_{(7,8)}",
-                "source": "o0kh4w6c",
-                "target": "r13waqo8"
+                "source": "g1ezwazc",
+                "target": "2778j7sp"
             },
             {
                 "id": "syn_{(8,9)}",
-                "source": "r13waqo8",
-                "target": "iqjct5v0"
+                "source": "2778j7sp",
+                "target": "bk5vnt77"
             },
             {
                 "id": "syn_{(9,10)}",
-                "source": "iqjct5v0",
-                "target": "bjn0rsjx"
+                "source": "bk5vnt77",
+                "target": "p924q19r"
             }
         ]
     },

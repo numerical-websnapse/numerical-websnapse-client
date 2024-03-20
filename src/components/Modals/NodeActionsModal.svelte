@@ -59,16 +59,7 @@
     resetNeuron();
     hideModal();
   }
-
-  function beforeUnload(e) {
-    unsubscribe();
-    e.preventDefault();
-    e.returnValue = '...';
-    return '...';
-  }
 </script>
-
-<svelte:window on:beforeunload={beforeUnload}/>
 <!-- Main modal -->
 <div
   id={ $modals.nodeModal }

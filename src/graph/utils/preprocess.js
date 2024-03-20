@@ -1,4 +1,4 @@
-import { texFormatter, trainFormatter } from "./format";
+import { texFormatter } from "./format";
 import { nodeOptions } from "../../stores/settings";
 import { addImage } from "../../stores/data";
 import { MathToImg } from "../../utils/math";
@@ -13,13 +13,17 @@ export function preprocessNode(node, simulating = false) {
 		
 	if(data.ntype === 'out') {
 		data.size = [config.outShape.defaultWidth, config.outShape.defaultHeight];
-		
-		const latexTrain = trainFormatter(
+
+		const latexTrain = texFormatter(
 			data.train,
-			config.outShape.row,
-			config.outShape.supressOutput,
-			config.outShape.supressCount
+			'train',
+			{
+				row: config.outShape.row,
+				supress: config.outShape.supressOutput,
+				count: config.outShape.supressCount
+			}
 		);
+
 		img.train = MathToImg(latexTrain);
 
 		data.size = [

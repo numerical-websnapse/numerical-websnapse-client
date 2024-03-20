@@ -26,6 +26,7 @@
     "@rollup/plugin-json": "^6.1.0",
     "feather-icons": "^4.29.1",
     "flowbite": "^2.2.1",
+    "katex": "^0.16.9",
     "mathjax": "^3.2.2",
     "patch-package": "^8.0.0",
     "rollup-plugin-postcss": "^4.0.2",

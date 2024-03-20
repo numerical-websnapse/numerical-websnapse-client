@@ -1,7 +1,16 @@
 <script>
-  import { MathToSvgElement, matrixFormatter } from "../../utils/math";
+  import { matrixFormatter } from "../../utils/math";
   import { modals, getModal } from "../../stores/modals";
   import { system } from "../../stores/system";
+
+  const katex = window.katex;
+
+  const getKatex = (text) => {
+    return katex.renderToString(String(text), {
+      throwOnError: false,
+      output: "mathml",
+    });
+  };
 
   const hideModal = () => {
     getModal("historyModal").hide();
@@ -88,68 +97,78 @@
           aria-labelledby="history-tab"
         >
           <div class="space-y-6 p-6 overflow-auto">
-            <table
-              class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
-            >
-              <thead
-                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+            {#if $system.history.length === 0}
+              <div class="text-center text-gray-500 dark:text-gray-400">
+                No history available
+              </div>
+            {:else}
+              <table
+                class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
               >
-                <tr>
-                  <th scope="col" class="px-6 py-3"> Configuration </th>
-                  <th scope="col" class="px-6 py-3"> Spike </th>
-                  <th scope="col" class="px-6 py-3"> Output </th>
-                  <th scope="col" class="px-6 py-3"> Next Configuration </th>
-                </tr>
-              </thead>
-              <tbody>
-                {#each $system.history as config, i}
-                  <tr
-                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                  >
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="flex items-center">
-                        <div class="text-sm font-medium">
-                          {@html MathToSvgElement(config.toString())}
-                        </div>
-                      </div>
-                    </td>
-                    {#if i === $system.history.length - 1}
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium"></div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium"></div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium"></div>
-                      </td>
-                    {:else}
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium">
-                          {@html MathToSvgElement(
-                            $system.spike[i + 1].toString()
-                          )}
-                        </div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium">
-                          {@html MathToSvgElement(
-                            $system.environment[i + 1].toString()
-                          )}
-                        </div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium">
-                          {@html MathToSvgElement(
-                            $system.history[i + 1].toString()
-                          )}
-                        </div>
-                      </td>
-                    {/if}
+                <thead
+                  class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                >
+                  <tr>
+                    <th scope="col" class="px-6 py-3"> Time </th>
+                    <th scope="col" class="px-6 py-3"> Configuration </th>
+                    <th scope="col" class="px-6 py-3"> Spike </th>
+                    <th scope="col" class="px-6 py-3"> Output </th>
+                    <th scope="col" class="px-6 py-3"> Next Configuration </th>
                   </tr>
-                {/each}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {#each $system.history as config, i}
+                    <tr
+                      class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                    >
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                          <div class="text-sm font-medium">
+                            {i + 1}
+                          </div>
+                        </div>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                          <div class="text-sm font-medium">
+                            {@html getKatex(config.toString())}
+                          </div>
+                        </div>
+                      </td>
+                      {#if i === $system.history.length - 1}
+                        <td class="px-6 py-4 whitespace-nowrap">
+                          <div class="text-sm font-medium"></div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                          <div class="text-sm font-medium"></div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                          <div class="text-sm font-medium"></div>
+                        </td>
+                      {:else}
+                        <td class="px-6 py-4 whitespace-nowrap">
+                          <div class="text-sm font-medium">
+                            {@html getKatex($system.spike[i + 1].toString())}
+                          </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                          <div class="text-sm font-medium">
+                            {@html getKatex(
+                              $system.environment[i + 1].toString()
+                            )}
+                          </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                          <div class="text-sm font-medium">
+                            {@html getKatex($system.history[i + 1].toString())}
+                          </div>
+                        </td>
+                      {/if}
+                    </tr>
+                  {/each}
+                </tbody>
+              </table>
+            {/if}
           </div>
         </div>
 
@@ -163,26 +182,30 @@
           <div
             class="flex flex-col items-center justify-center space-y-6 p-6 overflow-auto"
           >
-            {#each Object.keys($system.matrices) as matrix, i}
-              {#if matrix === "error"}
-                <div class="text-center text-gray-500 dark:text-gray-400">
-                  No matrices available
-                </div>
-              {:else}
-                <div>
+            {#if Object.keys($system.matrices).length}
+              {#each Object.keys($system.matrices) as matrix, i}
+                {#if matrix === "error"}
+                  <div class="text-center text-gray-500 dark:text-gray-400">
+                    No matrices for the current configuration
+                  </div>
+                {:else}
+                  <div>
                     {#if matrix === "P"}
-                        Production Matrix
+                      Production Matrix
                     {:else if matrix === "V"}
-                        Variable matrix
+                      Variable matrix
                     {:else if matrix === "E"}
-                        Environment matrix
+                      Environment matrix
                     {/if}
-                </div>
-                  {@html MathToSvgElement(
-                    matrixFormatter($system.matrices[matrix])
-                  )}
-              {/if}
-            {/each}
+                  </div>
+                  {@html getKatex(matrixFormatter($system.matrices[matrix]))}
+                {/if}
+              {/each}
+            {:else}
+              <div class="text-center text-gray-500 dark:text-gray-400">
+                No matrices available
+              </div>
+            {/if}
           </div>
         </div>
       </div>

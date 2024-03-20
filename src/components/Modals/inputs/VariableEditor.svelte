@@ -4,7 +4,7 @@
   export let neuron;
 
   const addVariable = () => {
-      $neuron.data.var_ = [...$neuron.data.var_, ['', 0]];
+      $neuron.data.var_ = [...$neuron.data.var_, ['x', '0']];
   }
 
   const deleteVariable = (index) => {

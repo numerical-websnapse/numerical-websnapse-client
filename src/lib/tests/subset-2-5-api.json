@@ -2,7 +2,7 @@
     "NSNP": {
         "neurons": [
             {
-                "id": "u621ywhe",
+                "id": "grczr4dp",
                 "data": {
                     "var_": [
                         [
@@ -40,7 +40,7 @@
                 }
             },
             {
-                "id": "lr35mvqm",
+                "id": "yx5lf9mu",
                 "data": {
                     "var_": [
                         [
@@ -78,7 +78,7 @@
                 }
             },
             {
-                "id": "5iymcks6",
+                "id": "greq7tk0",
                 "data": {
                     "var_": [
                         [
@@ -106,7 +106,7 @@
                 }
             },
             {
-                "id": "uxsom8dk",
+                "id": "bfc2eopp",
                 "data": {
                     "var_": [
                         [
@@ -134,7 +134,7 @@
                 }
             },
             {
-                "id": "qhyo9eem",
+                "id": "qsegq2vq",
                 "data": {
                     "var_": [
                         [
@@ -162,7 +162,7 @@
                 }
             },
             {
-                "id": "frrfi773",
+                "id": "hvjp95u5",
                 "data": {
                     "var_": [
                         [
@@ -190,7 +190,7 @@
                 }
             },
             {
-                "id": "eu9pjihm",
+                "id": "wko1sfmd",
                 "data": {
                     "var_": [
                         [
@@ -218,7 +218,7 @@
                 }
             },
             {
-                "id": "4emjfybw",
+                "id": "2swtd94t",
                 "data": {
                     "var_": [
                         [
@@ -246,13 +246,13 @@
                 }
             },
             {
-                "id": "7zt240sv",
+                "id": "6zdonsfm",
                 "data": {
                     "var_": [],
                     "prf": [],
                     "train": [],
                     "ntype": "out",
-                    "label": "\\sigma_{out}",
+                    "label": "\\sigma_{8}",
                     "x": 1000,
                     "y": 200
                 }
@@ -261,43 +261,43 @@
         "syn": [
             {
                 "id": "syn_{(0,2)}",
-                "source": "u621ywhe",
-                "target": "5iymcks6"
+                "source": "grczr4dp",
+                "target": "greq7tk0"
             },
             {
                 "id": "syn_{(2,6)}",
-                "source": "5iymcks6",
-                "target": "eu9pjihm"
+                "source": "greq7tk0",
+                "target": "wko1sfmd"
             },
             {
                 "id": "syn_{(1,3)}",
-                "source": "lr35mvqm",
-                "target": "uxsom8dk"
+                "source": "yx5lf9mu",
+                "target": "bfc2eopp"
             },
             {
                 "id": "syn_{(3,6)}",
-                "source": "uxsom8dk",
-                "target": "eu9pjihm"
+                "source": "bfc2eopp",
+                "target": "wko1sfmd"
             },
             {
                 "id": "syn_{(4,5)}",
-                "source": "qhyo9eem",
-                "target": "frrfi773"
+                "source": "qsegq2vq",
+                "target": "hvjp95u5"
             },
             {
                 "id": "syn_{(5,6)}",
-                "source": "frrfi773",
-                "target": "eu9pjihm"
+                "source": "hvjp95u5",
+                "target": "wko1sfmd"
             },
             {
                 "id": "syn_{(6,7)}",
-                "source": "eu9pjihm",
-                "target": "4emjfybw"
+                "source": "wko1sfmd",
+                "target": "2swtd94t"
             },
             {
                 "id": "syn_{(7,8)}",
-                "source": "4emjfybw",
-                "target": "7zt240sv"
+                "source": "2swtd94t",
+                "target": "6zdonsfm"
             }
         ]
     },
