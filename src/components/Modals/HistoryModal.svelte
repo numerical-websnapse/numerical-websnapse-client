@@ -96,7 +96,7 @@
           role="tabpanel"
           aria-labelledby="history-tab"
         >
-          <div class="space-y-6 p-6 overflow-auto">
+          <div class="space-y-6 p-6 overflow-x-auto overflow-y-auto">
             {#if $system.history.length === 0}
               <div class="text-center text-gray-500 dark:text-gray-400">
                 No history available

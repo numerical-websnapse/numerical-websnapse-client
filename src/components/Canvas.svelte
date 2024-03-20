@@ -12,7 +12,7 @@
   onMount(async () => {
     const localData = JSON.parse(localStorage.getItem("data"));
     const container = document.getElementById("canvas");
-    graph.set(renderGraph(container, getCanvasSize(), localData || data, "svg"));
+    graph.set(renderGraph(container, getCanvasSize(), localData || data, "canvas"));
 
     window.onresize = function () {
       const { width, height } = getCanvasSize();

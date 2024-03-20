@@ -12,7 +12,7 @@
 	}
 
 	function connect() {
-		//$system.socket = new WebSocket(`ws://${$system.url}/ws/${$system.client}`);
+		// $system.socket = new WebSocket(`ws://${$system.url}/ws/${$system.client}`);
 		$system.socket = new WebSocket(`wss://${$system.url}/ws/${$system.client}`);
 		$system.socket.onopen = function() {
 			console.log('Connected to the server');
@@ -55,6 +55,7 @@
 	async function requestDetails(route, message) {
 		let response = null;
 		await fetch(`https://${$system.url}/${route}/${$system.client}`, {
+		// await fetch(`http://${$system.url}/${route}/${$system.client}`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -74,7 +75,7 @@
 		return response;
 	}
 
-	export async function updateTime(time) {
+	async function updateTime(time) {
 		$system.time = time;
 		$system.prev = time;	
 	}
@@ -86,7 +87,7 @@
 		}
 	}
 
-	export function toggleSimulation() {
+	function toggleSimulation() {
 		$system.simulating = !$system.simulating;
 
 		if (!$system.simulating) {
@@ -95,11 +96,11 @@
 		}
 	}
 
-	export function simulationEnd() {
+	function simulationEnd() {
 		return $system.time === $system.history.length - 1;
 	}
 
-	export function triggerEdges(n) {
+	function triggerEdges(n) {
 		const edges = [];
 		$graph.getRelatedEdgesData(n, 'out').forEach((edge) => {
 			$graph.setItemState(edge.id, "Spiking", true);
@@ -109,7 +110,7 @@
 		return edges;
 	}
 
-	export function stopAllEdgeAnimation() {
+	function stopAllEdgeAnimation() {
 		$graph.getAllEdgesData().forEach((edge) => {
 			if ($graph.getItemState(edge.id, "Spiking"))
 				$graph.setItemState(edge.id, "Spiking", false);
@@ -191,15 +192,11 @@
 		console.log('Initial config generated');
 	}
 
-	export function getInitialConfig() {
-		return $system.history[0];
-	}
-
-	export function getCurrentConfig() {
+	function getCurrentConfig() {
 		return $system.history[$system.time];
 	}
 
-	export function updateGraphConfig(conf, mode='forward', step=1) {
+	function updateGraphConfig(conf, mode='forward', step=1) {
 		let curVar = 0;
 		$system.order.nrn_ord.forEach((reg) => {
 			const neuron = $graph.getNodeData(reg);
@@ -239,7 +236,7 @@
 		}
 	}
 
-	export async function nextFromHistory() {
+	async function nextFromHistory() {
 		$system.running = true;
 		const spike = $system.spike[$system.time + 1];
 		await animate(spike);
@@ -259,7 +256,7 @@
 		});
 	};
 
-	export function assignRandomSpikes() {
+	function assignRandomSpikes() {
 		let curPrf = 0;
 		
 		$system.order.nrn_ord.forEach((n) => {
@@ -286,7 +283,7 @@
 		});
 	}
 
-	export function waitForGuidedSubmit() {
+	function waitForGuidedSubmit() {
 		return new Promise((resolve) => {
 			const submitButton = document.getElementById($modals.guided.submitButton);
 			const cancelButtons = document.getElementsByClassName($modals.guided.cancelButton);

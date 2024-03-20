@@ -22,6 +22,7 @@ export const system = writable({
         random: {},
     },
     order: {},
+    //url: '127.0.0.1:8000',
     url: 'numerical-websnapse-server.onrender.com',
     client: null,
     socket: null,
