@@ -40,7 +40,13 @@
 
 	function sendMessage(message) {
 		if (!$system.socket || $system.socket.readyState !== WebSocket.OPEN) {
-			console.log('Still connecting to socket...');
+			addNotification({
+				position: 'top-left',
+				messages: ['Still connecting to server...'],
+				type: 'error',
+				header: 'Error starting simulation:',
+				removeAfter: 2000,
+			});
 			connect();
 			return;
 		}
