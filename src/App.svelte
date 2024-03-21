@@ -7,15 +7,15 @@
   	import Modals from './components/Modals.svelte';
 	import Alert from "./components/Alert.svelte";
 
-	function beforeUnload(e) {
-		e.preventDefault();
-		e.returnValue = '';
-		document.documentElement.innerHTML = '';
-		return 'Are you sure you want to leave?';
-	}
+	// function beforeUnload(e) {
+	// 	e.preventDefault();
+	// 	e.returnValue = '';
+	// 	document.documentElement.innerHTML = '';
+	// 	return 'Are you sure you want to leave?';
+	// }
 </script>
 
-<svelte:window on:beforeunload={beforeUnload}/>
+<!-- <svelte:window on:beforeunload={beforeUnload}/> -->
 <Notifications item={Alert}>
 	<main>
 		<Canvas/>

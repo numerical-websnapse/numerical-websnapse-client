@@ -10,9 +10,10 @@
   const unsubscribe = graph.subscribe((value) => {});
 
   onMount(async () => {
+    const renderer = localStorage.getItem("renderer") || "canvas";
     const localData = JSON.parse(localStorage.getItem("data"));
     const container = document.getElementById("canvas");
-    graph.set(renderGraph(container, getCanvasSize(), localData || data, "canvas"));
+    graph.set(renderGraph(container, getCanvasSize(), localData || data, renderer));
 
     window.onresize = function () {
       const { width, height } = getCanvasSize();

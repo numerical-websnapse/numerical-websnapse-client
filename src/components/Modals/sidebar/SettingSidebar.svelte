@@ -15,6 +15,7 @@
   export let edgeMetaData;
 
   let files;
+  const currentRenderer = localStorage.getItem("renderer") || "canvas";
 
   $: files = files?.length ? files : null;
 
@@ -55,6 +56,11 @@
       dropArea.addEventListener(eventName, unhighlight);
     });
   });
+
+  const changeRenderer = (e) => {
+    localStorage.setItem("renderer", e.target.value);
+    location.reload();
+  };
 
   const changeGraphData = () => {
     if (!files) return;
@@ -134,6 +140,15 @@
         class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
         aria-current="page">Edge</button
       >
+      <button
+        id="graph-setting-tab"
+        data-tabs-target="#graph-setting"
+        role="tab"
+        arial-controls="graph-setting"
+        arial-selected="false"
+        class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+        aria-current="page">Graph</button
+      >
       <div class="flex-grow"></div>
       <button
         id="upload-setting-tab"
@@ -163,7 +178,11 @@
       <div
         class="p-6 grid grid-flow-row grid-col-1 space-y-3 overflow-y-auto max-h-[45vh] md:max-h-[60vh]"
       >
-        <Setting bind:options={nodeOptions} bind:metaData={nodeMetaData} name="node-settings" />
+        <Setting
+          bind:options={nodeOptions}
+          bind:metaData={nodeMetaData}
+          name="node-settings"
+        />
       </div>
     </div>
     <!-- Edge settings content -->
@@ -176,10 +195,89 @@
       <div
         class="p-6 grid grid-flow-row grid-col-1 space-y-3 overflow-y-auto max-h-[45vh] md:max-h-[60vh]"
       >
-        <Setting bind:options={edgeOptions} bind:metaData={edgeMetaData} name="edge-settings" />
+        <Setting
+          bind:options={edgeOptions}
+          bind:metaData={edgeMetaData}
+          name="edge-settings"
+        />
       </div>
     </div>
 
+    <!-- Graph settings content -->
+    <div
+      class="hidden dark:bg-gray-800"
+      id="graph-setting"
+      role="tabpanel"
+      aria-labelledby="graph-setting-tab"
+    >
+      <div
+        class="p-6 grid grid-flow-row grid-col-1 space-y-3 overflow-y-auto max-h-[45vh] md:max-h-[60vh]"
+        on:change={changeRenderer}
+      >
+        <label
+          for="select-renderer-type"
+          class="text-sm font-medium text-gray-900 dark:text-white items-center flex flex-row space-x-2"
+        >
+          Renderer
+          <button
+            data-popover-target="renderer-info"
+            data-popover-placement="right"
+            class="border-0"
+            type="button"
+            ><svg
+              class="w-4 h-4 ms-2 text-gray-400 hover:text-gray-500"
+              aria-hidden="true"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                fill-rule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
+                clip-rule="evenodd"
+              ></path></svg
+            ><span class="sr-only">Show information</span></button
+          >
+          <div
+            data-popover
+            id="renderer-info"
+            role="tooltip"  
+            class="absolute z-10 invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-500 rounded-lg shadow-sm opacity-0 w-[22rem] dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400"
+          >
+            <div class="p-3 space-y-2 text-justify">
+              <p>
+                NOTE: Changing the renderer type will reload the application.
+              </p>
+              <h3 class="font-semibold text-gray-900 dark:text-white">Canvas</h3>
+              <ul class="list-disc list-inside">
+                <li>Default renderer, suitable for large graphs</li>
+                <li>Created edges will not displaying right away</li>
+                <li>Some nodes stutter when updated</li>
+              </ul>
+              <h3 class="font-semibold text-gray-900 dark:text-white">SVG</h3>
+              <ul class="list-disc list-inside">
+                <li>Suitable for small graphs.</li>
+                <li>Node texts are selectable (not intended)</li>
+              </ul>
+              <h3 class="font-semibold text-gray-900 dark:text-white">WebGL</h3>
+              <p>
+                Not fully implemented yet for this application, further updates will be made in the future.
+              </p>
+            </div>
+            <div data-popper-arrow class="border border-gray-500"></div>
+          </div>
+        </label>
+        <select
+          id="select-renderer-type"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        >
+          <option value="canvas" selected={currentRenderer === "canvas"}>Canvas</option>
+          <option value="svg" selected={currentRenderer === "svg"}>SVG</option>
+          <option value="webgl" selected={currentRenderer === "webgl"} disabled>WebGL</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Upload settings content -->
     <div
       class="hidden dark:bg-gray-800"
       id="upload-setting"
