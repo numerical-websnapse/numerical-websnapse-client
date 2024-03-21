@@ -62,7 +62,6 @@
 		} catch (error) {
 			$system.running = false;
 			$system.simulating = false;
-			console.error("Error:", error);
 		}
 	}
 
@@ -109,11 +108,7 @@
 			$system.running = false;
 		}
 	}
-
-	function simulationEnd() {
-		return $system.time === $system.history.length - 1;
-	}
-
+	
 	function triggerEdges(n) {
 		const edges = [];
 		$graph.getRelatedEdgesData(n, 'out').forEach((edge) => {
@@ -426,4 +421,21 @@
 		jumpToConfig(0);
 		resetSystem();
 	}
+
+	function safe(func) {
+		return function (...args) {
+			try {
+				return func.apply(this, args);
+			} catch (error) {
+				console.error(error);
+				$system.running = false;
+				$system.simulating = false;
+			}
+		};
+	}
+	
+	nextConfig = safe(nextConfig);
+	prevConfig = safe(prevConfig);
+	jumpToConfig = safe(jumpToConfig);
+	resetConfig = safe(resetConfig);
 </script>

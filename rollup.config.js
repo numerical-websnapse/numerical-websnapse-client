@@ -51,6 +51,7 @@ export default {
 			},
 			preprocess: sveltePreprocess({
 				postcss: true,
+				typescript: true,
 			}),
 		}),
 		// we'll extract any component CSS out into
