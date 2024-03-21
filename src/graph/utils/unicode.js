@@ -230,7 +230,9 @@ export const unicodeFormat = {
         "-": "\u{208B}",
         "(": "\u{208D}",
         ")": "\u{208E}",
+        "/": "\u{2E1D}",
         ",": ",",
+        ".": ".",
     },
 
     nameFormat: (content) => {

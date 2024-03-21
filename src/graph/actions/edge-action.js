@@ -8,8 +8,8 @@ export function addEdge(content = null, graph = null) {
     if (content !== null) {
         edge = {
             ...edge,
-            source: content.label || edge.label,
-            target: content.ntype || edge.ntype,
+            source: content.source,
+            target: content.target,
             data: content.data || edge.data,
         };
     }
@@ -17,6 +17,7 @@ export function addEdge(content = null, graph = null) {
     graph = graph || getGraph();
     graph.addData('edge', edge);
     setGraphLocalData();
+    return edge.id;
 }
 
 export function removeEdge(id, graph = null) {

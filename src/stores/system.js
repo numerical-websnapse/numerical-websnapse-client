@@ -36,8 +36,6 @@ export const resetSystem = () => {
         system.simulating = false;
         system.running = false;
         system.editing = true;
-        system.mode = 'default';
-        system.iterations = 1;
         system.spike = [];
         system.history = [];
         system.environment = [];

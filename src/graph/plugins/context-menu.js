@@ -1,5 +1,5 @@
 import { addNode, removeNode } from '../actions/node-action.js';
-import { removeEdge } from '../actions/edge-action.js';
+import { addEdge, removeEdge } from '../actions/edge-action.js';
 import { neuronAction, getModal } from '../../stores/modals.js';
 import { setNeuron, resetNeuron } from '../../stores/graph.js';
 import { system } from '../../stores/system.js';
@@ -216,6 +216,26 @@ const contextMenuCanvas = {
                 <span code="image">Save Image</span>
                 </button>
             </li>
+            <li>
+                <button code="duplicate" class="g6-contextmenu-button-custom">
+                <svg
+                    code="duplicate"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path code="duplicate" d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <polyline code="duplicate" points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    <line code="duplicate" x1="12" y1="22.08" x2="12" y2="12"></line>
+                </svg>
+                <span code="duplicate">Duplicate</span>
+                </button>
+            </li>
         </ul>
         `;
     },
@@ -245,6 +265,46 @@ const contextMenuCanvas = {
                 const fileName = 'graph' + new Date().toISOString().slice(0,10).replace(/-/g,"");
                 graph.downloadFullImage(fileName);
                 break;
+            }
+            case 'duplicate': {
+                const nodes = graph.findIdByState('node', 'selected');
+                const edges = graph.findIdByState('edge', 'selected');
+
+                if (nodes.length === 0) return;
+
+                const newNodes = [];
+                nodes.forEach((n) => {
+                    graph.setItemState(n, 'selected', false);
+                    const node = graph.getNodeData(n);
+                    node.data.x += 15;
+                    node.data.y += 15;
+                    const nodeId = addNode(node, graph);
+                    newNodes.push(nodeId);
+                });
+
+                const newEdges = [];
+                edges.forEach((e) => {
+                    graph.setItemState(e, 'selected', false);
+                    const edge = graph.getEdgeData(e);
+                    const source = nodes.indexOf(edge.source);
+                    const target = nodes.indexOf(edge.target);
+                    if(source > -1 && target > -1) {
+                        newEdges.push(addEdge({
+                             ...edge,
+                             source: newNodes[source],
+                             target: newNodes[target],
+                            },
+                        graph));
+                    }
+                });
+
+                for (const node of newNodes) {
+                    graph.setItemState(node, 'selected', true);
+                }
+
+                for (const edge of newEdges) {
+                    graph.setItemState(edge, 'selected', true);
+                }
             }
             default:
                 break;

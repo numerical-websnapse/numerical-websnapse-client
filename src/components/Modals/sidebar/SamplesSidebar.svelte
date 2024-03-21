@@ -5,6 +5,11 @@
   import { graph, setGraphLocalData } from "../../../stores/graph";
   import { resetSystem } from "../../../stores/system";
 
+  import powers_of_n from "./samples/simple/powers-of-n.json";
+  import natural_numbers from "./samples/simple/natural-numbers.json";
+  import multiples_of_n from "./samples/simple/multiples-of-n.json";
+  import non_deterministic from "./samples/simple/non-determinism.json";
+
   import subset_2_5 from "./samples/subsetsum/subset-2-5.json";
   import subset_3_10 from "./samples/subsetsum/subset-3-10.json";
   import subset_10_20 from "./samples/subsetsum/subset-10-20.json";
@@ -19,8 +24,28 @@
   import generator_program from "./samples/program/generator-program.json";
   import subtractor_program from "./samples/program/subtractor-program.json";
   import move_program from "./samples/program/move-program.json";
+  import copy_program from "./samples/program/copy-program.json";
 
   const { addNotification } = getNotificationsContext();
+
+  const simple = [
+    {
+      name: "Powers of N",
+      data: powers_of_n,
+    },
+    {
+      name: "Natural Numbers",
+      data: natural_numbers,
+    },
+    {
+      name: "Multiples of N",
+      data: multiples_of_n,
+    },
+    {
+      name: "Non-Deterministic",
+      data: non_deterministic,
+    },
+  ]
 
   const subsetsum = [
     {
@@ -78,6 +103,10 @@
       name: "Move Program",
       data: move_program,
     },
+    {
+      name: "Copy Program",
+      data: copy_program,
+    },
   ];
 
   const changeGraphData = (data) => {
@@ -113,6 +142,15 @@
       class="flex flex-col flex-wrap py-2 px-2 h-full content-center space-y-2 max-h-[45vh] md:max-h-[60vh]"
     >
       <button
+        id="simple-system-tab"
+        data-tabs-target="#simple-system"
+        role="tab"
+        arial-controls="simple-system"
+        arial-selected="false"
+        class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800 align-middle justify-center"
+        >Simple Systems</button
+      >
+      <button
         id="subset-sum-tab"
         data-tabs-target="#subset-sum"
         role="tab"
@@ -143,6 +181,35 @@
   </div>
   <!-- Contents -->
   <div id="samples-side-content" class="flex-grow">
+    <!-- Simple Systems -->
+    <div
+      class="hidden dark:bg-gray-800"
+      id="simple-system"
+      role="tabpanel"
+      aria-labelledby="simple-system-tab"
+    >
+      <div class="p-6 space-y-3 overflow-y-auto max-h-[45vh] md:max-h-[60vh]">
+        <div>
+          <h2 class="text-lg font-semibold text-gray-500 dark:text-gray-400">
+            Simple Systems
+          </h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            Choose a sample to load
+          </p>
+        </div>
+        <div class="grid grid-cols-2 gap-2 p-4 border border-gray-400 rounded-xl">
+          {#each simple as item}
+            <button
+              on:click={() => changeGraphData(item.data)}
+              class="text-gray-500 border-0 hover:text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+              >{item.name}</button
+            >
+          {/each}
+        </div>
+      </div>
+    </div>
+
+
     <!-- Subset Sum Systems -->
     <div
       class="hidden dark:bg-gray-800"
