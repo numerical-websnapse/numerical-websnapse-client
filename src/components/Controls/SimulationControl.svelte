@@ -1,6 +1,7 @@
 <script>
   import { system } from "../../stores/system";
   import { graph } from "../../stores/graph";
+  import { tools } from "../../stores/tools";
   import { checkOpenModal } from "../../stores/modals";
   import SimulationRequest from  "../../api/api-handler.svelte";
   
@@ -17,7 +18,7 @@
   };
 
   const initialRate = $system.tickRate;
-  let speedMultiplier = 1.25;
+  let speedMultiplier = 1.5;
   const handleSpeedChange = () => {
     $system.tickRate = initialRate * (1/speedMultiplier);
     const { edge } = $graph.getSpecification();
@@ -52,6 +53,7 @@
 <SimulationRequest bind:this={simulator} />
 <div
   class="fixed flex flex-col items-center bottom-[5vh] left-[50vw] translate-y-[5%] translate-x-[-50%]"
+  class:hidden={!$tools.controls.show}
 >
   <input
     id="sim-slider"
@@ -66,14 +68,13 @@
     disabled={$system.simulating || $system.running ? true:false}
   />
   <div
-    class="border-solid border-x border-b border-gray-300 rounded-b-lg bg-white px-4 pb-4 mt-[-1] shadow-lg"
+    class="border-solid border-x border-b border-gray-300 rounded-b-lg bg-white dark:bg-neutral-800 dark:border-gray-700 px-4 pb-4 mt-[-1] shadow-lg"
   >
     <div class="flex flex-row items-center space-x-2 mt-2">
       <!-- Mode: guided || auto -->
       <button
-        class="group rounded-md p-2 border-0 hover:bg-blue-800 dark:hover:bg-blue-700 {$system.guided
-          ? 'bg-blue-800 dark:bg-blue-700'
-          : ''}"
+        class="group rounded-md p-2 border-0 hover:bg-blue-800"
+        class:bg-blue-800={$system.guided}
         on:click={toggleGuided}
         data-tooltip-target="tooltip-guided"
         data-tooltip-placement="top"
@@ -114,7 +115,7 @@
 
       <!-- Backtrack -->
       <button
-        class="group rounded-md p-2 border-0 hover:bg-blue-800 dark:hover:bg-blue-700"
+        class="group rounded-md p-2 border-0 hover:bg-blue-800"
         on:click={()=>simulator.prevConfig()}
         data-tooltip-target="tooltip-backtrack"
         data-tooltip-placement="top"
@@ -146,9 +147,8 @@
 
       <!-- Play || Pause -->
       <button
-        class="group rounded-full p-2 border-0 hover:bg-blue-800 dark:hover:bg-blue-700 {$system.simulating
-          ? 'bg-blue-800 dark:bg-blue-700'
-          : ''}"
+        class="group rounded-full p-2 border-0 hover:bg-blue-800"
+        class:bg-blue-800={$system.simulating}
         on:click={()=>simulator.simulate()}
         data-tooltip-target="tooltip-play"
         data-tooltip-placement="top"
@@ -190,7 +190,7 @@
 
       <!-- Forward -->
       <button
-        class="group rounded-md p-2 border-0 hover:bg-blue-800 dark:hover:bg-blue-700"
+        class="group rounded-md p-2 border-0 hover:bg-blue-800"
         on:click={simulator.nextConfig}
         data-tooltip-target="tooltip-forward"
         data-tooltip-placement="top"
@@ -222,7 +222,7 @@
 
       <!-- reset -->
       <button
-        class="group rounded-md p-2 border-0 hover:bg-blue-800 dark:hover:bg-blue-700"
+        class="group rounded-md p-2 border-0 hover:bg-blue-800"
         on:click={simulator.resetConfig}
         on:dblclick={simulator.resetSimulation}
         data-tooltip-target="tooltip-reset"
@@ -262,7 +262,7 @@
       id="minmax-range"
       type="range"
       min=0.25
-      max=2.25
+      max=2.75
       step=0.125
       bind:value={speedMultiplier}
       class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
@@ -283,7 +283,7 @@
 
 <style lang="postcss">
   .sim-slider {
-    @apply w-full h-2 top-0 rounded-none appearance-none cursor-pointer bg-gray-200 dark:bg-gray-700 z-[2]
+    @apply w-full h-2 top-0 rounded-none appearance-none cursor-pointer bg-gray-200 dark:bg-neutral-700 z-[2]
       [&::-webkit-slider-thumb]:w-2.5
       [&::-webkit-slider-thumb]:h-2.5
       [&::-webkit-slider-thumb]:-mt-0.5

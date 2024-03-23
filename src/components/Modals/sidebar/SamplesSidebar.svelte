@@ -49,19 +49,19 @@
 
   const subsetsum = [
     {
-      name: "Subset Sum 2-5",
+      name: "Size (|V|) = 2; Sum (S) = 5",
       data: subset_2_5,
     },
     {
-      name: "Subset Sum 3-10",
+      name: "Size (|V|) = 3; Sum (S) = 10",
       data: subset_3_10,
     },
     {
-      name: "Subset Sum 10-20",
+      name: "Size (|V|) = 10; Sum (S) = 20",
       data: subset_10_20,
     },
     {
-      name: "Subset Sum 15-80",
+      name: "Size (|V|) = 15; Sum (S) = 80",
       data: subset_15_80,
     },
   ];

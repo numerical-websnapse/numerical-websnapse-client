@@ -1,6 +1,6 @@
 import G6, { Extensions } from "@antv/g6";
+import { graphOptions, dark } from "../stores/settings";
 import { get } from 'svelte/store';
-import { system } from '../stores/system';
 
 // Models
 import { NeuronNode } from './node';
@@ -12,7 +12,6 @@ import { contextMenuNode } from './plugins/context-menu';
 import { contextMenuEdge } from './plugins/context-menu';
 import { lodController } from "./plugins/lod-controller";
 import { minimap } from './plugins/minimap';
-import { grid } from './plugins/grid';
 
 // Behaviors
 import { deleteClick } from './behaviors/delete-click';
@@ -27,13 +26,17 @@ import { getEdgeConfig } from './config';
 import { getNodeConfig } from './config';
 import { nodeState } from './config';
 import { edgeState } from './config';
-import { preprocessNodes } from "./utils/preprocess";
 
 // Layout
 import { InitLayout } from './layouts/init-layout';
 
 // Local Storage
 import { setPositionLocalData, setGraphLocalData } from '../stores/graph';
+
+const isDark = get(dark);
+const { themes, grids } = get(graphOptions);
+const theme = isDark ? themes.dark : themes.light;
+const grid = isDark ? grids.dark : grids.light;
 
 /**
  * Extends the G6.Graph class to include custom nodes, edges, behaviors, and plugins.
@@ -247,16 +250,7 @@ const renderGraph = (container, size, data, renderer) => {
 			// tileBehaviorSize: 100,
 			// tileLodSize: 10,
 		},
-		theme: {
-			type: 'spec',
-			// base: 'dark',
-			specification: {
-				canvas: {
-					backgroundColor: '#f0f0f0',
-				},
-			}
-			
-		},
+		theme: theme,
 	});
 
 	graph.on('begincreate', (e) => {

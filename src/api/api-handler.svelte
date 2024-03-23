@@ -1,7 +1,7 @@
 <script>
+	import { graph, changeMode } from "../stores/graph";
 	import { modals, getModal } from "../stores/modals";
 	import { system, resetSystem } from "../stores/system";
-	import { graph, changeMode } from "../stores/graph";
 	import { getNotificationsContext } from "svelte-notifications";
 
 	const { addNotification } = getNotificationsContext();

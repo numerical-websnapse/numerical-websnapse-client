@@ -23,6 +23,13 @@ export const edgeAnimation = () => {
             //     iterations: systemConfig.iterations,
             //     duration: systemConfig.tickRate,
             // },
+            // {
+            //     fields: ['lineDash'],
+            //     shapeId: 'keyShape',
+            //     states: ['Spiking'],
+            //     iterations: systemConfig.iterations,
+            //     duration: systemConfig.tickRate,
+            // },
             {
                 fields: ['offsetDistance'],
                 shapeId: 'spikeShape',

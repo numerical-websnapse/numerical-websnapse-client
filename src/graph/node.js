@@ -55,6 +55,7 @@ class NeuronNode extends Extensions.RectNode {
 				y:y-config.label.offset,
 				text: unicodeFormatter(cfg.label, 'label'),
 				fontFamily: 'Computer Modern',
+				fill: config.content.fill,
 				textAlign: 'left',
           		textBaseline: 'top',
 				fontSize: 18,
@@ -80,6 +81,7 @@ class NeuronNode extends Extensions.RectNode {
 						count: config.outShape.supressCount
 					}),
 					fontFamily: 'Computer Modern',
+					fill: config.content.fill,
 					textAlign: 'left',
 					textBaseline: 'top',
 					fontSize: 18,
@@ -145,6 +147,7 @@ class NeuronNode extends Extensions.RectNode {
 				{
 					text: unicodeFormatter(cfg.prf, 'prf'),
 					fontFamily: 'Computer Modern',
+					fill: config.content.fill,
 					textAlign: 'left',
 					textBaseline: 'top',
 					fontSize: 18,
@@ -166,6 +169,7 @@ class NeuronNode extends Extensions.RectNode {
 				{
 					text: unicodeFormatter(cfg.var_, 'var'),
 					fontFamily: 'Computer Modern',
+					fill: config.content.fill,
 					textAlign: 'left',
 					textBaseline: 'top',
 					fontSize: 18,
@@ -234,6 +238,7 @@ class NeuronNode extends Extensions.RectNode {
 				y:y-config.label.offset,
 				text: unicodeFormatter(cfg.label, 'label'),
 				fontFamily: 'Computer Modern',
+				fill: config.content.fill,
 				textAlign: 'left',
           		textBaseline: 'top',
 				fontSize: 18,
@@ -259,6 +264,7 @@ class NeuronNode extends Extensions.RectNode {
 						count: config.outShape.supressCount
 					}),
 					fontFamily: 'Computer Modern',
+					fill: config.content.fill,
 					textAlign: 'left',
 					textBaseline: 'top',
 					fontSize: 18,
@@ -326,6 +332,7 @@ class NeuronNode extends Extensions.RectNode {
 						row: 3,
 					}),
 					fontFamily: 'Computer Modern',
+					fill: config.content.fill,
 					textAlign: 'left',
 					textBaseline: 'top',
 					fontSize: 18,

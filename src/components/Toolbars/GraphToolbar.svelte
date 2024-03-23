@@ -1,6 +1,8 @@
 <script>
   import LayoutDropdown from "./dropdown/LayoutDropdown.svelte";
   import NodeViewDropdown from "./dropdown/nodeViewDropdown.svelte";
+
+  import { tools } from "../../stores/tools";
   import { graph } from "../../stores/graph";
   import { getModal } from "../../stores/modals";
   import { nodeOptions } from "../../stores/settings";
@@ -29,7 +31,7 @@
   };
 
   const openSettings = () => {
-    getModal('settingModal').show();
+    getModal("settingModal").show();
   };
 
   const updateNodeView = (view = null) => {
@@ -38,17 +40,15 @@
       return;
     }
 
-    const modes = ['text', 'simple'];
+    const modes = ["text", "simple"];
     const mode = $nodeOptions.draw.mode;
 
     if (!modes.includes(mode)) {
-      $nodeOptions.draw.mode = 'simple';
+      $nodeOptions.draw.mode = "simple";
       return;
     }
 
-    $nodeOptions.draw.mode = (
-      modes[(modes.indexOf(mode) + 1) % modes.length]
-    );
+    $nodeOptions.draw.mode = modes[(modes.indexOf(mode) + 1) % modes.length];
   };
 
   const onKeydownGraph = (e) => {
@@ -70,31 +70,34 @@
       case "KeyV":
         updateNodeView();
         break;
-      case 'Escape':
-        getModal('settingModal').toggle();
+      case "Escape":
+        getModal("settingModal").toggle();
         break;
     }
   };
 
-  $: if(document.getElementById('canvas')) {
-    document.getElementById('canvas').focus();
+  $: if (document.getElementById("canvas")) {
+    document.getElementById("canvas").focus();
   }
 </script>
 
 <svelte:window on:keydown={onKeydownGraph} />
 
-<div class="fixed top-[2.5vh] right-[2.5vw]">
+<div
+  class="fixed top-[2.5vh] right-[2.5vw]"
+  class:hidden={!$tools.toolbars.show}
+>
   <div class="flex flex-row">
+    <!-- Node view toolbar -->
     <div
-      class="flex flex-row flex-wrap items-center justify-between mr-2 my-auto space-x-2 rounded-lg border-solid border border-gray-500 bg-gray-100 dark:bg-gray-900"
+      class="flex flex-row flex-wrap items-center justify-between mr-2 my-auto space-x-2 rounded-lg border-solid border border-gray-500 bg-white dark:bg-neutral-800 dark:border-neutral-600"
     >
       <!-- Change node view -->
-      <!-- on:click={updateNodeView} -->
       <button
         data-dropdown-toggle="nodeViewDropdown"
         data-tooltip-target="tooltip-view"
         data-tooltip-placement="left"
-        class="group rounded-md p-2 bg-gray-100 dark:bg-gray-800 border-0 hover:bg-blue-800 active:ring-4 active:outline-none active:ring-blue-800 active:bg-blue-800 dark:hover:bg-blue-800 dark:active:ring-blue-800"
+        class="group rounded-md p-2 bg-white dark:bg-neutral-800 border-0 hover:bg-blue-800 active:ring-4 active:outline-none active:ring-blue-800 active:bg-blue-800 dark:hover:bg-blue-800 dark:active:ring-blue-800"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -125,14 +128,14 @@
     </div>
     <!-- Graph action toolbar -->
     <div
-      class="flex flex-row flex-wrap items-center justify-between my-auto space-x-2 rounded-lg border-solid border border-gray-500 bg-gray-100 dark:bg-gray-900"
+      class="flex flex-row flex-wrap items-center justify-between my-auto space-x-2 rounded-lg border-solid border border-gray-500 bg-white dark:bg-neutral-800 dark:border-neutral-600"
     >
       <!-- Zoom in -->
       <button
         on:click={zoomIn}
         data-tooltip-target="tooltip-zoom-in"
         data-tooltip-placement="bottom"
-        class="group rounded-md p-2 bg-gray-100 dark:bg-gray-800 border-0 hover:bg-blue-800 active:ring-4 active:outline-none active:ring-blue-800 active:bg-blue-800 dark:hover:bg-blue-800 dark:active:ring-blue-800"
+        class="group rounded-md p-2 bg-white dark:bg-neutral-800 border-0 hover:bg-blue-800 active:ring-4 active:outline-none active:ring-blue-800 active:bg-blue-800 dark:hover:bg-blue-800 dark:active:ring-blue-800"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -166,7 +169,7 @@
         on:click={zoomOut}
         data-tooltip-target="tooltip-zoom-out"
         data-tooltip-placement="bottom"
-        class="group rounded-md p-2 bg-gray-100 dark:bg-gray-800 border-0 hover:bg-blue-800 active:ring-4 active:outline-none active:ring-blue-800 active:bg-blue-800 dark:hover:bg-blue-700 dark:active:ring-blue-800"
+        class="group rounded-md p-2 bg-white dark:bg-neutral-800 border-0 hover:bg-blue-800 active:ring-4 active:outline-none active:ring-blue-800 active:bg-blue-800 dark:hover:bg-blue-700 dark:active:ring-blue-800"
       >
         <svg
           viewBox="0 0 24 24"
@@ -198,7 +201,7 @@
         on:click={autoZoom}
         data-tooltip-target="tooltip-auto-zoom"
         data-tooltip-placement="bottom"
-        class="group rounded-md p-2 bg-gray-100 dark:bg-gray-800 border-0 hover:bg-blue-800 active:ring-4 active:outline-none active:ring-blue-800 active:bg-blue-800 dark:hover:bg-blue-700 dark:active:ring-blue-800"
+        class="group rounded-md p-2 bg-white dark:bg-neutral-800 border-0 hover:bg-blue-800 active:ring-4 active:outline-none active:ring-blue-800 active:bg-blue-800 dark:hover:bg-blue-700 dark:active:ring-blue-800"
       >
         <svg
           viewBox="0 0 24 24"
@@ -230,7 +233,7 @@
       <button
         id="layoutDropdownButton"
         data-dropdown-toggle="layoutDropdown"
-        class="group rounded-md p-2 bg-gray-100 dark:bg-gray-800 border-0 hover:bg-blue-800 active:ring-4 active:outline-none active:ring-blue-800 active:bg-blue-800 dark:hover:bg-blue-700 dark:active:ring-blue-800"
+        class="group rounded-md p-2 bg-white dark:bg-neutral-800 border-0 hover:bg-blue-800 active:ring-4 active:outline-none active:ring-blue-800 active:bg-blue-800 dark:hover:bg-blue-700 dark:active:ring-blue-800"
       >
         <svg
           viewBox="0 0 24 24"
@@ -248,17 +251,17 @@
         >
       </button>
 
-      <LayoutDropdown id="layoutDropdown" graph={graph} />
+      <LayoutDropdown id="layoutDropdown" {graph} />
     </div>
 
     <!-- Single-use toolbar -->
     <div
-      class="flex flex-row flex-wrap items-center justify-between my-auto ml-2 space-x-1 rounded-lg border-solid border border-gray-500 bg-gray-100 dark:bg-gray-900"
+      class="flex flex-row flex-wrap items-center justify-between my-auto ml-2 space-x-1 rounded-lg border-solid border border-gray-500 bg-white dark:bg-neutral-800 dark:border-neutral-600"
     >
       <!-- Settings -->
       <button
         on:click={openSettings}
-        class="group rounded-md p-2 bg-gray-100 dark:bg-gray-800 border-0 hover:bg-gray-800 active:ring-4 active:outline-none active:ring-gray-800 active:bg-gray-800 dark:hover:bg-gray-700 dark:active:ring-gray-800"
+        class="group rounded-md p-2 bg-white dark:bg-neutral-800 border-0 hover:bg-gray-800 active:ring-4 active:outline-none active:ring-gray-800 active:bg-gray-800 dark:hover:bg-gray-700 dark:active:ring-gray-800"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

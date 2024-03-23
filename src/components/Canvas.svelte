@@ -42,7 +42,7 @@
   }
 
   .g6-minimap-viewport-custom {
-    @apply border-2 border-blue-500 bg-blue-300/[.30];
+    @apply border-2 border-gray-500 bg-gray-300/[.30];
   }
 
   /* Custom context menu styles */

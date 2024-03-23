@@ -7,10 +7,13 @@
   import { ExtGraph } from "../../graph/render";
   import { modals, getModal } from "../../stores/modals";
   import {
+    dark,
     nodeOptions,
     edgeOptions,
+    graphOptions,
     nodeMetaData,
     edgeMetaData,
+    applyTheme,
   } from "../../stores/settings";
   import { nodeState, edgeState } from "../../graph/config";
   import { deepCopy } from "../../utils/copy";
@@ -67,6 +70,29 @@
     edgeOptions.set(tempEdgeOptions);
     hideModal();
   };
+
+  const changeGraphTheme = (theme) => {
+    $graph.updateTheme($graphOptions.themes[theme]);
+    $graph.updatePlugin($graphOptions.grids[theme]);
+    applyTheme(theme);
+  }
+
+  const toggleTheme = () => {
+    if (localStorage.theme === 'dark') {
+      localStorage.theme = 'light'
+      document.documentElement.classList.remove('dark')
+    } else {
+      localStorage.theme = 'dark'
+      document.documentElement.classList.add('dark')
+    }
+    changeGraphTheme(localStorage.theme);
+  };
+
+  if ($dark) {
+    document.documentElement.classList.add('dark')
+  } else {
+    document.documentElement.classList.remove('dark')
+  }
 </script>
 
 <div
@@ -114,25 +140,35 @@
           <li class="me-4 mt-3">
             <button
               type="button"
-              on:click={hideModal}
+              on:click={toggleTheme}
               class=" ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
             >
               <svg
-                class="h-3 w-3"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
                 fill="none"
-                viewBox="0 0 14 14"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="group-hover:text-gray-100 group-active:text-gray-100 dark:text-gray-300 dark:group-hover:text-gray-100 dark:group-active:text-gray-100"
               >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                />
+                {#if $dark}
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                {:else}
+                  <circle cx="12" cy="12" r="5"/>
+                  <line x1="12" y1="1" x2="12" y2="3"/>
+                  <line x1="12" y1="21" x2="12" y2="23"/>
+                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                  <line x1="1" y1="12" x2="3" y2="12"/>
+                  <line x1="21" y1="12" x2="23" y2="12"/>
+                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                {/if}
               </svg>
-              <span class="sr-only">Close modal</span>
+              <span class="sr-only">Theme</span>
             </button>
           </li>
         </ul>
@@ -201,7 +237,7 @@
           type="button"
           class="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
         >
-          Cancel
+          Exit
         </button>
       </div>
     </div>

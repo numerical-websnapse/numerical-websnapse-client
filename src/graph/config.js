@@ -101,9 +101,15 @@ export const edgeState = () => {
 				// 	stroke: config.colorShape.stroke,
 				// 	lineWidth: config.colorShape.lineWidth,
 				// },
+				// keyShape: {
+				// 	lineWidth: 2,
+				// 	lineDash: [2, 2],
+				// },
 				spikeShape: {
-					visible: true,
+					r: config.spikeShape.r,
+					fill: config.spikeShape.fill,
 					offsetDistance: 1,
+					visible: true,
 				},
 			},
 		},

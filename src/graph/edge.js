@@ -13,10 +13,8 @@ class SynapseSingleEdge extends Extensions.LineEdge {
 				'circle',
 				'spikeShape',
 				{
-					r: 4,
 					x: 0,
 					y: 0,
-					fill : '#1e429f',
 					offsetPath: keyShape,
 					zIndex: 3,
 					...spikeStyles,
@@ -83,10 +81,8 @@ class SynapseEdge extends Extensions.QuadraticEdge {
 				'circle',
 				'spikeShape',
 				{
-					r: 4,
 					x: 0,
 					y: 0,
-					fill : '#1e429f',
 					offsetPath: keyShape,
 					zIndex: 3,
 					...spikeStyles,

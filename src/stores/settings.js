@@ -1,5 +1,8 @@
 import { writable } from 'svelte/store';
 
+let isDark = localStorage.getItem('theme') === 'dark' || false;
+export const dark = writable(isDark);
+
 export const nodeOptions = writable({
     label: {
         offset: 23,
@@ -9,17 +12,18 @@ export const nodeOptions = writable({
         padding: 20,
         paddingSimple: 6,
         divider: 15,
+        fill: isDark ? '#FFFFFF' : '#000000',
     },
     keyShape: {
         lineWidth: 1,
         defaultWidth: 50,
         defaultHeight: 50,
         radius: 15,
-        fill: '#FFFFFF', //'transport',
-        stroke: '#000000',
+        fill: isDark ? '#333333' : '#FFFFFF',
+        stroke: isDark ? '#C2C2C2' : '#000000',
     },
     haloShape: {
-        stroke: '#2E2EFF',
+        stroke: isDark ? '#70A0FF' : '#2E2EFF',
     },
     outShape: {
         padding: 10,
@@ -30,8 +34,8 @@ export const nodeOptions = writable({
         row: 5,
         supressOutput: true,
         supressCount: 5,
-        fill: '#FFFFFF',
-        stroke: '#000000',
+        fill: isDark ? '#333333' : '#FFFFFF',
+        stroke: isDark ? '#C2C2C2' : '#000000',
     },
     draw: {
         mode: 'text',
@@ -40,14 +44,18 @@ export const nodeOptions = writable({
 
 export const edgeOptions = writable({
     keyShape: {
-        stroke: '#000000',
+        stroke: isDark ? '#FFFFFF' : '#000000',
         lineWidth: 1,
     },
     endArrow: {
-        stroke: '#000000',
-        fill: '#000000',
+        stroke: isDark ? '#FFFFFF' : '#000000',
+        fill: isDark ? '#FFFFFF' : '#000000',
         path: 'M 0,0 L 12,6 L 9,0 L 12,-6 Z',
     },
+    spikeShape: {
+        r: 4,
+        fill : isDark ? '#B8CCFF' : '#1E429F',
+    }
     // growShape: {
     //     lineWidth: 3,
     //     lineDash: ["100%", 0],
@@ -59,6 +67,65 @@ export const edgeOptions = writable({
     //     lineWidth: 2
     // },
 })
+
+export const graphOptions = writable({
+    themes: {
+        light: {
+			type: 'spec',
+			base: 'light',
+			specification: {
+				canvas: {
+					backgroundColor: '#ffffff',
+				},
+			}
+		},
+        dark: {
+			type: 'spec',
+			base: 'dark',
+			specification: {
+				canvas: {
+					backgroundColor: '#222222',
+				},
+			}
+		},
+    },
+    grids: {
+        light: {
+            key: 'default-grid',
+            type: 'grid',
+            img: `url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIiBmaWxsPSJub25lIj4KPHBhdGggZD0iTTIxIDIwQzIxIDIwLjU1MjMgMjAuNTUyMyAyMSAyMCAyMUMxOS40NDc3IDIxIDE5IDIwLjU1MjMgMTkgMjBDMTkgMTkuNDQ3NyAxOS40NDc3IDE5IDIwIDE5QzIwLjU1MjMgMTkgMjEgMTkuNDQ3NyAyMSAyMFoiIGZpbGw9ImJsYWNrIiBmaWxsLW9wYWNpdHk9IjAuNSIvPgo8L3N2Zz4=)`,
+        },
+        dark: {
+            key: 'default-grid',
+            type: 'grid',
+            img: `url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIiBmaWxsPSJub25lIj4KPHBhdGggZD0iTTIxIDIwQzIxIDIwLjU1MjMgMjAuNTUyMyAyMSAyMCAyMUMxOS40NDc3IDIxIDE5IDIwLjU1MjMgMTkgMjBDMTkgMTkuNDQ3NyAxOS40NDc3IDE5IDIwIDE5QzIwLjU1MjMgMTkgMjEgMTkuNDQ3NyAyMSAyMFoiIGZpbGw9IndoaXRlIiBmaWxsLW9wYWNpdHk9IjAuNSIvPgo8L3N2Zz4=)`,
+        }
+    },
+});
+
+export const applyTheme = (theme) => {
+    isDark = theme === 'dark';
+
+    nodeOptions.update(nodeOptions => {
+        nodeOptions.content.fill = isDark ? '#FFFFFF' : '#000000';
+        nodeOptions.keyShape.fill = isDark ? '#333333' : '#FFFFFF';
+        nodeOptions.keyShape.stroke = isDark ? '#FFFFFF' : '#000000';
+        nodeOptions.haloShape.stroke = isDark ? '#70A0FF' : '#2E2EFF';
+        nodeOptions.outShape.fill = isDark ? '#333333' : '#FFFFFF';
+        nodeOptions.outShape.stroke = isDark ? '#FFFFFF' : '#000000';
+        return nodeOptions;
+    });
+
+    edgeOptions.update(edgeOptions => {
+        edgeOptions.keyShape.stroke = isDark ? '#FFFFFF' : '#000000';
+        edgeOptions.endArrow.stroke = isDark ? '#FFFFFF' : '#000000';
+        edgeOptions.endArrow.fill = isDark ? '#FFFFFF' : '#000000';
+        edgeOptions.spikeShape.fill = isDark ? '#B8CCFF' : '#1E429F';
+        return edgeOptions;
+    });
+
+    dark.set(isDark);
+}
 
 export const nodeMetaData = {
     label: {
@@ -98,6 +165,11 @@ export const nodeMetaData = {
                 visible: true,
                 type: 'number',
             },
+            fill: {
+                name: 'Fill',
+                visible: true,
+                type: 'color',
+            }
         }
     },
     keyShape: {
@@ -260,6 +332,23 @@ export const edgeMetaData = {
             },
         }
     },
+    spikeShape: {
+        name: 'Spike Shape',
+        visible: true,
+        type: 'object',
+        value: {
+            r: {
+                name: 'Radius',
+                visible: true,
+                type: 'number',
+            },
+            fill: {
+                name: 'Stroke',
+                visible: true,
+                type: 'color',
+            },
+        }
+    }
     // growShape: {
     //     lineWidth: 3,
     //     lineDash: ["100%", 0],

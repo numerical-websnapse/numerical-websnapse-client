@@ -3,6 +3,7 @@
   import { system } from "../../stores/system";
   import { MathToSvgElement } from "../../utils/math";
   import { modals, getModal } from "../../stores/modals";
+  import { hideTools, showTools } from "../../stores/tools";
   import FunctionSelect from "./inputs/FunctionSelect.svelte";
 
   const hideModal = () => {
@@ -15,6 +16,7 @@
 
   const focusNode = (nodeId) => {
     hideModal();
+    hideTools();
 
     $graph.focusItem(nodeId, {
       easing: "ease-in",
@@ -22,14 +24,15 @@
     });
 
     setTimeout(() => {
-      $graph.zoomTo(3, undefined, {
+      $graph.zoomTo(2, undefined, {
         easing: "ease-in",
       });
     }, 1000);
 
     setTimeout(() => {
       showModal();
-    }, 3000);
+      showTools();
+    }, 2750);
   };
 
   const toggleRandom = (nodeId) => {
