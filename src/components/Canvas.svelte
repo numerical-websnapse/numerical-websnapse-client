@@ -38,7 +38,7 @@
 
   /* Custom minimap styles */
   .g6-minimap-custom {
-    @apply absolute top-[75vh] right-[2.5vw] shadow-lg border-2 border-gray-800/[.10] bg-gray-300/[.20] hidden md:block;
+    @apply absolute bottom-[2.5vh] right-[2.5vw] shadow-lg border-2 border-gray-800/[.10] bg-gray-300/[.20] hidden md:block;
   }
 
   .g6-minimap-viewport-custom {

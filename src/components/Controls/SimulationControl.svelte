@@ -52,7 +52,7 @@
 <svelte:window on:keydown={onKeydownControls} />
 <SimulationRequest bind:this={simulator} />
 <div
-  class="fixed flex flex-col items-center bottom-[5vh] left-[50vw] translate-y-[5%] translate-x-[-50%]"
+  class="fixed flex flex-col items-center bottom-[5vh] left-[50vw] translate-x-[-50%]"
   class:hidden={!$tools.controls.show}
 >
   <input
