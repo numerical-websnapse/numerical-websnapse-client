@@ -216,7 +216,7 @@ const contextMenuCanvas = {
                 <span code="image">Save Image</span>
                 </button>
             </li>
-            <li>
+            ${get(system).editing ? `<li>
                 <button code="duplicate" class="g6-contextmenu-button-custom">
                 <svg
                     code="duplicate"
@@ -235,7 +235,7 @@ const contextMenuCanvas = {
                 </svg>
                 <span code="duplicate">Duplicate</span>
                 </button>
-            </li>
+            </li>` : ''}
         </ul>
         `;
     },
