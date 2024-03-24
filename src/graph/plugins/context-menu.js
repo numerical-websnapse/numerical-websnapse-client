@@ -1,7 +1,8 @@
 import { addNode, removeNode } from '../actions/node-action.js';
 import { addEdge, removeEdge } from '../actions/edge-action.js';
 import { neuronAction, getModal } from '../../stores/modals.js';
-import { setNeuron, resetNeuron } from '../../stores/graph.js';
+import { setNeuron, resetNeuron, setGraphLocalData } from '../../stores/graph.js';
+import { minimap } from '../plugins/minimap.js';
 import { system } from '../../stores/system.js';
 import { get } from 'svelte/store';
 
@@ -135,6 +136,7 @@ const contextMenuNode = {
                 node.data.x += 15;
                 node.data.y += 15;
                 addNode(node, graph);
+                setGraphLocalData();
                 break;
             }
             default:
@@ -171,6 +173,46 @@ const contextMenuCanvas = {
                         <line code="add" x1="8" y1="12" x2="16" y2="12"></line>
                     </svg>
                     <span code="add">Add node</span>
+                </button>
+            </li>
+            <li>
+                <button code="duplicate" class="g6-contextmenu-button-custom">
+                <svg
+                    code="duplicate"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path code="duplicate" d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <polyline code="duplicate" points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    <line code="duplicate" x1="12" y1="22.08" x2="12" y2="12"></line>
+                </svg>
+                <span code="duplicate">Duplicate</span>
+                </button>
+            </li>
+            <li>
+                <button code="remove" class="g6-contextmenu-button-custom">
+                <svg
+                    code="remove"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path code="remove" d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
+                    <line code="remove" x1="18" y1="9" x2="12" y2="15"></line>
+                    <line code="remove" x1="12" y1="9" x2="18" y2="15"></line>
+                </svg>
+                <span code="remove">Remove</span>
                 </button>
             </li>
             ` : ''}
@@ -216,26 +258,6 @@ const contextMenuCanvas = {
                 <span code="image">Save Image</span>
                 </button>
             </li>
-            ${get(system).editing ? `<li>
-                <button code="duplicate" class="g6-contextmenu-button-custom">
-                <svg
-                    code="duplicate"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-                    <path code="duplicate" d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                    <polyline code="duplicate" points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                    <line code="duplicate" x1="12" y1="22.08" x2="12" y2="12"></line>
-                </svg>
-                <span code="duplicate">Duplicate</span>
-                </button>
-            </li>` : ''}
         </ul>
         `;
     },
@@ -274,7 +296,6 @@ const contextMenuCanvas = {
 
                 const newNodes = [];
                 nodes.forEach((n) => {
-                    graph.setItemState(n, 'selected', false);
                     const node = graph.getNodeData(n);
                     node.data.x += 15;
                     node.data.y += 15;
@@ -297,14 +318,22 @@ const contextMenuCanvas = {
                         graph));
                     }
                 });
-
-                for (const node of newNodes) {
-                    graph.setItemState(node, 'selected', true);
-                }
-
-                for (const edge of newEdges) {
-                    graph.setItemState(edge, 'selected', true);
-                }
+                
+                graph.setItemState(nodes, 'selected', false);
+                graph.setItemState(edges, 'selected', false);
+                graph.setItemState(newNodes, 'selected', true);
+                graph.setItemState(newEdges, 'selected', true);
+                setGraphLocalData();
+                break;
+            }
+            case 'remove': {
+                const nodes = graph.findIdByState('node', 'selected');
+                const edges = graph.findIdByState('edge', 'selected');
+                graph.removeData('node',nodes);
+                graph.removeData('edge',edges);
+                graph.updatePlugin(minimap());
+                setGraphLocalData();
+                break;
             }
             default:
                 break;
