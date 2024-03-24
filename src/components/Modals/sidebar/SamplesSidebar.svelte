@@ -3,28 +3,44 @@
   import { dataValidation } from "../../../utils/validation";
   import { getNotificationsContext } from "svelte-notifications";
   import { graph, setGraphLocalData } from "../../../stores/graph";
-  import { resetSystem } from "../../../stores/system";
-
+  import { system, resetSystem } from "../../../stores/system";
+  // Simple Systems
   import powers_of_n from "./samples/simple/powers-of-n.json";
   import natural_numbers from "./samples/simple/natural-numbers.json";
   import multiples_of_n from "./samples/simple/multiples-of-n.json";
   import non_deterministic from "./samples/simple/non-determinism.json";
-
+  // Subset Sum
   import subset_2_5 from "./samples/subsetsum/subset-2-5.json";
   import subset_3_10 from "./samples/subsetsum/subset-3-10.json";
   import subset_10_20 from "./samples/subsetsum/subset-10-20.json";
   import subset_15_80 from "./samples/subsetsum/subset-15-80.json";
-
+  // Instruction Modules
   import add_module from "./samples/module/add-module.json";
   import sub_module from "./samples/module/sub-module.json";
   import fin_module from "./samples/module/fin-module.json";
   import input_module from "./samples/module/input-module.json";
-
+  // Register Machine Programs
   import adder_program from "./samples/program/adder-program.json";
   import generator_program from "./samples/program/generator-program.json";
   import subtractor_program from "./samples/program/subtractor-program.json";
+  import clear_program from "./samples/program/clear-program.json";
   import move_program from "./samples/program/move-program.json";
   import copy_program from "./samples/program/copy-program.json";
+  // Stress Tests - Chain
+  import all_chain_250_loop from "./samples/stress-test/chain/all-chain-250-loop.json";
+  import all_chain_250 from "./samples/stress-test/chain/all-chain-250.json";
+  import one_chain_250_loop from "./samples/stress-test/chain/one-chain-250-loop.json";
+  import one_chain_250 from "./samples/stress-test/chain/one-chain-250.json";
+  // Stress Tests - Complete Graph
+  import complete_10 from "./samples/stress-test/complete/complete-10.json";
+  import complete_20 from "./samples/stress-test/complete/complete-20.json";
+  import complete_30 from "./samples/stress-test/complete/complete-30.json";
+  import complete_40 from "./samples/stress-test/complete/complete-40.json";
+  // Stress Tests - Larger Subset Sum
+  import subset_25_100 from "./samples/stress-test/subsetsum/subset-25-100.json";
+  import subset_50_200 from "./samples/stress-test/subsetsum/subset-50-200.json";
+  import subset_75_300 from "./samples/stress-test/subsetsum/subset-75-300.json";
+  import subset_100_400 from "./samples/stress-test/subsetsum/subset-100-400.json";
 
   const { addNotification } = getNotificationsContext();
 
@@ -100,6 +116,10 @@
       data: generator_program,
     },
     {
+      name: "Clear Program",
+      data: clear_program,
+    },
+    {
       name: "Move Program",
       data: move_program,
     },
@@ -108,6 +128,57 @@
       data: copy_program,
     },
   ];
+
+  const stressTests = [
+    {
+      name: "All Chain 250 Loop",
+      data: all_chain_250_loop,
+    },
+    {
+      name: "All Chain 250",
+      data: all_chain_250,
+    },
+    {
+      name: "One Chain 250 Loop",
+      data: one_chain_250_loop,
+    },
+    {
+      name: "One Chain 250",
+      data: one_chain_250,
+    },
+    {
+      name: "Complete 10",
+      data: complete_10,
+    },
+    {
+      name: "Complete 20",
+      data: complete_20,
+    },
+    {
+      name: "Complete 30",
+      data: complete_30,
+    },
+    {
+      name: "Complete 40",
+      data: complete_40,
+    },
+    {
+      name: "Subset 25 100",
+      data: subset_25_100,
+    },
+    {
+      name: "Subset 50 200",
+      data: subset_50_200,
+    },
+    {
+      name: "Subset 75 300",
+      data: subset_75_300,
+    },
+    {
+      name: "Subset 100 400",
+      data: subset_100_400,
+    },
+  ]
 
   const changeGraphData = (data) => {
     const errors = dataValidation(data);
@@ -176,6 +247,16 @@
         arial-selected="false"
         class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800 align-middle justify-center"
         >Register Machine</button
+      >
+      <button
+        id="stress-tests-tab"
+        data-tabs-target="#stress-tests"
+        role="tab"
+        arial-controls="stress-tests"
+        arial-selected="false"
+        class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800 align-middle justify-center"
+        class:hidden={!$system.dev}
+        >Stress Tests</button
       >
     </div>
   </div>
@@ -284,6 +365,34 @@
         </div>
         <div class="grid grid-cols-2 gap-2 p-4 border border-gray-400 rounded-xl">
           {#each programs as item}
+            <button
+              on:click={() => changeGraphData(item.data)}
+              class="text-gray-500 border-0 hover:text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+              >{item.name}</button
+            >
+          {/each}
+        </div>
+      </div>
+    </div>
+
+    <!-- Stress Tests -->
+    <div
+      class="hidden dark:bg-gray-800"
+      id="stress-tests"
+      role="tabpanel"
+      aria-labelledby="stress-tests-tab"
+    >
+      <div class="p-6 space-y-3 overflow-y-auto max-h-[45vh] md:max-h-[60vh]">
+        <div>
+          <h2 class="text-lg font-semibold text-gray-500 dark:text-gray-400">
+            Stress Tests
+          </h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            Choose a sample to load
+          </p>
+        </div>
+        <div class="grid grid-cols-2 gap-2 p-4 border border-gray-400 rounded-xl">
+          {#each stressTests as item}
             <button
               on:click={() => changeGraphData(item.data)}
               class="text-gray-500 border-0 hover:text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"

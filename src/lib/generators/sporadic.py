@@ -65,10 +65,11 @@ def generate_data(node_count, row_max, func_count, var_count, position = 700, ed
                     ]
                     for j in range(set_func_count) if ntype == 'reg'
                 ],
-            'label': 'n_{{{i}}}'.format(i=i),
-            'ntype': ntype,
-            'x': pos['x'],
-            'y': pos['y'],
+                'train': [],
+                'label': 'n_{{{i}}}'.format(i=i),
+                'ntype': ntype,
+                'x': pos['x'],
+                'y': pos['y'],
             }
         }
 

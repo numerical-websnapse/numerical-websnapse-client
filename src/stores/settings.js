@@ -1,6 +1,7 @@
 import { writable } from 'svelte/store';
 
 let isDark = localStorage.getItem('theme') === 'dark' || false;
+let drawMode = localStorage.getItem('nodeView') || 'text';
 export const dark = writable(isDark);
 
 export const nodeOptions = writable({
@@ -38,7 +39,7 @@ export const nodeOptions = writable({
         stroke: isDark ? '#C2C2C2' : '#000000',
     },
     draw: {
-        mode: 'text',
+        mode: drawMode,
     }
 })
 

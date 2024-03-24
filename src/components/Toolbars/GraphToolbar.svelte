@@ -36,6 +36,7 @@
 
   const updateNodeView = (view = null) => {
     if (view) {
+      localStorage.setItem("nodeView", view);
       $nodeOptions.draw.mode = view;
       return;
     }
@@ -44,11 +45,15 @@
     const mode = $nodeOptions.draw.mode;
 
     if (!modes.includes(mode)) {
+      localStorage.setItem("nodeView", "simple");
       $nodeOptions.draw.mode = "simple";
       return;
     }
 
-    $nodeOptions.draw.mode = modes[(modes.indexOf(mode) + 1) % modes.length];
+    const nextMode = modes[(modes.indexOf(mode) + 1) % modes.length];
+
+    localStorage.setItem("nodeView", nextMode);
+    $nodeOptions.draw.mode = nextMode;
   };
 
   const onKeydownGraph = (e) => {
@@ -75,10 +80,6 @@
         break;
     }
   };
-
-  $: if (document.getElementById("canvas")) {
-    document.getElementById("canvas").focus();
-  }
 </script>
 
 <svelte:window on:keydown={onKeydownGraph} />

@@ -80,7 +80,7 @@
         });
         return;
       }
-
+      
       $graph.changeData(data, "replace");
       $graph.updatePlugin(minimap());
       setGraphLocalData();
@@ -128,7 +128,7 @@
         role="tab"
         arial-controls="node-setting"
         arial-selected="false"
-        class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800 align-middle justify-center"
+        class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800 align-middle justify-center"
         >Node</button
       >
       <button
@@ -137,7 +137,7 @@
         role="tab"
         arial-controls="edge-setting"
         arial-selected="false"
-        class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+        class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
         aria-current="page">Edge</button
       >
       <button
@@ -146,7 +146,7 @@
         role="tab"
         arial-controls="graph-setting"
         arial-selected="false"
-        class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+        class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
         aria-current="page">Graph</button
       >
       <div class="flex-grow"></div>
@@ -156,12 +156,12 @@
         role="tab"
         arial-controls="upload-setting"
         arial-selected="false"
-        class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+        class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
         aria-current="page">Upload</button
       >
       <button
         on:click={() => downloadGraphData("graph.json")}
-        class="text-gray-500 border-0 hover:text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-cente dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+        class="text-gray-500 hover:text-white hover:bg-blue-800 border-gray-100 dark:border-0 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-gray-400 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
         aria-current="page">Download</button
       >
     </div>
@@ -287,7 +287,7 @@
       <div class="p-6 space-y-3 overflow-y-auto max-h-[45vh] md:max-h-[60vh]">
         <label
           id="drop-area"
-          class="flex justify-center w-full h-[39vh] px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none"
+          class="flex justify-center w-full h-[39vh] px-4 transition border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none"
         >
           <span class="flex items-center space-x-2">
             <svg
@@ -305,14 +305,14 @@
               />
             </svg>
             {#if files}
-              <h2>Selected files:</h2>
+              <h2 class="dark:text-gray-300">Selected files:</h2>
               {#each Array.from(files) as file}
-                <span class="font-medium text-gray-600">
+                <span class="font-medium text-gray-600 dark:text-white">
                   {file.name} ({file.size} bytes)
                 </span>
               {/each}
             {:else}
-              <span class="font-medium text-gray-600">
+              <span class="font-medium text-gray-600 dark:text-white">
                 Drop files to Attach, or
                 <span class="text-blue-600 underline">browse</span>
               </span>
@@ -329,7 +329,7 @@
         </label>
         <div class="w-full flex justify-center">
           <button on:click={changeGraphData} class="p-2 rounded-xl">
-            <span class="text-sm font-medium text-gray-600">
+            <span class="text-sm font-medium text-gray-600 dark:text-white">
               Change graph data
             </span>
           </button>

@@ -156,19 +156,19 @@ def generate_subset_sum(n, sum=20):
     return { 'nodes':nodes, 'edges':edges }
 
 # print(json.dumps(generate_subset_sum(3), indent=4))
-size = [2,3,10,15,20]
-sum = [5,10,20,80,80]
+size = [25, 50, 75, 100]
+sum = [100, 200, 300, 400]
 
 for i in range(len(size)):
     data = generate_subset_sum(size[i],sum[i])
-    with open('subset-%s-%s.json'%(size[i], sum[i]), 'w') as f:
+    with open('../tests/subsetsum/subset-%s-%s.json'%(size[i], sum[i]), 'w') as f:
         json.dump(data, f, indent=4)
 
-    with open('subset-%s-%s-api.json'%(size[i], sum[i]), 'w') as f:
-        api_data = {'neurons': data['nodes'], 'syn': data['edges']}
-        json.dump({
-            'NSNP': api_data,
-            "branch": None,
-            "cur_depth": 0,
-            "sim_depth": 1
-        }, f, indent=4)
+    # with open('../tests/subsetsum/subset-%s-%s-api.json'%(size[i], sum[i]), 'w') as f:
+    #     api_data = {'neurons': data['nodes'], 'syn': data['edges']}
+    #     json.dump({
+    #         'NSNP': api_data,
+    #         "branch": None,
+    #         "cur_depth": 0,
+    #         "sim_depth": 1
+    #     }, f, indent=4)

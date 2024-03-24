@@ -127,9 +127,7 @@
 	}
 
 	export function stopEdgeAnimation(edges) {
-		edges.forEach((id) => {
-			$graph.setItemState(id, "Spiking", false);
-		});
+		$graph.setItemState(edges, "Spiking", false);
 	}
 
 	export async function animate(spike) {

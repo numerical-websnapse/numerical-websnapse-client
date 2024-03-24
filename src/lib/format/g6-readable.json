@@ -25,6 +25,7 @@
                 ]
               ]
             ],
+            "train": [],
             "label": "n_1",
             "ntype": "reg",
             "x": 100,
@@ -32,7 +33,7 @@
         }
       },
       {
-        "id": "n_out",
+        "id": "n_2",
         "data": {
             "var_": [
                 ["x_{(1,2)}", 2]
@@ -53,7 +54,8 @@
                     ]
                 ]
             ],
-            "label": "n_{out}",
+            "train": [],
+            "label": "n_2",
             "ntype": "out",
             "x": 100,
             "y": 150
@@ -64,12 +66,12 @@
       {
         "id": "syn1",
         "source": "n_1",
-        "target": "n_out",
+        "target": "n_2",
         "data": {}
       },
       {
         "id": "syn2",
-        "source": "n_out",
+        "source": "n_2",
         "target": "n_1",
         "data": {}
       }

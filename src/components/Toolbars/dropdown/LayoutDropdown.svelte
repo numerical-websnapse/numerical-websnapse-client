@@ -56,6 +56,7 @@
     $graph.layout(layout);
     setTimeout(() => {
       $graph.fitView(undefined, {});
+      $graph.layout({type: 'init'});
     }, 1000);
   };
 </script>
