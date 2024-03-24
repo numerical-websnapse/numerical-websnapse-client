@@ -330,7 +330,7 @@ export const unicodeFormat = {
             return subscripts[v];
         }).join('')}` : '';
 
-        if (expression === '') return `${name} = 0${threshold}`;
+        if (expression === '') return `${nameFormat(name)} = 0${threshold}`;
         return `${nameFormat(name)} = ${expression}${threshold}`;
     },
 

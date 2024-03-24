@@ -9,6 +9,8 @@
   import natural_numbers from "./samples/simple/natural-numbers.json";
   import multiples_of_n from "./samples/simple/multiples-of-n.json";
   import non_deterministic from "./samples/simple/non-determinism.json";
+  import sample_from_ballesteros from "./samples/simple/sample-from-ballesteros.json";
+  import sample_from_wu from "./samples/simple/sample-from-wu.json";
   // Subset Sum
   import subset_2_5 from "./samples/subsetsum/subset-2-5.json";
   import subset_3_10 from "./samples/subsetsum/subset-3-10.json";
@@ -60,6 +62,16 @@
     {
       name: "Non-Deterministic",
       data: non_deterministic,
+    },
+    {
+      name: "Sample from Ballesteros et al.",
+      data: sample_from_ballesteros,
+      link: "https://link.springer.com/article/10.1007/s41965-022-00093-7",
+    },
+    {
+      name: "Sample from Wu et al.",
+      data: sample_from_wu,
+      link: "https://ieeexplore.ieee.org/document/9138473",
     },
   ]
 
@@ -199,6 +211,10 @@
     setGraphLocalData();
     resetSystem();
   };
+
+  const openLink = (link) => {
+    if(link) window.open(link, "_blank");
+  };
 </script>
 
 <div class="flex flex-row">
@@ -282,8 +298,10 @@
           {#each simple as item}
             <button
               on:click={() => changeGraphData(item.data)}
+              on:contextmenu={() => openLink(item.link)}
               class="text-gray-500 border-0 hover:text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
-              >{item.name}</button
+              >{item.name}
+              </button
             >
           {/each}
         </div>
