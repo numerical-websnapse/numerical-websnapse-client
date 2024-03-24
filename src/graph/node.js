@@ -54,7 +54,7 @@ class NeuronNode extends Extensions.RectNode {
 				x:x-config.label.offset,
 				y:y-config.label.offset,
 				text: unicodeFormatter(cfg.label, 'label'),
-				fontFamily: 'Computer Modern',
+				fontFamily: 'KaTeX_Main',
 				fill: config.content.fill,
 				textAlign: 'left',
           		textBaseline: 'top',
@@ -80,7 +80,7 @@ class NeuronNode extends Extensions.RectNode {
 						supress: config.outShape.supressOutput,
 						count: config.outShape.supressCount
 					}),
-					fontFamily: 'Computer Modern',
+					fontFamily: 'KaTeX_Main',
 					fill: config.content.fill,
 					textAlign: 'left',
 					textBaseline: 'top',
@@ -146,7 +146,7 @@ class NeuronNode extends Extensions.RectNode {
 				'func-shape',
 				{
 					text: unicodeFormatter(cfg.prf, 'prf'),
-					fontFamily: 'Computer Modern',
+					fontFamily: 'KaTeX_Main',
 					fill: config.content.fill,
 					textAlign: 'left',
 					textBaseline: 'top',
@@ -168,7 +168,7 @@ class NeuronNode extends Extensions.RectNode {
 				'var-shape',
 				{
 					text: unicodeFormatter(cfg.var_, 'var'),
-					fontFamily: 'Computer Modern',
+					fontFamily: 'KaTeX_Main',
 					fill: config.content.fill,
 					textAlign: 'left',
 					textBaseline: 'top',
@@ -237,7 +237,7 @@ class NeuronNode extends Extensions.RectNode {
 				x:x-config.label.offset,
 				y:y-config.label.offset,
 				text: unicodeFormatter(cfg.label, 'label'),
-				fontFamily: 'Computer Modern',
+				fontFamily: 'KaTeX_Main',
 				fill: config.content.fill,
 				textAlign: 'left',
           		textBaseline: 'top',
@@ -263,7 +263,7 @@ class NeuronNode extends Extensions.RectNode {
 						supress: config.outShape.supressOutput,
 						count: config.outShape.supressCount
 					}),
-					fontFamily: 'Computer Modern',
+					fontFamily: 'KaTeX_Main',
 					fill: config.content.fill,
 					textAlign: 'left',
 					textBaseline: 'top',
@@ -331,7 +331,7 @@ class NeuronNode extends Extensions.RectNode {
 					text: unicodeFormatter(cfg.var_.map((v)=>v[1]), 'train', {
 						row: 3,
 					}),
-					fontFamily: 'Computer Modern',
+					fontFamily: 'KaTeX_Main',
 					fill: config.content.fill,
 					textAlign: 'left',
 					textBaseline: 'top',
