@@ -311,7 +311,7 @@ export const edgeMetaData = {
                 type: 'boolean',
             },
             autoDisable: {
-                name: 'Auto Disable',
+                name: 'Auto-disable',
                 visible: true,
                 type: 'boolean',
             },
