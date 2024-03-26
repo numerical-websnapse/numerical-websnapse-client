@@ -311,7 +311,13 @@
                         Environment matrix
                       {/if}
                     </div>
-                    {@html getKatex(matrixFormatter($system.matrices[matrix]))}
+                    {#if $system.matrices[matrix].length > 20 || $system.matrices[matrix][0].length > 20}
+                      <div class="text-center text-red-500 dark:text-red-400 py-4">
+                        Matrix too large to display
+                      </div>
+                    {:else}
+                      {@html getKatex(matrixFormatter($system.matrices[matrix]))}
+                    {/if}
                   {/if}
                 {/each}
               {:else}
