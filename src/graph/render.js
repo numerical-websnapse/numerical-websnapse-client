@@ -243,9 +243,13 @@ const renderGraph = (container, size, data, renderer) => {
 			minimap(),
 			grid,
 		],
+		// enableStack: false,
+		stackCfg: {
+			stackActive: false,
+		},
 		optimize: {
 			tileFirstRender: true,
-			tileFirstRenderSize: 100,
+			tileFirstRenderSize: 20,
 			// tileBehavior: true,
 			// tileBehaviorSize: 100,
 			// tileLodSize: 10,

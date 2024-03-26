@@ -2,6 +2,7 @@ import { writable } from 'svelte/store';
 
 let isDark = localStorage.getItem('theme') === 'dark' || false;
 let drawMode = localStorage.getItem('nodeView') || 'text';
+let enableAnimation = localStorage.getItem('animate') === 'true' || false;
 export const dark = writable(isDark);
 
 export const nodeOptions = writable({
@@ -44,6 +45,11 @@ export const nodeOptions = writable({
 })
 
 export const edgeOptions = writable({
+    animation: {
+        enabled: enableAnimation,
+        autoDisable: true,
+        autoDisableCount: 256,
+    },
     keyShape: {
         stroke: isDark ? '#FFFFFF' : '#000000',
         lineWidth: 1,
@@ -294,6 +300,28 @@ export const nodeMetaData = {
 }
 
 export const edgeMetaData = {
+    animation: {
+        name: 'Animation',
+        visible: true,
+        type: 'object',
+        value: {
+            enabled: {
+                name: 'Enabled',
+                visible: true,
+                type: 'boolean',
+            },
+            autoDisable: {
+                name: 'Auto Disable',
+                visible: true,
+                type: 'boolean',
+            },
+            autoDisableCount: {
+                name: 'Synapse Count',
+                visible: true,
+                type: 'number',
+            }
+        }
+    },
     keyShape: {
         name: 'Key Shape',
         visible: true,

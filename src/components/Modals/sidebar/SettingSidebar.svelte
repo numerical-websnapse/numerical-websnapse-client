@@ -245,7 +245,7 @@
           >
             <div class="p-3 space-y-2 text-justify">
               <p>
-                NOTE: Changing the renderer type will reload the application.
+                <b>NOTE</b>: Changing the renderer type will reload the application.
               </p>
               <h3 class="font-semibold text-gray-900 dark:text-white">Canvas</h3>
               <ul class="list-disc list-inside">
@@ -255,15 +255,16 @@
               </ul>
               <h3 class="font-semibold text-gray-900 dark:text-white">SVG</h3>
               <ul class="list-disc list-inside">
-                <li>Suitable for small graphs.</li>
+                <li>Suitable for small graphs</li>
                 <li>Node texts are selectable (not intended)</li>
+                <li>Easier to create systems</li>
               </ul>
               <h3 class="font-semibold text-gray-900 dark:text-white">WebGL</h3>
               <p>
                 Not fully implemented yet for this application, further updates will be made in the future.
               </p>
             </div>
-            <div data-popper-arrow class="border border-gray-500"></div>
+            <div data-popper-arrow></div>
           </div>
         </label>
         <select

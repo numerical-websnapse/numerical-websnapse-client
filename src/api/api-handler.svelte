@@ -3,8 +3,10 @@
 	import { modals, getModal } from "../stores/modals";
 	import { system, resetSystem } from "../stores/system";
 	import { getNotificationsContext } from "svelte-notifications";
+	import { edgeOptions } from "../stores/settings";
 
 	const { addNotification } = getNotificationsContext();
+	let edgeCount = 0;
 
 	$: if(!$system.client) {
 		$system.client = Date.now().toString();
@@ -126,11 +128,29 @@
 		});
 	}
 
-	export function stopEdgeAnimation(edges) {
+	function stopEdgeAnimation(edges) {
 		$graph.setItemState(edges, "Spiking", false);
 	}
 
+	async function dummyAnimate() {
+		return await new Promise((resolve) => {
+			setTimeout(async() => {
+				resolve();
+			}, $system.tickRate);
+		});
+	}
+
 	export async function animate(spike) {
+		if(!$edgeOptions.animation.enabled) {
+			return await dummyAnimate();
+		}
+
+		if($edgeOptions.animation.autoDisable) {
+			if(edgeCount > $edgeOptions.animation.autoDisableCount) {
+				return await dummyAnimate();
+			}
+		}
+
 		return await new Promise((resolve) => {
 			const edges = [];
 			let curPrf = 0;
@@ -179,13 +199,18 @@
 
 	export async function generateInitialConfig() {
 		console.log('Generating initial config');
+		const nodes = $graph.getAllNodesData();
+		const edges = $graph.getAllEdgesData();
+
 		const data = await requestSimulation({
 			type: "generate",
 			NSNP: {
-				neurons: $graph.getAllNodesData(),
-				syn: $graph.getAllEdgesData(),
+				neurons: nodes,
+				syn: edges,
 			}
 		});
+
+		edgeCount = edges.length;
 		const { nodes: treeNodes, nrn_ord, out_ord } = data;
 		$system.order = { nrn_ord, out_ord };
 		$system.history = [treeNodes[0].conf];
@@ -412,6 +437,13 @@
 	export function resetConfig() {
 		if ($system.simulating) return;
 		prevConfig($system.time);
+
+		addNotification({
+			position: 'top-left',
+			messages: ['Double-click to hard-reset'],
+			type: 'success',
+			removeAfter: 2000,
+		});
 	}
 
 	export function resetSimulation() {

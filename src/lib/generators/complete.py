@@ -27,8 +27,8 @@ def generate_data(positions, type = 'one', loop = False, data_template = None):
             'data': {
                 'label' : '\\sigma_{%s}'%(i),
                 'ntype' : 'reg',
-                'var_'  : [['x_{(1,2)}', '0']] if type == 'one' and i != 0 else [['x_{(1,2)}', '1']],
-                'prf'   : [['f_{(1,2)}', '1', [['x_{(1,2)}', '1']]]],
+                'var_'  : [['x_{(1,2)}', '1']],
+                'prf'   : [['f_{(1,2)}', '', [['x_{(1,2)}', '1']]]],
                 'train' : [],
                 'x'     : pos[0],
                 'y'     : pos[1],
@@ -44,18 +44,16 @@ def generate_data(positions, type = 'one', loop = False, data_template = None):
         })
 
     edges = []
-    for i in range(len(nodes)):
-        if(i == len(nodes) - 1 and not loop):
-            break
-
-        j = (i+1)%len(nodes)
-
-        edges.append({
-            'id': id_generator(12),
-            'source': nodes[i]['id'],
-            'target': nodes[j]['id'],
-            'data'  : {},
-        })
+    for i, node1 in enumerate(nodes):
+        for j, node2 in enumerate(nodes):
+            if i == j:
+                continue
+            edges.append({
+                'id': id_generator(12),
+                'source': node1['id'],
+                'target': node2['id'],
+                'data'  : {},
+            })
                 
 
     return {
@@ -64,27 +62,14 @@ def generate_data(positions, type = 'one', loop = False, data_template = None):
     }
 
 
-n = [1000]
+n = [16, 32, 64, 128]
 r = generate_radius(n)
 circles = circle_points(r, n)
 
 for i, circle in enumerate(circles):
     data = generate_data(circle.tolist())
-    with open(f'../tests/chain/one-chain-{n[i]}.json', 'w') as f:
+    with open(f'../tests/complete/complete-{n[i]}.json', 'w') as f:
         json.dump(data, f)
-
-    data = generate_data(circle.tolist(), type='all')
-    with open(f'../tests/chain/all-chain-{n[i]}.json', 'w') as f:
-        json.dump(data, f)
-
-    data = generate_data(circle.tolist(), type='all', loop=True)
-    with open(f'../tests/chain/one-chain-{n[i]}-loop.json', 'w') as f:
-        json.dump(data, f)
-
-    data = generate_data(circle.tolist(), type='all', loop=True)
-    with open(f'../tests/chain/all-chain-{n[i]}-loop.json', 'w') as f:
-        json.dump(data, f)
-
 
 
 
