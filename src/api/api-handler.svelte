@@ -114,7 +114,6 @@
 	function triggerEdges(n) {
 		const edges = [];
 		$graph.getRelatedEdgesData(n, 'out').forEach((edge) => {
-			$graph.setItemState(edge.id, "Spiking", true);
 			edges.push(edge.id);
 		});
 
@@ -165,6 +164,8 @@
 				}
 				curPrf += func_count;
 			});
+
+			$graph.setItemState(edges, "Spiking", true);
 
 			setTimeout(async() => {
 				resolve(stopEdgeAnimation(edges));
@@ -229,6 +230,8 @@
 	}
 
 	function updateGraphConfig(conf, mode='forward', step=1) {
+		const updatedNodes = [];
+		
 		let curVar = 0;
 		$system.order.nrn_ord.forEach((reg) => {
 			const neuron = $graph.getNodeData(reg);
@@ -241,14 +244,14 @@
 				curVar += 1;
 			});
 
-			if(changed) $graph.updateData('node', neuron);
+			if(changed) updatedNodes.push(neuron);
 		});
 
 		if (mode === 'backward') {
 			$system.order.out_ord.forEach((out) => {
 				const neuron = $graph.getNodeData(out);
 				neuron.data.train = neuron.data.train.slice(0, neuron.data.train.length - step);
-				$graph.updateData('node', neuron);
+				updatedNodes.push(neuron);
 			});
 		}
 
@@ -263,9 +266,11 @@
 			}
 			$system.order.out_ord.forEach((out) => {
 				const neuron = $graph.getNodeData(out);
-				$graph.updateData('node', neuron);
+				updatedNodes.push(neuron);
 			});
 		}
+
+		$graph.updateData('node', updatedNodes);
 	}
 
 	async function nextFromHistory() {

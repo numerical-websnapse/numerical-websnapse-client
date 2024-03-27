@@ -21,6 +21,11 @@
   import sub_module from "./samples/module/sub-module.json";
   import fin_module from "./samples/module/fin-module.json";
   import input_module from "./samples/module/input-module.json";
+  // Logic Gates
+  import and_gate from "./samples/logic-gate/and-gate.json";
+  import or_gate from "./samples/logic-gate/or-gate.json";
+  import not_gate from "./samples/logic-gate/not-gate.json";
+  import convert_to_boolean from "./samples/logic-gate/convert-to-boolean.json";
   // Register Machine Programs
   import adder_program from "./samples/program/adder-program.json";
   import generator_program from "./samples/program/generator-program.json";
@@ -112,6 +117,25 @@
       data: input_module,
     },
   ];
+
+  const gates = [
+    {
+      name: "AND Gate",
+      data: and_gate,
+    },
+    {
+      name: "OR Gate",
+      data: or_gate,
+    },
+    {
+      name: "NOT Gate",
+      data: not_gate,
+    },
+    {
+      name: "Convert to Boolean",
+      data: convert_to_boolean,
+    },
+  ]
 
   const programs = [
     {
@@ -247,6 +271,15 @@
         >Subset Sum</button
       >
       <button
+        id="logic-gates-tab"
+        data-tabs-target="#logic-gates"
+        role="tab"
+        arial-controls="logic-gates"
+        arial-selected="false"
+        class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800 align-middle justify-center"
+        >Logic Gates</button
+      >
+      <button
         id="instruction-modules-tab"
         data-tabs-target="#instruction-modules"
         role="tab"
@@ -327,6 +360,34 @@
         </div>
         <div class="grid grid-cols-2 gap-2 p-4 border border-gray-400 rounded-xl">
           {#each subsetsum as item}
+            <button
+              on:click={() => changeGraphData(item.data)}
+              class="text-gray-500 border-0 hover:text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+              >{item.name}</button
+            >
+          {/each}
+        </div>
+      </div>
+    </div>
+
+    <!-- Logic Gates -->
+    <div
+      class="hidden dark:bg-gray-800"
+      id="logic-gates"
+      role="tabpanel"
+      aria-labelledby="logic-gates-tab"
+    >
+      <div class="p-6 space-y-3 overflow-y-auto max-h-[45vh] md:max-h-[60vh]">
+        <div>
+          <h2 class="text-lg font-semibold text-gray-500 dark:text-gray-400">
+            Logic Gates
+          </h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            Choose a sample to load
+          </p>
+        </div>
+        <div class="grid grid-cols-2 gap-2 p-4 border border-gray-400 rounded-xl">
+          {#each gates as item}
             <button
               on:click={() => changeGraphData(item.data)}
               class="text-gray-500 border-0 hover:text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
