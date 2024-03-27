@@ -173,32 +173,14 @@
 		});
 	}
 
-	export function getConfigDetails(conf) {
-		return requestSimulation({
-			type: "config",
-			config: conf
-		});
-	}
-
-	export async function getConfigMatrices() {
+	async function getConfigMatrices() {
 		const conf = getCurrentConfig();
 		$system.matrices = await requestDetails(
 			'matrices', { config: conf }
 		);
 	}
 
-	export function getGraphConfig() {
-		const config = [];
-		$system.order.nrn_ord.forEach((n) => {
-			const neuron = $graph.getNodeData(n);
-			neuron.data.var_.forEach((v) => {
-				config.push(parseFloat(v[1]));
-			});
-		});
-		return config;
-	}
-
-	export async function generateInitialConfig() {
+	async function generateInitialConfig() {
 		console.log('Generating initial config');
 		const nodes = $graph.getAllNodesData();
 		const edges = $graph.getAllEdgesData();
@@ -351,7 +333,7 @@
 		});
 	}
 
-	export async function nextConfig() {
+	async function nextConfig() {
 		if ($system.running) return;
 		$system.running = true;
 
@@ -406,7 +388,7 @@
 		$system.running = false;
 	}
 
-	export async function prevConfig(step=1) {
+	async function prevConfig(step=1) {
 		if ($system.running) return;
 		if ($system.time === 0 || $system.time - step < 0) return;
 
@@ -422,7 +404,7 @@
 	}
 
 	// function for simulation slider
-	export function jumpToConfig(time) {
+	function jumpToConfig(time) {
 		if ($system.running) return;
 		$system.time = $system.prev;
 		
@@ -439,10 +421,12 @@
 		}
 	}
 
-	export function resetConfig() {
+	function resetConfig() {
 		if ($system.simulating) return;
-		prevConfig($system.time);
+		if (!$system.history.length) return;
 
+		prevConfig($system.time);
+		
 		addNotification({
 			position: 'top-left',
 			messages: ['Double-click to hard-reset'],
@@ -451,7 +435,7 @@
 		});
 	}
 
-	export function resetSimulation() {
+	function resetSimulation() {
 		if ($system.simulating || $system.running) return;
 		jumpToConfig(0);
 		resetSystem();
@@ -473,4 +457,7 @@
 	prevConfig = safe(prevConfig);
 	jumpToConfig = safe(jumpToConfig);
 	resetConfig = safe(resetConfig);
+	resetSimulation = safe(resetSimulation);
+
+	export { nextConfig, prevConfig, jumpToConfig, resetConfig, resetSimulation };
 </script>
