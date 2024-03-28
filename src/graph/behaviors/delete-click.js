@@ -22,7 +22,9 @@ class deleteClick extends Extensions.BaseBehavior {
         if (ev.itemType === 'node' || ev.itemType === 'edge') {
             this.graph.removeData(itemType, ev.itemId);
             ev.itemType === 'node' ? deleteImage(ev.itemId) : null;
-            this.graph.updatePlugin(minimap());
+            this.graph.updatePlugin(minimap(
+              this.graph.getAllEdgesData().length
+            ));
             setGraphLocalData();
         }
     };

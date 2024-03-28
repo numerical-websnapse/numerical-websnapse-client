@@ -1,7 +1,9 @@
-import { Graph as BaseGraph, Extensions, Util, extend } from '@antv/g6';
 import { getCanvasSize } from '../utils/canvas-size.js';
 
-const minimap = () => {
+const minimap = (edgeCount = 0) => {
+    const { width, height } = getCanvasSize(0.17,0.20);
+    const hideEdge = edgeCount > 128 ? true : false;
+
     return {
         key: 'nsnp-minimap',
         type: 'minimap',
@@ -9,7 +11,8 @@ const minimap = () => {
         className: 'g6-minimap-custom',
         viewportClassName: 'g6-minimap-viewport-custom',
         container: 'canvas',
-        size: Object.values(getCanvasSize(0.2,0.2)),
+        hideEdge: hideEdge,
+        size: [width, height],
     };
 }
 

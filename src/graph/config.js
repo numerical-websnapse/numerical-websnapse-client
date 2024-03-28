@@ -12,8 +12,8 @@ export const getNodeConfig = (nodeInnerModel) => {
 		return nodeInnerModel;
 	}
 
-	const config = get(nodeOptions);
 	const {data, ...newModel } = nodeInnerModel;
+	const config = get(nodeOptions);
 
 	if (data.ntype === 'out') {
 		return {
@@ -62,13 +62,17 @@ export const getNodeConfig = (nodeInnerModel) => {
 }
 
 export const getEdgeConfig = (edgeInnerModel) => {
-	const { id, data } = edgeInnerModel;
+	const config = get(edgeOptions);
 
-	if (id === VIRTUAL_EDGE_ID) {
+	if (edgeInnerModel.id === VIRTUAL_EDGE_ID) {
+		edgeInnerModel.data.keyShape.stroke = config.keyShape.stroke;
+		edgeInnerModel.data.keyShape.endArrow.stroke = config.endArrow.stroke;
+		edgeInnerModel.data.keyShape.endArrow.fill = config.endArrow.fill;
+
 		return edgeInnerModel;
 	}
 
-	const config = get(edgeOptions);
+	const { id, data } = edgeInnerModel;
 	
 	return {
 		id,

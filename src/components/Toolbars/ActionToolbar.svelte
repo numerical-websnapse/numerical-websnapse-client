@@ -363,7 +363,7 @@
     <!-- Dev-toolbar toolbar -->
     <div
       class="flex flex-col display flex-wrap items-center justify-between mx-auto mt-2 space-y-1 rounded-lg border-solid border border-gray-500 bg-white dark:bg-neutral-800 dark:border-neutral-600"
-      class:hidden={!$system.dev}
+      class:hidden={!$system.dev || !$system.editing}
     >
       <!-- Trigger edge animations -->
       <button

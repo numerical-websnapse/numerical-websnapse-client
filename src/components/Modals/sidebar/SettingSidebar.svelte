@@ -82,7 +82,9 @@
       }
       
       $graph.changeData(data, "replace");
-      $graph.updatePlugin(minimap());
+      $graph.updatePlugin(minimap(
+        $graph.getAllEdgesData().length
+      ));
       setGraphLocalData();
       resetSystem();
     };

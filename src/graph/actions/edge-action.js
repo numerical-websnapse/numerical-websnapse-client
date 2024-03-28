@@ -23,6 +23,8 @@ export function addEdge(content = null, graph = null) {
 export function removeEdge(id, graph = null) {
     graph = graph || getGraph();
     graph.removeData('edge', id);
-    graph.updatePlugin(minimap());
+    graph.updatePlugin(minimap(
+        graph.getAllEdgesData().length
+    ));
     setGraphLocalData();
 }

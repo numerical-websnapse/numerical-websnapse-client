@@ -331,7 +331,9 @@ const contextMenuCanvas = {
                 const edges = graph.findIdByState('edge', 'selected');
                 graph.removeData('node',nodes);
                 graph.removeData('edge',edges);
-                graph.updatePlugin(minimap());
+                graph.updatePlugin(minimap(
+                    graph.getAllEdgesData().length
+                ));
                 setGraphLocalData();
                 break;
             }

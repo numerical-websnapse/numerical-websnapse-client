@@ -6,7 +6,6 @@
 	import { edgeOptions } from "../stores/settings";
 
 	const { addNotification } = getNotificationsContext();
-	let edgeCount = 0;
 
 	$: if(!$system.client) {
 		$system.client = Date.now().toString();
@@ -17,8 +16,8 @@
 	}
 
 	function connect() {
-		// $system.socket = new WebSocket(`ws://${$system.url}/ws/${$system.client}`);
-		$system.socket = new WebSocket(`wss://${$system.url}/ws/${$system.client}`);
+		$system.socket = new WebSocket(`ws://${$system.url}/ws/${$system.client}`);
+		// $system.socket = new WebSocket(`wss://${$system.url}/ws/${$system.client}`);
 		$system.socket.onopen = function() {
 			addNotification({
 				position: 'top-left',
@@ -69,8 +68,8 @@
 
 	async function requestDetails(route, message) {
 		let response = null;
-		// await fetch(`http://${$system.url}/${route}/${$system.client}`, {
-		await fetch(`https://${$system.url}/${route}/${$system.client}`, {
+		await fetch(`http://${$system.url}/${route}/${$system.client}`, {
+		// await fetch(`https://${$system.url}/${route}/${$system.client}`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -145,7 +144,7 @@
 		}
 
 		if($edgeOptions.animation.autoDisable) {
-			if(edgeCount > $edgeOptions.animation.autoDisableCount) {
+			if($system.edgeCount > $edgeOptions.animation.autoDisableCount) {
 				return await dummyAnimate();
 			}
 		}
@@ -192,8 +191,8 @@
 				syn: edges,
 			}
 		});
-
-		edgeCount = edges.length;
+		
+		$system.edgeCount = edges.length;
 		const { nodes: treeNodes, nrn_ord, out_ord } = data;
 		$system.order = { nrn_ord, out_ord };
 		$system.history = [treeNodes[0].conf];
@@ -422,7 +421,7 @@
 	}
 
 	function resetConfig() {
-		if ($system.simulating) return;
+		if ($system.simulating || $system.running) return;
 		if (!$system.history.length) return;
 
 		prevConfig($system.time);
@@ -442,8 +441,21 @@
 	}
 
 	function safe(func) {
-		return function (...args) {
+		return async function (...args) {
 			try {
+				if($system.dev) {
+					const startTime = performance.now();
+					const value = await func.apply(this, args);
+					const endTime = performance.now();
+					
+					if(func.name === 'nextConfig' && $system.history.length - 1 === $system.time)
+						console.log(`${func.name} took ${endTime - startTime - $system.tickRate}ms`);
+					else
+						console.log(`${func.name} took ${endTime - startTime}ms`);
+
+					return value;
+				}
+
 				return func.apply(this, args);
 			} catch (error) {
 				console.error(error);

@@ -18,7 +18,9 @@
     window.onresize = function () {
       const { width, height } = getCanvasSize();
       $graph.setSize([width, height]);
-      $graph.updatePlugin(minimap());
+      $graph.updatePlugin(minimap(
+        $graph.getAllEdgesData().length
+      ));
     };
   });
 

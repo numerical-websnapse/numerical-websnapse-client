@@ -147,6 +147,7 @@ const renderGraph = (container, size, data, renderer) => {
 				'drag-canvas',
 				'zoom-canvas',
 				'delete-click',
+				'hover-activate',
 			],
 			edit: [
 				'drag-canvas',
@@ -240,7 +241,7 @@ const renderGraph = (container, size, data, renderer) => {
 			contextMenuNode,
 			contextMenuEdge,
 			lodController,
-			minimap(),
+			minimap(data.edges.length),
 			grid,
 		],
 		// enableStack: false,
@@ -263,7 +264,9 @@ const renderGraph = (container, size, data, renderer) => {
 
 	graph.on('cancelcreate', (e) => {
 		graph.setCursor('default');
-		graph.updatePlugin(minimap());
+		graph.updatePlugin(minimap(
+			graph.getAllEdgesData().length
+		));
 	});
 
 	graph.on('aftercreate', (e) => {

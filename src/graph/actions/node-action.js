@@ -56,6 +56,8 @@ export function updateNode(id, content, graph = null, simulating = false) {
 export function removeNode(id, graph = null) {
     graph = graph || getGraph();
     graph.removeData('node', id);
-    graph.updatePlugin(minimap());
+    graph.updatePlugin(minimap(
+        graph.getAllEdgesData().length
+    ));
     setGraphLocalData();
 }
