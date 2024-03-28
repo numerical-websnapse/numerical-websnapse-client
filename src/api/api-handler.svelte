@@ -15,9 +15,12 @@
 		connect();
 	}
 
+	/**
+	 * Connect to the server (Websocket-based communication)
+	 * @returns {void}
+	 */
 	function connect() {
-		// $system.socket = new WebSocket(`ws://${$system.url}/ws/${$system.client}`);
-		$system.socket = new WebSocket(`wss://${$system.url}/ws/${$system.client}`);
+		$system.socket = new WebSocket(`${$system.protocol.socket}://${$system.url}/ws/${$system.client}`);
 		$system.socket.onopen = function() {
 			addNotification({
 				position: 'top-left',
@@ -28,6 +31,10 @@
 		};
 	}
 
+	/**
+	 * Wait for a message from the server
+	 * @returns {Promise<raw>}
+	 */
 	function waitForMessage() {
 		return new Promise(async (resolve, reject) => {
 			if (!$system.socket || $system.socket.readyState !== WebSocket.OPEN)
@@ -39,11 +46,16 @@
     	});
 	}
 
+	/**
+	 * Send a message to the server
+	 * @param {object} message
+	 * @returns {void}
+	 */
 	function sendMessage(message) {
 		if (!$system.socket || $system.socket.readyState !== WebSocket.OPEN) {
 			addNotification({
 				position: 'top-left',
-				messages: ['Still connecting to server...'],
+				messages: ['Still connecting to server...', '50 seconds server downtime at initial connection'],
 				type: 'error',
 				header: 'Error starting simulation:',
 				removeAfter: 2000,
@@ -55,6 +67,11 @@
 		$system.socket.send(message);
 	}
 
+	/**
+	 * Request simulation from the server
+	 * @param {object} message
+	 * @returns {Promise<object>}
+	 */
 	async function requestSimulation(message) {
 		try {
 			sendMessage(JSON.stringify(message));
@@ -66,10 +83,15 @@
 		}
 	}
 
+	/**
+	 * Request details from the server
+	 * @param {string} route
+	 * @param {object} message
+	 * @returns {Promise<object>}
+	 */
 	async function requestDetails(route, message) {
 		let response = null;
-		// await fetch(`http://${$system.url}/${route}/${$system.client}`, {
-		await fetch(`https://${$system.url}/${route}/${$system.client}`, {
+		await fetch(`${$system.protocol.api}://${$system.url}/${route}/${$system.client}`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -89,11 +111,41 @@
 		return response;
 	}
 
+	/**
+	 * Time latency function for performance testing
+	 * @param {function} func
+	 * @returns {function}
+	 */
+	function timeLatency(func) {
+		return async function (...args) {
+			if($system.dev) {
+				const startTime = performance.now();
+				const value = await func.apply(this, args);
+				const endTime = performance.now();
+				console.log(`${func.name} took ${endTime - startTime}ms`);
+				return value;
+			}
+
+			return func.apply(this, args);
+		};
+	}
+
+	requestSimulation = timeLatency(requestSimulation);
+	requestDetails = timeLatency(requestDetails);
+
+	/**
+	 * Update the time of the system
+	 * @param time
+	 */
 	async function updateTime(time) {
 		$system.time = time;
 		$system.prev = time;	
 	}
 	
+	/**
+	 * Start the simulation by continuously getting next config
+	 * @returns {void}
+	 */
 	export async function simulate() {
 		toggleSimulation();
 		while ($system.simulating) {
@@ -101,6 +153,10 @@
 		}
 	}
 
+	/**
+	 * Toggle the simulation state
+	 * @returns {void}
+	 */
 	function toggleSimulation() {
 		$system.simulating = !$system.simulating;
 
@@ -110,6 +166,10 @@
 		}
 	}
 	
+	/**
+	 * Gets all edges related to a node to be triggered in animation
+	 * @returns {void}
+	 */
 	function triggerEdges(n) {
 		const edges = [];
 		$graph.getRelatedEdgesData(n, 'out').forEach((edge) => {
@@ -119,6 +179,10 @@
 		return edges;
 	}
 
+	/**
+	 * Stops all edge animations
+	 * @returns {void}
+	 */
 	function stopAllEdgeAnimation() {
 		$graph.getAllEdgesData().forEach((edge) => {
 			if ($graph.getItemState(edge.id, "Spiking"))
@@ -126,10 +190,19 @@
 		});
 	}
 
+	/**
+	 * Stops edge animations
+	 * @param {array} edges
+	 * @returns {void}
+	 */
 	function stopEdgeAnimation(edges) {
 		$graph.setItemState(edges, "Spiking", false);
 	}
 
+	/**
+	 * Dummy animate function (delays for tickRate)
+	 * @returns {Promise<void>}
+	 */
 	async function dummyAnimate() {
 		return await new Promise((resolve) => {
 			setTimeout(async() => {
@@ -138,6 +211,11 @@
 		});
 	}
 
+	/**
+	 * Animate the spikes
+	 * @param {array} spike
+	 * @returns {Promise<void>}
+	 */
 	export async function animate(spike) {
 		if(!$edgeOptions.animation.enabled) {
 			return await dummyAnimate();
@@ -172,6 +250,10 @@
 		});
 	}
 
+	/**
+	 * Get the current config matrices
+	 * @returns {void}
+	 */
 	async function getConfigMatrices() {
 		const conf = getCurrentConfig();
 		$system.matrices = await requestDetails(
@@ -179,6 +261,11 @@
 		);
 	}
 
+	/**
+	 * Generates a simulator class from the current graph in the server
+	 * Sets the initial config and updates the system state
+	 * @returns {void}
+	 */
 	async function generateInitialConfig() {
 		console.log('Generating initial config');
 		const nodes = $graph.getAllNodesData();
@@ -206,10 +293,21 @@
 		console.log('Initial config generated');
 	}
 
+	/**
+	 * Get the current config
+	 * @returns {array}
+	 */
 	function getCurrentConfig() {
 		return $system.history[$system.time];
 	}
 
+	/**
+	 * Update the graph config based
+	 * @param {array} conf
+	 * @param {string} mode
+	 * @param {number} step
+	 * @returns {void}
+	 */
 	function updateGraphConfig(conf, mode='forward', step=1) {
 		const updatedNodes = [];
 		
@@ -254,6 +352,10 @@
 		$graph.updateData('node', updatedNodes);
 	}
 
+	/**
+	 * Get the current config matrices
+	 * @returns {void}
+	 */
 	async function nextFromHistory() {
 		$system.running = true;
 		const spike = $system.spike[$system.time + 1];
@@ -262,6 +364,11 @@
 		jumpToConfig($system.time + 1);
 	}
 
+	/**
+	 * Compute the active and spike neurons
+	 * @param {array} config
+	 * @returns {void}
+	 */
 	async function computeActive(config) {
 		$system.choice.active = await requestSimulation({
 			type: "active",
@@ -274,6 +381,10 @@
 		});
 	};
 
+	/**
+	 * Assign random spikes to the neurons (pseudo-guided mode)
+	 * @returns {void}
+	 */
 	function assignRandomSpikes() {
 		let curPrf = 0;
 		
@@ -301,6 +412,10 @@
 		});
 	}
 
+	/**
+	 * Wait for the guided submit/cancel interaction
+	 * @returns {Promise<void>}
+	 */
 	function waitForGuidedSubmit() {
 		return new Promise((resolve) => {
 			const submitButton = document.getElementById($modals.guided.submitButton);
@@ -332,6 +447,10 @@
 		});
 	}
 
+	/**
+	 * Next config function which holds the main logic for the simulation
+	 * @returns {void}
+	 */
 	async function nextConfig() {
 		if ($system.running) return;
 		$system.running = true;
@@ -387,6 +506,11 @@
 		$system.running = false;
 	}
 
+	/**
+	 * Previous config function - moves the simulation backward by n steps
+	 * @param {number} step
+	 * @returns {void}
+	 */
 	async function prevConfig(step=1) {
 		if ($system.running) return;
 		if ($system.time === 0 || $system.time - step < 0) return;
@@ -402,7 +526,11 @@
 		$system.running = false;
 	}
 
-	// function for simulation slider
+	/**
+	 * Jump to a specific config in the history
+	 * @param {number} time
+	 * @returns {void}
+	 */
 	function jumpToConfig(time) {
 		if ($system.running) return;
 		$system.time = $system.prev;
@@ -420,6 +548,10 @@
 		}
 	}
 
+	/**
+	 * Reset the config to the initial state
+	 * @returns {void}
+	 */
 	function resetConfig() {
 		if ($system.simulating || $system.running) return;
 		if (!$system.history.length) return;
@@ -434,12 +566,21 @@
 		});
 	}
 
+	/**
+	 * Reset the simulation to the initial state
+	 * @returns {void}
+	 */
 	function resetSimulation() {
 		if ($system.simulating || $system.running) return;
 		jumpToConfig(0);
 		resetSystem();
 	}
 
+	/**
+	 * Safe function wrapper for error handling
+	 * @param {function} func
+	 * @returns {function}
+	 */
 	function safe(func) {
 		return async function (...args) {
 			try {
