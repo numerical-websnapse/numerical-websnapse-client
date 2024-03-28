@@ -305,7 +305,6 @@ const contextMenuCanvas = {
 
                 const newEdges = [];
                 edges.forEach((e) => {
-                    graph.setItemState(e, 'selected', false);
                     const edge = graph.getEdgeData(e);
                     const source = nodes.indexOf(edge.source);
                     const target = nodes.indexOf(edge.target);

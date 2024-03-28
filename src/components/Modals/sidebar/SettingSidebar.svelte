@@ -1,12 +1,18 @@
 <script>
   import Setting from "./Setting.svelte";
-  import { onMount } from "svelte";
+
   import { minimap } from "../../../graph/plugins/minimap";
+  import { addNode } from "../../../graph/actions/node-action";
+  import { addEdge } from "../../../graph/actions/edge-action";
+  
   import { dataValidation } from "../../../utils/validation";
-  import { getNotificationsContext } from "svelte-notifications";
   import { graph, setGraphLocalData } from "../../../stores/graph";
   import { resetSystem } from "../../../stores/system";
 
+  import { getNotificationsContext } from "svelte-notifications";
+  import { v4 as uuidv4 } from 'uuid';
+  import { onMount } from "svelte";
+  
   const { addNotification } = getNotificationsContext();
 
   export let nodeOptions;
@@ -88,6 +94,64 @@
       setGraphLocalData();
       resetSystem();
     };
+    reader.readAsText(files[0]);
+  };
+
+  const mergeGraphData = () => {
+    if (!files) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const data = JSON.parse(e.target.result);
+      const errors = dataValidation(data);
+
+      if (errors.length) {
+        addNotification({
+          position: "top-left",
+          messages: errors,
+          type: "error",
+          header: "Failed to upload:",
+          removeAfter: 4000,
+        });
+        return;
+      }
+
+      const nodes = data.nodes;
+      const edges = data.edges;
+      const nodeIds = nodes.map((node) => node.id);
+      const edgeIds = edges.map((edge) => edge.id);
+
+      if (nodes.length === 0) return;
+
+      const newNodes = nodeIds.map((id) => uuidv4().slice(0, 8));
+      nodes.forEach((node, index) => {
+        node.id = newNodes[index];
+      });
+
+      const newEdges = edgeIds.map((id) => uuidv4().slice(0, 12));
+      edges.forEach((edge, index) => {
+          const source = nodeIds.indexOf(edge.source);
+          const target = nodeIds.indexOf(edge.target);
+          if(source > -1 && target > -1) {
+            edge.source = newNodes[source];
+            edge.target = newNodes[target];
+            edge.id = newEdges[index];
+          }
+      });
+      
+      $graph.addData('node', nodes);
+      $graph.addData('edge', edges);
+      $graph.setItemState(newNodes, 'selected', true);
+      $graph.setItemState(newEdges, 'selected', true);
+      
+      $graph.updatePlugin(minimap(
+        $graph.getAllEdgesData().length
+      ));
+
+      setGraphLocalData();
+      resetSystem();
+    };
+
     reader.readAsText(files[0]);
   };
 
@@ -287,7 +351,7 @@
       role="tabpanel"
       aria-labelledby="upload-setting-tab"
     >
-      <div class="p-6 space-y-3 overflow-y-auto max-h-[45vh] md:max-h-[60vh]">
+      <div class="p-6 space-y-3 overflow-x-auto overflow-y-auto max-h-[45vh] md:max-h-[60vh]">
         <label
           id="drop-area"
           class="flex justify-center w-full h-[39vh] px-4 transition border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none"
@@ -330,10 +394,15 @@
             type="file"
           />
         </label>
-        <div class="w-full flex justify-center">
+        <div class="w-full flex justify-center space-x-4">
           <button on:click={changeGraphData} class="p-2 rounded-xl">
             <span class="text-sm font-medium text-gray-600 dark:text-white">
               Change graph data
+            </span>
+          </button>
+          <button on:click={mergeGraphData} class="p-2 rounded-xl">
+            <span class="text-sm font-medium text-gray-600 dark:text-white">
+              Merge graph data
             </span>
           </button>
         </div>
