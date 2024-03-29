@@ -130,8 +130,8 @@
 		};
 	}
 
-	requestSimulation = timeLatency(requestSimulation);
-	requestDetails = timeLatency(requestDetails);
+	// requestSimulation = timeLatency(requestSimulation);
+	// requestDetails = timeLatency(requestDetails);
 
 	/**
 	 * Update the time of the system

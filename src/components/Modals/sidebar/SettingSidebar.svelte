@@ -2,12 +2,9 @@
   import Setting from "./Setting.svelte";
 
   import { minimap } from "../../../graph/plugins/minimap";
-  import { addNode } from "../../../graph/actions/node-action";
-  import { addEdge } from "../../../graph/actions/edge-action";
-  
   import { dataValidation } from "../../../utils/validation";
   import { graph, setGraphLocalData } from "../../../stores/graph";
-  import { resetSystem } from "../../../stores/system";
+  import { system, resetSystem } from "../../../stores/system";
 
   import { getNotificationsContext } from "svelte-notifications";
   import { v4 as uuidv4 } from 'uuid';
@@ -68,7 +65,7 @@
     location.reload();
   };
 
-  const changeGraphData = () => {
+  function changeGraphData() {
     if (!files) return;
 
     const reader = new FileReader();
@@ -97,7 +94,24 @@
     reader.readAsText(files[0]);
   };
 
-  const mergeGraphData = () => {
+  function timeUpload(func) {
+		return async function (...args) {
+
+			if($system.dev) {
+				const startTime = performance.now();
+				const value = await func.apply(this, args);
+				const endTime = performance.now();
+				console.log(`${func.name} took ${endTime - startTime}`);
+				return value;
+			}
+
+			return func.apply(this, args);
+		};
+	}
+
+  changeGraphData = timeUpload(changeGraphData);
+
+  function mergeGraphData() {
     if (!files) return;
 
     const reader = new FileReader();
@@ -155,7 +169,7 @@
     reader.readAsText(files[0]);
   };
 
-  const downloadGraphData = (filename) => {
+  function downloadGraphData(filename) {
     let data = localStorage.getItem("data");
     var file = new Blob([data], { type: "application/json" });
     if (window.navigator.msSaveOrOpenBlob)
