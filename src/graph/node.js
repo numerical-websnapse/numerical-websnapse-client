@@ -385,7 +385,7 @@ class NeuronNode extends Extensions.RectNode {
 
         const otherShapes = {};
 
-		const [ imgLbl, widthLbl, heightLbl ] = MathToImg(cfg.label);
+		const [ imgLbl, widthLbl, heightLbl ] = MathToImg(cfg.label, config.content.fill);
 
 		otherShapes['label-shape'] = this.upsertShape(
 			'image',
@@ -418,7 +418,7 @@ class NeuronNode extends Extensions.RectNode {
 				}
 			);
 
-			const [ imgTrn, widthTrn, heightTrn ] = MathToImg(latexTrain);
+			const [ imgTrn, widthTrn, heightTrn ] = MathToImg(latexTrain, config.content.fill);
 
 			const width = Math.max(widthTrn, config.outShape.defaultWidth);
 			const height = Math.max(heightTrn, config.outShape.defaultHeight);
@@ -481,8 +481,8 @@ class NeuronNode extends Extensions.RectNode {
 			const latexVar = texFormatter(cfg.var_, 'var');
 			const latexPrf = texFormatter(cfg.prf, 'prf');
 
-			const [ imgPrf, widthPrf, heightPrf ] = MathToImg(latexPrf);
-			const [ imgVar, widthVar, heightVar ] = MathToImg(latexVar);
+			const [ imgPrf, widthPrf, heightPrf ] = MathToImg(latexPrf, config.content.fill);
+			const [ imgVar, widthVar, heightVar ] = MathToImg(latexVar, config.content.fill);
 
 			const width = Math.max(widthPrf, widthVar);
 			const height = cfg.prf.length 

@@ -1,12 +1,13 @@
 const MathJax = window.MathJax;
 
-const MathToImg = (text) => {
+const MathToImg = (text, color = '#FFFFFF') => {
 	const [em, ex] = [10, 5];
 	let mathjaxWrapper = MathJax.tex2svg(`${text}`, {
 		em, ex, display: true,
 	});
 
 	let mathjaxSvg = mathjaxWrapper.getElementsByTagName('svg')[0];
+	mathjaxSvg.style.color = color;
 	const svg = mathjaxSvg.outerHTML;
 	const width = mathjaxSvg.getAttribute('width');
 	const height = mathjaxSvg.getAttribute('height');

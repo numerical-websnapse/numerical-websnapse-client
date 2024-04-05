@@ -68,6 +68,25 @@
 	}
 
 	/**
+	 * Time latency function for performance testing
+	 * @param {function} func
+	 * @returns {function}
+	 */
+	 function timeExecution(func) {
+		return async function (...args) {
+			if($system.dev) {
+				const startTime = performance.now();
+				const value = await func.apply(this, args);
+				const endTime = performance.now();
+				console.log(`${func.name} took ${endTime - startTime}ms`);
+				return value;
+			}
+
+			return func.apply(this, args);
+		};
+	}
+
+	/**
 	 * Request simulation from the server
 	 * @param {object} message
 	 * @returns {Promise<object>}
@@ -111,27 +130,8 @@
 		return response;
 	}
 
-	/**
-	 * Time latency function for performance testing
-	 * @param {function} func
-	 * @returns {function}
-	 */
-	function timeLatency(func) {
-		return async function (...args) {
-			if($system.dev) {
-				const startTime = performance.now();
-				const value = await func.apply(this, args);
-				const endTime = performance.now();
-				console.log(`${func.name} took ${endTime - startTime}ms`);
-				return value;
-			}
-
-			return func.apply(this, args);
-		};
-	}
-
-	// requestSimulation = timeLatency(requestSimulation);
-	// requestDetails = timeLatency(requestDetails);
+	// requestSimulation = timeExecution(requestSimulation);
+	// requestDetails = timeExecution(requestDetails);
 
 	/**
 	 * Update the time of the system
