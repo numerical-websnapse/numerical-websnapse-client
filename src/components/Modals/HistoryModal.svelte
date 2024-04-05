@@ -306,9 +306,17 @@
                       {#if matrix === "P"}
                         Production Matrix
                       {:else if matrix === "V"}
-                        Variable matrix
+                        Variable Matrix
                       {:else if matrix === "E"}
-                        Environment matrix
+                        Environment Matrix
+                      {:else if matrix === "S"}
+                        Spiking Matrix
+                      {:else if matrix === "L"}
+                        Function Location Matrix
+                      {:else if matrix === "F"}
+                        Function Matrix
+                      {:else}
+                        {matrix}
                       {/if}
                     </div>
                     {#if $system.matrices[matrix].length > 20 || $system.matrices[matrix][0].length > 20}
