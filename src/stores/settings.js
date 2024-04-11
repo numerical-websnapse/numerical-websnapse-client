@@ -2,7 +2,8 @@ import { writable } from 'svelte/store';
 
 let isDark = localStorage.getItem('theme') === 'dark' || false;
 let drawMode = localStorage.getItem('nodeView') || 'text';
-let enableAnimation = localStorage.getItem('animate') === 'true' || false;
+let enableAnimation = ['true',null].includes(localStorage.getItem('animate')) || false;
+
 export const dark = writable(isDark);
 
 export const nodeOptions = writable({
