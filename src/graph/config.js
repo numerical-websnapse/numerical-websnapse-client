@@ -15,12 +15,33 @@ export const getNodeConfig = (nodeInnerModel) => {
 	const {data, ...newModel } = nodeInnerModel;
 	const config = get(nodeOptions);
 
-	if (data.ntype === 'out') {
+	if(data.type === 'reg') {
 		return {
 			...newModel,
 			data: {
 				...data,
-				type: 'neuron-node',
+				keyShape: {
+					fill: config.keyShape.fill,
+					stroke: config.keyShape.stroke,
+					lineWidth: config.keyShape.lineWidth,
+					radius: config.keyShape.radius,
+					cursor: 'pointer',
+					zIndex: -3,
+				},
+				haloShape: {
+					stroke: config.haloShape.stroke,
+				},
+				otherShapes: {},
+				animates: nodeAnimation(),
+			},
+		};
+	}
+
+	if (data.type === 'out') {
+		return {
+			...newModel,
+			data: {
+				...data,
 				keyShape: {
 					fill: config.outShape.fill,
 					stroke: config.outShape.stroke,
@@ -37,17 +58,17 @@ export const getNodeConfig = (nodeInnerModel) => {
 			},
 		}
 	}
-	if(data.ntype === 'reg') {
+
+	if (data.type === 'in') {
 		return {
 			...newModel,
 			data: {
 				...data,
-				type: 'neuron-node',
 				keyShape: {
-					fill: config.keyShape.fill,
-					stroke: config.keyShape.stroke,
-					lineWidth: config.keyShape.lineWidth,
-					radius: config.keyShape.radius,
+					fill: config.inShape.fill,
+					stroke: config.inShape.stroke,
+					lineWidth: config.inShape.lineWidth,
+					radius: config.inShape.radius,
 					cursor: 'pointer',
 					zIndex: -3,
 				},
@@ -57,7 +78,7 @@ export const getNodeConfig = (nodeInnerModel) => {
 				otherShapes: {},
 				animates: nodeAnimation(),
 			},
-		};
+		}
 	}
 }
 

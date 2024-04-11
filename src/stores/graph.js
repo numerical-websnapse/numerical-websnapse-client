@@ -22,7 +22,7 @@ export const neuronTemplate = (x = 0, y = 0) => {
             prf: [[ 'f_1', null, [['x_1','1']] ]],
             train: [],
             label: 'n1',
-            ntype: 'reg',
+            type: 'reg',
             x,
             y,
         }
@@ -55,7 +55,7 @@ const cleanNodes = (nodes) => {
                 prf: node.data.prf,
                 train: node.data.train,
                 label: node.data.label,
-                ntype: node.data.ntype,
+                type: node.data.type,
                 x: node.data.x,
                 y: node.data.y,
             }
@@ -103,7 +103,7 @@ export const setNeuron = (id) => {
             prf: node.data.prf,
             train: node.data.train,
             label: node.data.label,
-            ntype: node.data.ntype,
+            type: node.data.type,
             x: node.data.x,
             y: node.data.y,
         }

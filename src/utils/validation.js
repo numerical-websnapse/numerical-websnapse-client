@@ -103,14 +103,15 @@ const validName = (() => {
 })();
 
 const validValue = /^(-?\d+||-?\d+\.\d+||-?\d+\/\d+)$/;
+const trainValue = /^((-?\d+||-?\d+\.\d+||-?\d+\/\d+)(,-?\d+||,-?\d+\.\d+||,-?\d+\/\d+)*)$/;
 
 export const nodeLabelValidation = (label) => {
     if (label === '') { return 'Node must have a label'; }
     if (!validName.test(label)) { return 'Node has an invalid label'; }
 }
 
-export const nodeTypeValidation = (ntype) => {
-    if (ntype === '') { return 'Node must have a type'; }
+export const nodeTypeValidation = (type) => {
+    if (type === '') { return 'Node must have a type'; }
 }
 
 export const nameValidation = (name, type, index=null) => {
@@ -134,15 +135,45 @@ export const valueValidation = (value, type, index=null) => {
     }
 }
 
+export const trainValidation = (train) => {
+    if(typeof train === 'string') {
+        if (train === '') {
+            return 'Input neuron must have a spike train';
+        }
+    
+        if (!trainValue.test(train)) {
+            return 'Input neuron has an invalid spike train';
+        }
+    }
+
+    if(Array.isArray(train)) {
+        if (!train.length) {
+            return 'Input neuron must have a spike train';
+        }
+
+        let error = undefined;
+        train.forEach((value, index) => {
+            if (!value) {
+                error = `Train ${index + 1} must have a value`;
+            }
+        
+            if (!validValue.test(value)) {
+                error = `Train ${index + 1} has an invalid value`;
+            }
+        });
+
+        return error;
+    }
+}
+
 export const nodeValidation = (node) => {
     let errors = [];
     const { data } = node;
 
-    
     nodeLabelValidation(data.label) && errors.push(nodeLabelValidation(data.label));
-    nodeTypeValidation(data.ntype) && errors.push(nodeTypeValidation(data.ntype));
+    nodeTypeValidation(data.type) && errors.push(nodeTypeValidation(data.type));
     
-    if (data.ntype === 'reg') {
+    if (data.type === 'reg') {
         const varNames = data.var_.map(([name, value]) => name);
         if (new Set(varNames).size !== varNames.length) {
             errors.push('Node has duplicate variable names');
@@ -165,6 +196,10 @@ export const nodeValidation = (node) => {
                 valueValidation(value, 'Coefficient', j) && errors.push(valueValidation(value, 'Coefficient', j));
             });
         });
+    }
+
+    if (data.type === 'in') {
+        trainValidation(data.train) && errors.push(trainValidation(data.train));
     }
     
     return errors;
@@ -194,9 +229,9 @@ export const dataValidation = (data) => {
         return errors;
     }
 
-    // check if each nodes contains the required fields (id, data->(data.label, data.ntype, data.var_, data.prf, data.x, data.y))
+    // check if each nodes contains the required fields (id, data->(data.label, data.type, data.var_, data.prf, data.x, data.y))
     const requiredFields = ['id', 'data'];
-    const dataFields = ['label', 'ntype', 'var_', 'prf', 'x', 'y'];
+    const dataFields = ['label', 'type', 'var_', 'prf', 'x', 'y'];
 
     data.nodes.forEach((node) => {
         requiredFields.forEach((field) => {

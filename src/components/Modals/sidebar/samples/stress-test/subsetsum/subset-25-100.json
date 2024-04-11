@@ -32,7 +32,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{0}",
                 "x": 200,
                 "y": 0
@@ -70,7 +70,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{1}",
                 "x": 200,
                 "y": 200
@@ -108,7 +108,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{2}",
                 "x": 200,
                 "y": 400
@@ -146,7 +146,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{3}",
                 "x": 200,
                 "y": 600
@@ -184,7 +184,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{4}",
                 "x": 200,
                 "y": 800
@@ -222,7 +222,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{5}",
                 "x": 200,
                 "y": 1000
@@ -260,7 +260,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{6}",
                 "x": 200,
                 "y": 1200
@@ -298,7 +298,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{7}",
                 "x": 200,
                 "y": 1400
@@ -336,7 +336,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{8}",
                 "x": 200,
                 "y": 1600
@@ -374,7 +374,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{9}",
                 "x": 200,
                 "y": 1800
@@ -412,7 +412,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{10}",
                 "x": 200,
                 "y": 2000
@@ -450,7 +450,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{11}",
                 "x": 200,
                 "y": 2200
@@ -488,7 +488,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{12}",
                 "x": 200,
                 "y": 2400
@@ -526,7 +526,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{13}",
                 "x": 200,
                 "y": 2600
@@ -564,7 +564,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{14}",
                 "x": 200,
                 "y": 2800
@@ -602,7 +602,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{15}",
                 "x": 200,
                 "y": 3000
@@ -640,7 +640,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{16}",
                 "x": 200,
                 "y": 3200
@@ -678,7 +678,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{17}",
                 "x": 200,
                 "y": 3400
@@ -716,7 +716,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{18}",
                 "x": 200,
                 "y": 3600
@@ -754,7 +754,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{19}",
                 "x": 200,
                 "y": 3800
@@ -792,7 +792,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{20}",
                 "x": 200,
                 "y": 4000
@@ -830,7 +830,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{21}",
                 "x": 200,
                 "y": 4200
@@ -868,7 +868,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{22}",
                 "x": 200,
                 "y": 4400
@@ -906,7 +906,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{23}",
                 "x": 200,
                 "y": 4600
@@ -944,7 +944,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{24}",
                 "x": 200,
                 "y": 4800
@@ -972,7 +972,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{25}",
                 "x": 400,
                 "y": 0
@@ -1000,7 +1000,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{26}",
                 "x": 400,
                 "y": 200
@@ -1028,7 +1028,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{27}",
                 "x": 400,
                 "y": 400
@@ -1056,7 +1056,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{28}",
                 "x": 400,
                 "y": 600
@@ -1084,7 +1084,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{29}",
                 "x": 400,
                 "y": 800
@@ -1112,7 +1112,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{30}",
                 "x": 400,
                 "y": 1000
@@ -1140,7 +1140,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{31}",
                 "x": 400,
                 "y": 1200
@@ -1168,7 +1168,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{32}",
                 "x": 400,
                 "y": 1400
@@ -1196,7 +1196,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{33}",
                 "x": 400,
                 "y": 1600
@@ -1224,7 +1224,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{34}",
                 "x": 400,
                 "y": 1800
@@ -1252,7 +1252,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{35}",
                 "x": 400,
                 "y": 2000
@@ -1280,7 +1280,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{36}",
                 "x": 400,
                 "y": 2200
@@ -1308,7 +1308,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{37}",
                 "x": 400,
                 "y": 2400
@@ -1336,7 +1336,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{38}",
                 "x": 400,
                 "y": 2600
@@ -1364,7 +1364,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{39}",
                 "x": 400,
                 "y": 2800
@@ -1392,7 +1392,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{40}",
                 "x": 400,
                 "y": 3000
@@ -1420,7 +1420,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{41}",
                 "x": 400,
                 "y": 3200
@@ -1448,7 +1448,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{42}",
                 "x": 400,
                 "y": 3400
@@ -1476,7 +1476,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{43}",
                 "x": 400,
                 "y": 3600
@@ -1504,7 +1504,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{44}",
                 "x": 400,
                 "y": 3800
@@ -1532,7 +1532,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{45}",
                 "x": 400,
                 "y": 4000
@@ -1560,7 +1560,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{46}",
                 "x": 400,
                 "y": 4200
@@ -1588,7 +1588,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{47}",
                 "x": 400,
                 "y": 4400
@@ -1616,7 +1616,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{48}",
                 "x": 400,
                 "y": 4600
@@ -1644,7 +1644,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{49}",
                 "x": 400,
                 "y": 4800
@@ -1672,7 +1672,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{50}",
                 "x": 600,
                 "y": 4400
@@ -1700,7 +1700,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{51}",
                 "x": 600,
                 "y": 4600
@@ -1728,7 +1728,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{52}",
                 "x": 600,
                 "y": 4800
@@ -1756,7 +1756,7 @@
                     ]
                 ],
                 "train": [],
-                "ntype": "reg",
+                "type": "reg",
                 "label": "\\sigma_{53}",
                 "x": 800,
                 "y": 4800
@@ -1768,7 +1768,7 @@
                 "var_": [],
                 "prf": [],
                 "train": [],
-                "ntype": "out",
+                "type": "out",
                 "label": "\\sigma_{54}",
                 "x": 1000,
                 "y": 4800

@@ -15,6 +15,7 @@ export const system = writable({
     spike:[],
     history: [],
     environment: [],
+    inputs: [],
     config: {},
     matrices: {},
     choice: {
@@ -24,11 +25,11 @@ export const system = writable({
     },
     order: {},
     protocol: {
-        socket: 'wss',
-        api: 'https',
+        socket: 'ws',
+        api: 'http',
     },
-    url: 'numerical-websnapse-server.onrender.com',
-    // url: '127.0.0.1:8000',
+    // url: 'numerical-websnapse-server.onrender.com',
+    url: '127.0.0.1:8000',
     client: null,
     socket: null,
 });
@@ -37,6 +38,7 @@ export const resetSystem = () => {
     system.update(system => {
         system.time = 0;
         system.prev = 0;
+        system.edgeCount = 0;
         system.guided = false;
         system.simulating = false;
         system.running = false;
@@ -44,6 +46,7 @@ export const resetSystem = () => {
         system.spike = [];
         system.history = [];
         system.environment = [];
+        system.inputs = [];
         system.config = {};
         system.matrices = {};
         system.choice = {

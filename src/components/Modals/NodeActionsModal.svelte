@@ -1,6 +1,7 @@
 <script>
   import VariableEditor from "./inputs/VariableEditor.svelte";
   import FunctionEditor from "./inputs/FunctionEditor.svelte";
+  import TrainEditor from "./inputs/TrainEditor.svelte";
 
   import { onDestroy } from "svelte";
   import { nodeValidation } from "../../utils/validation";
@@ -164,24 +165,27 @@
                 <!-- Node type -->
                 <div class="basis-1/4 mr-5">
                   <label
-                    for="ntype"
+                    for="type"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >Type</label
                   >
                   <select
-                    id="ntype"
+                    id="type"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    bind:value={ $neuron.data.ntype }
+                    bind:value={ $neuron.data.type }
                   >
                     <option value="reg">regular</option>
                     <option value="out">output</option>
+                    <option value="in">input</option>
                   </select>
                 </div>
               </div>
               <!-- Row 2 -->
-              {#if $neuron.data.ntype === 'reg'}
+              {#if $neuron.data.type === 'reg'}
                 <VariableEditor neuron={neuron}/>
                 <FunctionEditor neuron={neuron}/>
+              {:else if $neuron.data.type === 'in'}
+                <TrainEditor neuron={neuron}/>
               {/if}
             </form>
           </div>

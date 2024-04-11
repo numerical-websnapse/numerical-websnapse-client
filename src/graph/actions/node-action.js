@@ -2,23 +2,23 @@ import { preprocessNode } from '../utils/preprocess';
 import { neuronTemplate } from '../../stores/graph';
 import { minimap } from '../plugins/minimap';
 import { getGraph, setGraphLocalData } from '../../stores/graph';
-import { deepCopy } from '../../utils/copy';
 
 export function addNode(content = null, graph = null) {
     let node = neuronTemplate();
     
     if (content !== null) {
-        const ntype = content.data.ntype;
+        const type = content.data.type;
         const var_ = content.data.var_;
         const prf = content.data.prf;
+        const train = content.data.train;
 
         node = {
             ...node,
             data: {
                 ...content.data,
-                var_: ntype === "reg" ? var_ : [],
-                prf: ntype === "reg" ? prf : [],
-                train: [],
+                var_: type === "reg" ? var_ : [],
+                prf: type === "reg" ? prf : [],
+                train: type === "in" ? train : [],
             },
         };
     }
@@ -34,7 +34,7 @@ export function updateNode(id, content, graph = null, simulating = false) {
     graph = graph || getGraph();
     const node = graph.getNodeData(id);
 
-    const ntype = content.data.ntype;
+    const type = content.data.type;
     const var_ = content.data.var_;
     const prf = content.data.prf;
     const train = content.data.train;
@@ -43,9 +43,9 @@ export function updateNode(id, content, graph = null, simulating = false) {
         ...node,
         data: {
             ...content.data,
-            var_: ntype === "reg" ? var_ : [],
-            prf: ntype === "reg" ? prf : [],
-            train: ntype === "out" ? train : [],
+            var_: type === "reg" ? var_ : [],
+            prf: type === "reg" ? prf : [],
+            train: type === "out" || type === "in" ? train : [],
         },
     };
 

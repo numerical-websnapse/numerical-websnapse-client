@@ -57,20 +57,21 @@ export const texFormat = {
     },
 
     trainFormat: (content, details) => {
-        let { row, supress=null, count=null } = details;
+        let { row, supress=null, count=null, reverse=false } = details;
 
         let accumulator = '';
         let compressed = content;
         row = row < 1 ? 5 : row;
 
         if (supress) {
-            compressed = content.slice(-count);
+            if(reverse) compressed = content.slice(0,count);
+            else compressed = content.slice(-count);
         }
             
         compressed.forEach((t, i) => {
             accumulator += `${t}`;
-            if((i+1) % row) accumulator += `,`;
-            if (!((i+1) % row)) accumulator += `\\\\`;
+            if((i+1) % row && (i+1) !== compressed.length) accumulator += `,`;
+            if (!((i+1) % row) && (i+1) !== compressed.length) accumulator += `\\\\`;
         });
         
         return `\\begin{gather*}${accumulator}\\end{gather*}`;

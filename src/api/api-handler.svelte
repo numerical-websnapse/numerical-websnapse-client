@@ -4,6 +4,7 @@
 	import { system, resetSystem } from "../stores/system";
 	import { getNotificationsContext } from "svelte-notifications";
 	import { edgeOptions } from "../stores/settings";
+  import { deepCopy } from "../utils/copy";
 
 	const { addNotification } = getNotificationsContext();
 
@@ -94,8 +95,11 @@
 	async function requestSimulation(message) {
 		try {
 			sendMessage(JSON.stringify(message));
-			const response = await waitForMessage();
-			return JSON.parse(response);
+			let response = await waitForMessage();
+			response = JSON.parse(response);
+			if (response.error)
+				throw new Error(response.error);
+			return response;
 		} catch (error) {
 			$system.running = false;
 			$system.simulating = false;
@@ -268,6 +272,7 @@
 	 */
 	async function generateInitialConfig() {
 		console.log('Generating initial config');
+
 		const nodes = $graph.getAllNodesData();
 		const edges = $graph.getAllEdgesData();
 
@@ -279,16 +284,20 @@
 			}
 		});
 		
+		const { nodes: treeNodes, nrn_ord, out_ord, in_ord } = data;
+
 		$system.edgeCount = edges.length;
-		const { nodes: treeNodes, nrn_ord, out_ord } = data;
-		$system.order = { nrn_ord, out_ord };
+		$system.order = { nrn_ord, out_ord, in_ord };
 		$system.history = [treeNodes[0].conf];
 		$system.environment = [null];
 		$system.spike = [null];
+
+		$system.inputs = in_ord.map((in_) => deepCopy($graph.getNodeData(in_).data.train));
 		$system.choice.random = nrn_ord.reduce((choice, neuron) => {
 			choice[neuron] = 0;
 			return choice;
 		}, {});
+
 		changeMode('move');
 		console.log('Initial config generated');
 	}
@@ -332,6 +341,12 @@
 				neuron.data.train = neuron.data.train.slice(0, neuron.data.train.length - step);
 				updatedNodes.push(neuron);
 			});
+
+			$system.order.in_ord.forEach((in_, index) => {
+				const neuron = $graph.getNodeData(in_);
+				neuron.data.train = $system.inputs[index].slice($system.time, $system.inputs[index].length);
+				updatedNodes.push(neuron);
+			});
 		}
 
 		if (mode === 'forward') {
@@ -343,8 +358,15 @@
 					neuron.data.train.push(env[index].toString());
 				});
 			}
+
 			$system.order.out_ord.forEach((out) => {
 				const neuron = $graph.getNodeData(out);
+				updatedNodes.push(neuron);
+			});
+
+			$system.order.in_ord.forEach((in_, index) => {
+				const neuron = $graph.getNodeData(in_);
+				neuron.data.train = $system.inputs[index].slice($system.time + step, $system.inputs[index].length);
 				updatedNodes.push(neuron);
 			});
 		}
@@ -353,7 +375,7 @@
 	}
 
 	/**
-	 * Get the current config matrices
+	 * Get the next config from the history
 	 * @returns {void}
 	 */
 	async function nextFromHistory() {
@@ -479,6 +501,7 @@
 		$system.config = await requestSimulation({
 			type: "next",
 			config: conf,
+			time: $system.time,
 			spike: $system.choice.spike,
 		});
 

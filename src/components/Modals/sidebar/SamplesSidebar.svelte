@@ -27,7 +27,7 @@
   import not_gate from "./samples/logic-gate/not-gate.json";
   import convert_to_boolean from "./samples/logic-gate/convert-to-boolean.json";
   // Register Machine Programs
-  import adder_program from "./samples/program/adder-program.json";
+  import add_program from "./samples/program/add-program.json";
   import generator_program from "./samples/program/generator-program.json";
   import subtractor_program from "./samples/program/subtractor-program.json";
   import clear_program from "./samples/program/clear-program.json";
@@ -139,11 +139,6 @@
 
   const programs = [
     {
-      name: "Adder Program",
-      data: adder_program,
-    },
-    
-    {
       name: "Subtractor Program",
       data: subtractor_program,
     },
@@ -158,6 +153,10 @@
     {
       name: "Move Program",
       data: move_program,
+    },
+    {
+      name: "Add Program",
+      data: add_program,
     },
     {
       name: "Copy Program",

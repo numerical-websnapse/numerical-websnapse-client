@@ -39,6 +39,18 @@ export const nodeOptions = writable({
         fill: isDark ? '#333333' : '#FFFFFF',
         stroke: isDark ? '#C2C2C2' : '#000000',
     },
+    inShape: {
+        padding: 10,
+        lineWidth: 1,
+        defaultWidth: 50,
+        defaultHeight: 50,
+        radius: 15,
+        row: 5,
+        supressInput: true,
+        supressCount: 5,
+        fill: isDark ? '#333333' : '#FFFFFF',
+        stroke: isDark ? '#C2C2C2' : '#000000',
+    },
     draw: {
         mode: drawMode,
     }
@@ -120,6 +132,8 @@ export const applyTheme = (theme) => {
         nodeOptions.haloShape.stroke = isDark ? '#70A0FF' : '#2E2EFF';
         nodeOptions.outShape.fill = isDark ? '#333333' : '#FFFFFF';
         nodeOptions.outShape.stroke = isDark ? '#FFFFFF' : '#000000';
+        nodeOptions.inShape.fill = isDark ? '#333333' : '#FFFFFF';
+        nodeOptions.inShape.stroke = isDark ? '#FFFFFF' : '#000000';
         return nodeOptions;
     });
 
@@ -265,6 +279,63 @@ export const nodeMetaData = {
             },
             supressOutput: {
                 name: 'Supress output',
+                visible: true,
+                type: 'boolean',
+            },
+            supressCount: {
+                name: 'Supress count',
+                visible: true,
+                type: 'number',
+            },
+            fill: {
+                name: 'Fill',
+                visible: true,
+                type: 'color',
+            },
+            stroke: {
+                name: 'Stroke',
+                visible: true,
+                type: 'color',
+            },
+        }
+    },
+    inShape: {
+        name: 'Input Shape',
+        visible: true,
+        type: 'object',
+        value: {
+            padding: {
+                name: 'Padding',
+                visible: true,
+                type: 'number',
+            },
+            lineWidth: {
+                name: 'Line width',
+                visible: true,
+                type: 'number',
+            },
+            defaultWidth: {
+                name: 'Default width',
+                visible: true,
+                type: 'number',
+            },
+            defaultHeight: {
+                name: 'Default height',
+                visible: true,
+                type: 'number',
+            },
+            radius:{
+                name: 'Radius',
+                visible: true,
+                type: 'number',
+            },
+            row: {
+                name: 'Row',
+                visible: true,
+                type: 'number',
+            },
+            supressInput: {
+                name: 'Supress Input',
                 visible: true,
                 type: 'boolean',
             },

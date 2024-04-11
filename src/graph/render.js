@@ -3,7 +3,7 @@ import { graphOptions, dark } from "../stores/settings";
 import { get } from 'svelte/store';
 
 // Models
-import { NeuronNode } from './node';
+import { RegularNeuron, OutputNeuron, InputNeuron } from './node';
 import { SynapseEdge, SynapseSingleEdge } from './edge';
 
 // Plugins
@@ -50,7 +50,10 @@ const grid = isDark ? grids.dark : grids.light;
  */
 const ExtGraph = G6.extend(G6.Graph, {
 	nodes: {
-	  'neuron-node': NeuronNode,
+	  'reg': RegularNeuron,
+	  'out': OutputNeuron,
+	  'in': InputNeuron,
+	  'triangle': Extensions.TriangleNode,
 	},
 	edges: {
 		'line-edge': SynapseSingleEdge,
@@ -183,9 +186,17 @@ const renderGraph = (container, size, data, renderer) => {
 					cancelCreateEventName: 'cancelcreate',
 					shouldBegin: (e) => {
 						const node = graph.getNodeData(e.itemId);
-						if (node.data.ntype === 'out') {
+						if (node.data.type === 'out') {
 							return false;
 						}
+						return true;
+					},
+					shouldEnd: (e) => {
+						const node = graph.getNodeData(e.itemId);
+						if (node.data.type === 'in') {
+							return false;
+						}
+
 						return true;
 					},
 				},
@@ -209,7 +220,15 @@ const renderGraph = (container, size, data, renderer) => {
 					cancelCreateEventName: 'cancelcreate',
 					shouldBegin: (e) => {
 						const node = graph.getNodeData(e.itemId);
-						if (node.data.ntype === 'out') {
+						if (node.data.type === 'out') {
+							return false;
+						}
+
+						return true;
+					},
+					shouldEnd: (e) => {
+						const node = graph.getNodeData(e.itemId);
+						if (node.data.type === 'in') {
 							return false;
 						}
 
@@ -260,7 +279,7 @@ const renderGraph = (container, size, data, renderer) => {
 
 	graph.on('begincreate', (e) => {
 		graph.setCursor('crosshair');
-	  });
+	});
 
 	graph.on('cancelcreate', (e) => {
 		graph.setCursor('default');
@@ -275,10 +294,20 @@ const renderGraph = (container, size, data, renderer) => {
 				removeEdge(edge.id, graph);
 			}
 
-			if(edge.id === e.edge.id) return;
-			if(edge.source === e.edge.source && edge.target === e.edge.target) {
+			const source = graph.getNodeData(edge.source);
+			const target = graph.getNodeData(edge.target);
+
+			if(source.data.type === 'in' && target.data.type === 'out') {
 				removeEdge(edge.id, graph);
 			}
+
+			if(edge.id === e.edge.id) return;
+
+			if(edge.source === e.edge.source && edge.target === e.edge.target) {
+				removeEdge(edge.id, graph);
+				return;
+			}
+			
 		});
 		
 		setGraphLocalData();
