@@ -407,13 +407,13 @@
         on:click={() => {
           $graph.getAllNodesData().forEach((node) => {
             const newNode = $graph.getNodeData(node.id);
-            if (node.data.ntype === "reg") {
+            if (node.data.type === "reg") {
               newNode.data.var_.forEach((v) => {
                 v[1] = (Math.random() * 100).toString();
               });
               $graph.updateData("node", newNode);
             }
-            // if (node.data.ntype === 'out') {
+            // if (node.data.type === 'out') {
             //   node.data.train = [];
             //   for(let i = 0; i < 100; i++) {
             //     node.data.train.push(Math.random() * 100);

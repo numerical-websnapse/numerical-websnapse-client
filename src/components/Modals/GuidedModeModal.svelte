@@ -124,7 +124,7 @@
                 class="grid grid-cols-1 p-4 sm:grid-cols-3 gap-4 max-h-[45vh] overflow-y-auto"
               >
                 {#each $system.order.nrn_ord as neuron}
-                  {#if nodeData(neuron, "ntype") === "reg"}
+                  {#if nodeData(neuron, "type") === "reg"}
                     <div
                       class="border p-4 rounded-lg border-gray-500"
                       class:hidden={nodeData(neuron, "prf").length < 2}

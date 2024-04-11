@@ -11,7 +11,7 @@ export function preprocessNode(node, simulating = false) {
 
 	img.label = MathToImg(node.data.label);
 		
-	if(data.ntype === 'out') {
+	if(data.type === 'out') {
 		data.size = [config.outShape.defaultWidth, config.outShape.defaultHeight];
 
 		const latexTrain = texFormatter(
@@ -34,7 +34,7 @@ export function preprocessNode(node, simulating = false) {
 		];
 	}
 
-	if(data.ntype === 'reg') {
+	if(data.type === 'reg') {
 		const latexVar = texFormatter(data.var_, 'var');
 		const latexPrf = texFormatter(data.prf, 'prf');
 

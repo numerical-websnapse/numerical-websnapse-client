@@ -246,6 +246,11 @@
 				curPrf += func_count;
 			});
 
+			$system.order.in_ord.forEach((in_, index) => {
+				if($system.inputs[index][$system.time])
+					edges.push(...triggerEdges(in_));
+			});
+
 			$graph.setItemState(edges, "Spiking", true);
 
 			setTimeout(async() => {
