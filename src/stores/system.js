@@ -25,11 +25,11 @@ export const system = writable({
     },
     order: {},
     protocol: {
-        socket: 'wss',
-        api: 'https',
+        socket: 'ws',
+        api: 'http',
     },
-    url: 'numerical-websnapse-server.onrender.com',
-    // url: '127.0.0.1:8000',
+    // url: 'numerical-websnapse-server.onrender.com',
+    url: '127.0.0.1:8000',
     client: null,
     socket: null,
 });

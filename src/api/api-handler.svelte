@@ -4,7 +4,7 @@
 	import { system, resetSystem } from "../stores/system";
 	import { getNotificationsContext } from "svelte-notifications";
 	import { edgeOptions } from "../stores/settings";
-  import { deepCopy } from "../utils/copy";
+  	import { deepCopy } from "../utils/copy";
 
 	const { addNotification } = getNotificationsContext();
 

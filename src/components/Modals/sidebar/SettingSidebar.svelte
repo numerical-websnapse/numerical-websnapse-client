@@ -169,6 +169,28 @@
     reader.readAsText(files[0]);
   };
 
+  async function requestConversion(data) {
+		let response = null;
+		await fetch(`${$system.protocol.api}://${$system.url}/convert`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+      body: data
+		})
+		.then(response => {
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+			return response.json();
+		})
+		.then(data => {
+			response = data;
+		})
+
+		return response;
+	}
+
   function downloadGraphData(filename) {
     let data = localStorage.getItem("data");
     var file = new Blob([data], { type: "application/json" });
@@ -189,6 +211,29 @@
       }, 0);
     }
   };
+
+  async function downloadConvertedData(filename) {
+    let data = localStorage.getItem("data");
+    data = await requestConversion(data);
+    data = JSON.stringify(data, null, 2);
+    var file = new Blob([data], { type: "application/json" });
+    if (window.navigator.msSaveOrOpenBlob)
+      // IE10+
+      window.navigator.msSaveOrOpenBlob(file, filename);
+    else {
+      // Others
+      var a = document.createElement("a"),
+        url = URL.createObjectURL(file);
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }, 0);
+    }
+  }
 </script>
 
 <div class="flex flex-row">
@@ -241,6 +286,7 @@
       >
       <button
         on:click={() => downloadGraphData("graph.json")}
+        on:contextmenu={() => downloadConvertedData("converted.json")}
         class="text-gray-500 hover:text-white hover:bg-blue-800 border-gray-100 dark:border-0 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-gray-400 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
         aria-current="page">Download</button
       >
