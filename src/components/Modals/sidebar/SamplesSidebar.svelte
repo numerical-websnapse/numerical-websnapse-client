@@ -11,6 +11,7 @@
   import non_deterministic from "./samples/simple/non-determinism.json";
   import sample_from_ballesteros from "./samples/simple/sample-from-ballesteros.json";
   import sample_from_wu from "./samples/simple/sample-from-wu.json";
+  import sample_from_delos_reyes from "./samples/simple/sample-from-delos-reyes.json";
   // Subset Sum
   import subset_2_5 from "./samples/subsetsum/subset-2-5.json";
   import subset_3_10 from "./samples/subsetsum/subset-3-10.json";
@@ -78,6 +79,10 @@
       data: sample_from_wu,
       link: "https://ieeexplore.ieee.org/document/9138473",
     },
+    {
+      name: "Sample from Delos Reyes et al.",
+      data: sample_from_delos_reyes,
+    }
   ]
 
   const subsetsum = [
