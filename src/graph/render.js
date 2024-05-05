@@ -307,7 +307,6 @@ const renderGraph = (container, size, data, renderer) => {
 				removeEdge(edge.id, graph);
 				return;
 			}
-			
 		});
 		
 		setGraphLocalData();

@@ -4,6 +4,9 @@ import { get } from 'svelte/store';
 import { system } from './system';
 import { deepCopy } from '../utils/copy';
 
+const DUMMY_NODE_ID = 'g6-create-edge-dummy-node';
+const VIRTUAL_EDGE_ID = 'g6-create-edge-virtual-edge';
+
 // TEMPLATES
 export const edgeTemplate = (source = null, target = null) => {
     return {
@@ -47,7 +50,9 @@ export const changeMode = (mode) => {
 }
 
 const cleanNodes = (nodes) => {
-    return nodes.map((node) => {
+    return nodes.filter(function (node) { 
+        return node.id != DUMMY_NODE_ID;
+    }).map((node) => {
         return {
             id: node.id,
             data: {
@@ -64,7 +69,9 @@ const cleanNodes = (nodes) => {
 }
 
 const cleanEdges = (edges) => {
-    return edges.map((edge) => {
+    return edges.filter(function (edge) { 
+        return edge.id != VIRTUAL_EDGE_ID;
+    }).map((edge) => {
         return {
             id: edge.id,
             source: edge.source,
@@ -77,6 +84,7 @@ export const setGraphLocalData = () => {
     const nodes = cleanNodes(getGraph().getAllNodesData());
     const edges = cleanEdges(getGraph().getAllEdgesData());
     const data = { nodes, edges };
+    console.log('setGraphLocalData:', data);
     localStorage.setItem('data', JSON.stringify(data));
 }
 
