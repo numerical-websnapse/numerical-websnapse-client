@@ -1,8 +1,6 @@
----
-
 # Numerical WebSnapse
 
-This is a project for visualizing and simulating **Numerical Spiking Neural P Systems**. The live application can be accessed [here](https://numerical-websnapse.vercel.app).
+This is a project for visualizing and simulating **Numerical Spiking Neural P Systems**. The live application can be accessed [here](https://numerical-websnapse.vercel.app). A [tutorial](https://drive.google.com/file/d/1oy0i2VVDa_jKAVLAC8pSj34cjUekfjlv/view) for using the application is also provided.
 
 To clone the project:
 
